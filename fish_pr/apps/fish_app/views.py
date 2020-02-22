@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import FishingPlace, Order, Profile
 from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -28,6 +29,14 @@ def workspace(request):
 
     return render(request, 'fish_app/workspace.html', {'currentProfile': cur_profile, 'userID': user_id,
                                                        'renewProfileForm': renewProfileForm})
+
+
+def profile_update(request):
+    # model = Profile
+    # fields = ['first_name','last_name','date_of_birth','date_of_death']
+    # exclude = ('user',)
+    return 1
+
 
 
 def index(request):

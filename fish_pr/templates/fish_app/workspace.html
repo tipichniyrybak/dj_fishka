@@ -86,14 +86,30 @@
     </div>
 
     <div class="form-popup" id="popupForm">
-
-
-        <form action="" method="post">
+        <!-- <form action="/action_page.php" class="form-container">
             {% csrf_token %}
-            <table>
-            {{ renewProfileForm }}
-            </table>
-            <input type="submit" value="Submit" />
-        </form>
+            <p>Имя: <input type="text" id="form_first_nameID" name="form_first_name" /></p>
+            <p>Фамилия: <input type="text" id="form_last_nameID" name="form_last_name" /></p>
+
+            <p>Домашний водоем: <input type="text" id="form_home_pondID" name="form_home_pond" /></p>
+            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" name="form_lovely_pond" /></p>
+            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" name="form_fishing_object" /></p>
+            <p>Любимая снасть: <input type="text" id="form_tackleID" name="form_tackle" /></p>
+            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" name="form_fishing_style" /></p>
+
+            <input type="file"  id="form_photoID" name="form_photo" />
+            <input type="button" value="Изменить профиль" onclick="changeProfile()" />
+            <input type="button" value="Отмена"  onclick="closeForm()" />
+
+        </form> -->
+
+            <form action="profile_update" method="post">
+                {% csrf_token %}
+                <table>
+                {{ renewProfileForm }}
+                </table>
+                <input type="submit" value="Submit" />
+            </form>
+
     </div>
 {% endblock %}
