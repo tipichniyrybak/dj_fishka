@@ -4,4 +4,4 @@ from .models import Profile
 class renewProfileModelForm(ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ('first_name', 'last_name', 'photo', 'is_professional')
