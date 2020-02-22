@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import FishingPlace, Order, Profile
+from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -23,7 +24,10 @@ import json
 def workspace(request):
     user_id = request.session['userID']
     cur_profile = request.session['currentProfile']
-    return render(request, 'fish_app/workspace.html', {'currentProfile': cur_profile, 'userID': user_id})
+    renewProfileForm = renewProfileModelForm()
+
+    return render(request, 'fish_app/workspace.html', {'currentProfile': cur_profile, 'userID': user_id,
+                                                       'renewProfileForm': renewProfileForm})
 
 
 def index(request):
