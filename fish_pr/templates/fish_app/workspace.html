@@ -1,0 +1,106 @@
+{% extends 'fish_app/base.html' %}
+
+{% block css_link %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/workspace_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+{% endblock %}
+
+{% block js_link %}
+    {% load static %}
+    <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?apikey=18f62a6d-77ff-4bb8-8f46-3b6d164fdf4d&lang=ru_RU"></script>
+    <script type=text/javascript src="{% static 'js/libs/jquery341min.js' %}"></script>
+    <script type=text/javascript src="{% static 'js/yamaps.js' %}"></script>
+    <script type=text/javascript src="{% static 'js/workspace.js' %}"></script>
+{% endblock %}
+
+{% block js_script %}
+    <script type="text/javascript">
+
+        var myYandexMap = null;
+        var currProfile_json = "";
+        var currUserID = null;
+
+        $(document).ready(function() {
+
+            currProfile_json = jQuery.parseJSON('{{ currentProfile }}'.replace(/&quot;/gi, '\"'));
+            currUserID = '{{ userID }}';
+            console.log(currUserID);
+            reloadProfile(currUserID);
+
+            myYandexMap = new YandexMap()
+            myYandexMap.set_places();
+        });
+    </script>
+{% endblock %}
+
+
+{% block title %} Workspace {% endblock %}
+
+{% block content_area %}
+
+    <div class="content-container">
+
+        <div class="profile">
+            <div id="profile_photo">
+            </div>
+
+            <a href="javascript:openForm(currProfile_json);">Редактировать профиль</a> <br>
+
+            <div id="name">
+                Паша Вислов
+            </div>
+            <div id="is_professional">
+                [yes/no]
+            </div>  <br>
+            <div id="home_pond">
+                Домашний водоем
+            </div>
+            <div id="lovely_pond">
+                Любимый водоем
+            </div>
+            <div id="fishing_object">
+                Любимый объект ловли
+            </div>
+            <div id="tackle">
+                Любимая снасть
+            </div>
+            <div id="fishing_style">
+                Любимый стиль ловли
+            </div> <br>
+            <div id="controls">
+                <a href="#">Мои рыбалки</a> <br>
+                <a href="#">Трофеи</a> <br>
+                <a href="#">Добавить рыбалку</a> <br>
+                <a href="#">Мои отчеты</a> <br>
+                <a href="#">Мои объявления</a> <br>
+            </div>
+            <!-- <input type="button" id="openAddPlaseFormID" value="Add place" name="Add place"> -->
+        </div>
+        <div class="map">
+            <div id="map" style="margin:auto; width: 100%; height: 80vh"></div>
+        </div>
+        <div class="filters" id="divcontentID">
+            filters
+        </div>
+    </div>
+
+    <div class="form-popup" id="popupForm">
+        <form action="/action_page.php" class="form-container">
+            {% csrf_token %}
+            <p>Имя: <input type="text" id="form_first_nameID" name="form_first_name" /></p>
+            <p>Фамилия: <input type="text" id="form_last_nameID" name="form_last_name" /></p>
+
+            <p>Домашний водоем: <input type="text" id="form_home_pondID" name="form_home_pond" /></p>
+            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" name="form_lovely_pond" /></p>
+            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" name="form_fishing_object" /></p>
+            <p>Любимая снасть: <input type="text" id="form_tackleID" name="form_tackle" /></p>
+            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" name="form_fishing_style" /></p>
+
+            <input type="file"  id="form_photoID" name="form_photo" />
+            <input type="button" value="Изменить профиль" onclick="changeProfile()" />
+            <input type="button" value="Отмена"  onclick="closeForm()" />
+
+        </form>
+    </div>
+{% endblock %}

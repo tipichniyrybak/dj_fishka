@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ place.name }} {% endblock %}
+
+{% block content %}
+    <h2>{{ place.name }}</h2>
+    <p>{{ place.lant }}   {{ place.long }}</p>
+    <p>{{ place.description }}</p>
+    <em>{{ place.photos }}</em>
+    <hr>
+        {% if latest_order_list %}
+            {% for o in latest_order_list %}
+                <p>
+                    <strong>{{ o.user_id }}</strong>
+                    <p>{{ o.description }} </p>
+                </p>
+            {% endfor %}
+        {% else %}
+            Отчеты об этом месте не найдены
+        {% endif %}
+    <hr>
+
+    <form action="{% url 'workspace:leave_comment' place.id %}" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="text" required placeholder="Ваше имя:" name="name"> <br>
+        <textarea name="description" placeholder="Текст отчета:"></textarea> <br>
+
+        <button type="submit" class="btn btn-success">Записать отчет></button>
+    </form>
+
+{% endblock %}

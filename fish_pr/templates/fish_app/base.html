@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base_style.css' %}">
+        {% block css_link %} {% endblock %}
+        {% block js_link %} {% endblock %}
+        {% block js_script %} {% endblock %}
+        <title> {% block title %} My fishing site {% endblock %} </title>
+    </head>
+    <body>
+        <div class="grid-container">
+            <div class="header"></div>
+            <div class="content_area">
+                {% block content_area %}
+                {% endblock %}
+            </div>
+            <div class="footer"></div>
+        </div>
+    </body>
+</html>
