@@ -1,11 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os
+import random
+import string
 
 def get_path_to_save_profile_photo(instance, filename):
     path = 'fish_pr/static/img/profile/'
-    extension = os.path.splitext(filename)[1]
-    file_name = 'userID' + str(instance.user.id) + extension
+    #extension = os.path.splitext(filename)[1]
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    file_name = ''.join(random.choice(letters) for i in range(20))
+    file_name = file_name + '.jpg'
+        #'userID' + str(instance.user.id) + extension
     path = os.path.join(path, file_name)
     return path
 
