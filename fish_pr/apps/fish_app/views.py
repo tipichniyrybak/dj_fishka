@@ -30,12 +30,21 @@ def workspace(request):
     return render(request, 'fish_app/workspace.html', {'currentProfile': cur_profile, 'userID': user_id,
                                                        'renewProfileForm': renewProfileForm})
 
+@csrf_exempt
+def update_profile(request):
+    currentProfile = Profile.objects.get(user=User.objects.get(id=request.POST.get("userID")))
 
-def profile_update(request):
-    # model = Profile
-    # fields = ['first_name','last_name','date_of_birth','date_of_death']
-    # exclude = ('user',)
-    return 1
+    currentProfile.first_name = request.POST.get("first_name")
+    currentProfile.last_name = request.POST.get("last_name")
+
+    currentProfile.home_pond = request.POST.get("home_pond")
+    currentProfile.lovely_pond = request.POST.get("lovely_pond")
+    currentProfile.fishing_object = request.POST.get("fishing_object")
+    currentProfile.tackle = request.POST.get("tackle")
+    currentProfile.fishing_style = request.POST.get("fishing_style")
+
+    currentProfile.save()
+    return JsonResponse(1, safe=False)
 
 
 

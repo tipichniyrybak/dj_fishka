@@ -15,7 +15,7 @@ urlpatterns = [
     path('get_place_info/', views.get_place_info, name='get_place_info'),
     path('add_place/', views.add_place, name='add_place'),
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),
-    path('workspace/profile_update/', views.profile_update, name='profile_update'),
+    path('update_profile/', views.update_profile, name='update_profile'),
 
     # path('change_profile/', views.change_profile, name='change_profile'),
     # path('<int:place_id>/', views.detail, name='detail'),

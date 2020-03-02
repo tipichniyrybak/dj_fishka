@@ -1,36 +1,15 @@
-var myYandexMap = null;
-var currProfile_json = "";
+function reloadProfile() {
 
-function getProfileInfo(userID){
     $.ajax({
         type: "POST",
         url: "/get_profile_info/",
         data: {
-            'userID': userID
+            'userID': currUserID
         },
         success: function(response) {
-            console.log('response3:  ');
+            console.log('Profile_json:  ');
             console.log(response);
-            return response;
-        },
-        error: function(error) {
-            console.log('get_profile_info_error:');
-            console.log(error);
-        }
-    });
-}
-
-function reloadProfile(userID) {
-
-    $.ajax({
-        type: "POST",
-        url: "/get_profile_info/",
-        data: {
-            'userID': userID
-        },
-        success: function(currProfile_json) {
-            console.log('currProfile_json:  ');
-            console.log(currProfile_json);
+            currProfile_json = response;
 
             $("#name").html('<em><h4>' + currProfile_json[0].first_name + ' ' +currProfile_json[0].last_name + '</h4></em>');
             if (currProfile_json[0].is_professional) {
@@ -51,13 +30,11 @@ function reloadProfile(userID) {
             console.log(error);
         }
     });
-
 }
 
-function openForm(currProfile_json) {
+function openForm() {
 
-    $("#popupForm").show();
-
+    $('#formProfileEditID').bPopup();
     $("#form_first_nameID").val(currProfile_json[0].first_name);
     $("#form_last_nameID").val(currProfile_json[0].last_name);
 
@@ -68,62 +45,46 @@ function openForm(currProfile_json) {
     $("#form_fishing_styleID").val(currProfile_json[0].fishing_style);
 }
 
-function changeProfile() {
+function closeForm() {
+    // $("#popupForm").hide();
+    $('#formProfileEditID').bPopup().close();
+}
+
+function updateProfile() {
     $.ajax({
         type: "POST",
-        url: "/get_place_info/",
+        url: "/update_profile/",
         data: {
-            'place_id': place_id
+            'userID': currUserID,
+            'first_name': $('#form_first_nameID').val(),
+            'last_name': $('#form_last_nameID').val(),
+
+            'home_pond': $('#form_home_pondID').val(),
+            'lovely_pond': $('#form_lovely_pondID').val(),
+            'fishing_object': $('#form_fishing_objectID').val(),
+            'tackle': $('#form_tackleID').val(),
+            'fishing_style': $('#form_fishing_styleID').val()
         },
         success: function(response) {
-            console.log('response2:  ');
+            console.log('response_update_profile:  ');
             console.log(response);
 
-            $("#base_name").html('<b>Place name:</b> ' + response[0]['name']);
-            $("#lant").html('<b>Place lant:</b> ' + response[0]['lant']);
-            $("#long").html('<b>Place long:</b> ' + response[0]['long']);
-            $("#decription").html('<b>Place description:</b> ' + response[0]['description']);
-
-            console.log('photos str:  ');
-            console.log(response[0]['photos']);
-            var photo_names = response[0]['photos'].split('|');
-            console.log('photo_names:  ');
-            console.log(photo_names);
-            var photosHTML = '<b>Place photos:</b> <br> ';
-            photo_names.forEach(function(photo_name) {
-                photosHTML = photosHTML + '<br>' + photo_name;
-            });
-
-            $("#photos").html(photosHTML);
+            if (response == 1) {
+                console.log('ok');
+                reloadProfile();
+                closeForm();
+                $('#messageID').html('Профиль успешно обновлен!');
+                $('#messageID').bPopup({
+                    autoClose: 3500 //Auto closes after 1000ms/1sec
+                });
+            }
         },
         error: function(error) {
-            console.log('get_place_info_error:');
+            console.log('updateProfile_ERROR:');
             console.log(error);
         }
     });
 }
-
-function closeForm() {
-    $("#popupForm").hide();
-}
-
-$('#openAddPlaseFormID').click(function(e){
-    e.preventDefault();
-    console.log("openAddPlaseFormID");
-    var modal = document.getElementById("myModal");
-    modal.style.display = "block";
-    console.log('myYandexMap:  ');
-    console.log(myYandexMap);
-});
-
-$('#closeAddPlaceFormID').click(function(e){
-    e.preventDefault();
-    console.log("closeAddPlaceFormID");
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-    console.log('myYandexMap:  ');
-    console.log(myYandexMap);
-});
 
 $('#confirmAddPlaseID').click(function(e){
     e.preventDefault();
