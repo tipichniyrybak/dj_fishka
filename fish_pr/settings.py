@@ -27,7 +27,7 @@ SECRET_KEY = 'hk_#)4e-zv$=fsyqq6gk7(#bc8mv$)(!9bv8e9^vphgs6bl#e^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.200.244', '127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['192.168.200.244', '127.0.0.1', '.herokuapp.com', 'http://fishka.herokuapp.com', 'http://fishka.herokuapp.com/get_profile_info/']
 
 
 # Application definition
