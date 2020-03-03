@@ -1,5 +1,4 @@
 function reloadProfile() {
-
     $.ajax({
         type: "POST",
         url: "/get_profile_info/",
@@ -50,21 +49,55 @@ function closeForm() {
     $('#formProfileEditID').bPopup().close();
 }
 
-function updateProfile() {
+function updateFilters() {
+    // var filters = {
+    //     is_selfPlaces: $('#is_selfPlacesID').is(":checked"),
+    //     is_Base: $('#is_BaseID').is(":checked"),
+    //     is_carAccessibility: $('#is_carAccessibilityID').is(":checked"),
+    //     is_busAccessibility: $('#is_busAccessibilityID').is(":checked")
+    // };
+
+    updateProfile('filters')
+    // console.log(filters);
+    myYandexMap.set_places();
+}
+
+function updateProfile(typeInfo) {
+    var updateData = null;
+    switch (typeInfo) {
+        case 'main':
+            updateData = {
+                'userID': currUserID,
+                'typeInfo': 'main',
+                'first_name': $('#form_first_nameID').val(),
+                'last_name': $('#form_last_nameID').val(),
+
+                'home_pond': $('#form_home_pondID').val(),
+                'lovely_pond': $('#form_lovely_pondID').val(),
+                'fishing_object': $('#form_fishing_objectID').val(),
+                'tackle': $('#form_tackleID').val(),
+                'fishing_style': $('#form_fishing_styleID').val()
+            };
+            break;
+
+        case 'filters':
+            updateData = {
+                'userID': currUserID,
+                'typeInfo': 'filters',
+                'is_selfPlaces': $('#is_selfPlacesID').is(":checked"),
+                'is_Base': $('#is_BaseID').is(":checked"),
+                'is_carAccessibility': $('#is_carAccessibilityID').is(":checked"),
+                'is_busAccessibility': $('#is_busAccessibilityID').is(":checked")
+            };
+            break;
+        default:
+            break;
+    }
+
     $.ajax({
         type: "POST",
         url: "/update_profile/",
-        data: {
-            'userID': currUserID,
-            'first_name': $('#form_first_nameID').val(),
-            'last_name': $('#form_last_nameID').val(),
-
-            'home_pond': $('#form_home_pondID').val(),
-            'lovely_pond': $('#form_lovely_pondID').val(),
-            'fishing_object': $('#form_fishing_objectID').val(),
-            'tackle': $('#form_tackleID').val(),
-            'fishing_style': $('#form_fishing_styleID').val()
-        },
+        data: updateData,
         success: function(response) {
             console.log('response_update_profile:  ');
             console.log(response);

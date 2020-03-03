@@ -33,18 +33,27 @@ def workspace(request):
 @csrf_exempt
 def update_profile(request):
     currentProfile = Profile.objects.get(user=User.objects.get(id=request.POST.get("userID")))
+    typeInfo = request.POST.get("typeInfo")
+    res = 0
 
-    currentProfile.first_name = request.POST.get("first_name")
-    currentProfile.last_name = request.POST.get("last_name")
+    if typeInfo == 'main':
+        currentProfile.first_name = request.POST.get("first_name")
+        currentProfile.last_name = request.POST.get("last_name")
 
-    currentProfile.home_pond = request.POST.get("home_pond")
-    currentProfile.lovely_pond = request.POST.get("lovely_pond")
-    currentProfile.fishing_object = request.POST.get("fishing_object")
-    currentProfile.tackle = request.POST.get("tackle")
-    currentProfile.fishing_style = request.POST.get("fishing_style")
+        currentProfile.home_pond = request.POST.get("home_pond")
+        currentProfile.lovely_pond = request.POST.get("lovely_pond")
+        currentProfile.fishing_object = request.POST.get("fishing_object")
+        currentProfile.tackle = request.POST.get("tackle")
+        currentProfile.fishing_style = request.POST.get("fishing_style")
+        res = 1
+
+    if typeInfo == 'filters':
+        currentProfile.filters = request.POST.get("is_selfPlaces") + '' + request.POST.get("is_Base") \
+                                 + '' + request.POST.get("is_carAccessibility") + '' + request.POST.get("is_busAccessibility")
+        res = 2
 
     currentProfile.save()
-    return JsonResponse(1, safe=False)
+    return JsonResponse(res, safe=False)
 
 
 
@@ -77,7 +86,13 @@ def registration(request):
 
 @csrf_exempt
 def get_places(request):
-    places = FishingPlace.objects.values()
+    user_id = request.POST.get("userID")
+
+    if user_id == '-1':
+        places = FishingPlace.objects.values()
+    else:
+        user_by_id = User.objects.get(id=user_id)
+        places = FishingPlace.objects.filter(user=user_by_id).values()
     return JsonResponse(list(places), safe=False)
 
 

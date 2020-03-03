@@ -30,7 +30,7 @@
             reloadProfile();
 
             myYandexMap = new YandexMap()
-            myYandexMap.set_places();
+            myYandexMap.set_places(false);
         });
     </script>
 {% endblock %}
@@ -79,9 +79,15 @@
         </div>
         <div class="map">
             <div id="map" style="margin:auto; width: 100%; height: 80vh"></div>
+            <div id="map_contect" class="formClass">
+            </div>
         </div>
         <div class="filters" id="divcontentID">
-            filters
+            filters <br>
+            <input type="checkbox" id="is_selfPlacesID" onclick='updateFilters();'>Только мои места ловли<Br>
+            <input type="checkbox" id="is_BaseID" onclick='updateFilters();'>Рыболовная база<Br>
+            <input type="checkbox" id="is_carAccessibilityID" onclick='updateFilters();'>Доступ на машине<Br>
+            <input type="checkbox" id="is_busAccessibilityID" onclick='updateFilters();'>Доступ на общественном<Br>
         </div>
     </div>
 
@@ -127,7 +133,7 @@
             <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" name="form_fishing_style" /></p>
 
 
-            <input type="button" value="Изменить профиль" onclick="updateProfile()" />
+            <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
             <input type="button" value="Отмена"  onclick="closeForm()" />
         </form>
     </div>
