@@ -31,6 +31,7 @@
 
 .mapContent {
     position: absolute;
+    float:right;
     display: none;
     list-style-type: none;
     margin: 10px;
@@ -38,7 +39,7 @@
     border: 1px solid gray;
     z-index: 100;
     background-color: rgba(0, 120, 201, 0.4); /* Цвет фона и значение прозрачности */
-    
+
 }
 
 .messageClass {
