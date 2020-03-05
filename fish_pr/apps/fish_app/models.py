@@ -7,17 +7,13 @@ from django.http import JsonResponse
 
 
 def get_path_to_save_photos(instance, filename):
-    # path = 'fish_pr/static/img/profile/'
     path = 'fish_pr/static/img/'
-
     if type(instance) == Profile:
         path = path + 'profile/'
 
     if type(instance) == FishingPlaceImages:
         path = path + 'places/'
 
-    #extension = os.path.splitext(filename)[1]
-    """Generate a random string of fixed length """
     letters = string.ascii_lowercase
     file_name = ''.join(random.choice(letters) for i in range(20))
     file_name = file_name + '.jpg'
@@ -37,7 +33,7 @@ class Profile(models.Model):
     fishing_object = models.CharField('Lovely fishing object', max_length=70)
     tackle = models.CharField('tackle', max_length=70)
     fishing_style = models.CharField('fishing_style', max_length=70)
-    filters = models.CharField('filters', max_length=50)
+    filters = models.CharField('filters', max_length=300)
 
     class Meta:
         verbose_name = 'Профиль'

@@ -24,10 +24,10 @@ import json
 
 def workspace(request):
     user_id = request.session['userID']
-    cur_profile = request.session['currentProfile']
+    # cur_profile = request.session['currentProfile']
     renewProfileForm = renewProfileModelForm()
 
-    return render(request, 'fish_app/workspace.html', {'currentProfile': cur_profile, 'userID': user_id,
+    return render(request, 'fish_app/workspace.html', {'userID': user_id,
                                                        'renewProfileForm': renewProfileForm})
 
 @csrf_exempt
@@ -48,8 +48,12 @@ def update_profile(request):
         res = 1
 
     if typeInfo == 'filters':
-        currentProfile.filters = request.POST.get("is_selfPlaces") + '' + request.POST.get("is_Base") \
-                                 + '' + request.POST.get("is_carAccessibility") + '' + request.POST.get("is_busAccessibility")
+        currentProfile.filters = json.dumps({
+            'is_selfPlaces': request.POST.get("is_selfPlaces"),
+            'is_Base': request.POST.get("is_Base"),
+            'is_carAccessibility': request.POST.get("is_carAccessibility"),
+            'is_busAccessibility': request.POST.get("is_busAccessibility")
+        })
         res = 2
 
     currentProfile.save()
@@ -67,13 +71,11 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             user_id = User.objects.get(username=user).id
-            profile = Profile.objects.filter(user_id=user_id).values()
-            profile_json = json.dumps(list(profile))
-            # serialized_obj = serializers.serialize('json', [profile])
-            # profile_json = json.dumps("data": profile)
+            # profile = Profile.objects.filter(user_id=user_id).values()
+            # profile_json = json.dumps(list(profile))
             auth_login(request, user)
             request.session['userID'] = user_id
-            request.session['currentProfile'] = profile_json
+            # request.session['currentProfile'] = profile_json
             return redirect('fish_app:workspace')
     else:
         form = AuthenticationForm()
@@ -86,13 +88,22 @@ def registration(request):
 
 @csrf_exempt
 def get_places(request):
-    user_id = request.POST.get("userID")
+    userID = request.POST.get("userID")
+    filt = Profile.objects.filter(user_id=userID).values('filters')         #  JSON B JSONe
+    filt1 = filt[0]
+    filt2 = filt1["filters"]
+    filters = json.loads(filt2)
 
-    if user_id == '-1':
-        places = FishingPlace.objects.values()
-    else:
-        user_by_id = User.objects.get(id=user_id)
-        places = FishingPlace.objects.filter(user=user_by_id).values()
+    places = FishingPlace.objects.values()
+    if filters["is_selfPlaces"] == 'true':
+        places = places.filter(user_id=userID)
+    if filters["is_Base"] == 'true':
+        places = places.filter(is_Base=True)
+    if filters["is_carAccessibility"] == 'true':
+        places = places.filter(car_accessibility=True)
+    if filters["is_busAccessibility"] == 'true':
+        places = places.filter(bus_accessibility=True)
+
     return JsonResponse(list(places), safe=False)
 
 

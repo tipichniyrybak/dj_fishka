@@ -23,6 +23,19 @@ function reloadProfile() {
             $("#fishing_style").html('<b><em>Любимый стиль ловли: </b>' + currProfile_json[0].fishing_style + '</em>');
             $("#profile_photo").html('<img class="img_resize" src="/static/img/profile/' + currProfile_json[0].photo.replace(/^.*[\\\/]/, '') +  '"/>');
 
+            $("#form_first_nameID").val(currProfile_json[0].first_name);
+            $("#form_last_nameID").val(currProfile_json[0].last_name);
+            $("#form_home_pondID").val(currProfile_json[0].home_pond);
+            $("#form_lovely_pondID").val(currProfile_json[0].lovely_pond);
+            $("#form_fishing_objectID").val(currProfile_json[0].fishing_object);
+            $("#form_tackleID").val(currProfile_json[0].tackle);
+            $("#form_fishing_styleID").val(currProfile_json[0].fishing_style);
+
+            var filters = JSON.parse(currProfile_json[0].filters);
+            $('#is_selfPlacesID').prop('checked', (filters["is_selfPlaces"] == 'true'));
+            $('#is_BaseID').prop('checked', (filters["is_Base"] == 'true'));
+            $('#is_carAccessibilityID').prop('checked', (filters["is_carAccessibility"] == 'true'));
+            $('#is_busAccessibilityID').prop('checked', (filters["is_busAccessibility"] == 'true'));
         },
         error: function(error) {
             console.log('get_profile_info_error:');
@@ -32,16 +45,7 @@ function reloadProfile() {
 }
 
 function openForm() {
-
     $('#formProfileEditID').bPopup();
-    $("#form_first_nameID").val(currProfile_json[0].first_name);
-    $("#form_last_nameID").val(currProfile_json[0].last_name);
-
-    $("#form_home_pondID").val(currProfile_json[0].home_pond);
-    $("#form_lovely_pondID").val(currProfile_json[0].lovely_pond);
-    $("#form_fishing_objectID").val(currProfile_json[0].fishing_object);
-    $("#form_tackleID").val(currProfile_json[0].tackle);
-    $("#form_fishing_styleID").val(currProfile_json[0].fishing_style);
 }
 
 function closeForm() {
@@ -50,16 +54,15 @@ function closeForm() {
 }
 
 function updateFilters() {
-    // var filters = {
-    //     is_selfPlaces: $('#is_selfPlacesID').is(":checked"),
-    //     is_Base: $('#is_BaseID').is(":checked"),
-    //     is_carAccessibility: $('#is_carAccessibilityID').is(":checked"),
-    //     is_busAccessibility: $('#is_busAccessibilityID').is(":checked")
-    // };
+    updateProfile('filters');
+}
 
-    updateProfile('filters')
-    // console.log(filters);
-    myYandexMap.set_places();
+function hideMapContent() {
+    $('#map_contentID').hide();
+}
+
+function reloadPlaces() {
+     myYandexMap.set_places();
 }
 
 function updateProfile(typeInfo) {
