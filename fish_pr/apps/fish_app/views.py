@@ -88,15 +88,15 @@ def registration(request):
 
 @csrf_exempt
 def get_places(request):
-    userID = request.POST.get("userID")
-    filt = Profile.objects.filter(user_id=userID).values('filters')         #  JSON B JSONe
+    user_id = request.POST.get("userID")
+    filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
     filt1 = filt[0]
     filt2 = filt1["filters"]
     filters = json.loads(filt2)
 
     places = FishingPlace.objects.values()
     if filters["is_selfPlaces"] == 'true':
-        places = places.filter(user_id=userID)
+        places = places.filter(user_id=user_id)
     if filters["is_Base"] == 'true':
         places = places.filter(is_Base=True)
     if filters["is_carAccessibility"] == 'true':
