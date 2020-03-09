@@ -30,6 +30,7 @@ def workspace(request):
     return render(request, 'fish_app/workspace.html', {'userID': user_id,
                                                        'renewProfileForm': renewProfileForm})
 
+
 @csrf_exempt
 def update_profile(request):
     currentProfile = Profile.objects.get(user=User.objects.get(id=request.POST.get("userID")))
@@ -58,7 +59,6 @@ def update_profile(request):
 
     currentProfile.save()
     return JsonResponse(res, safe=False)
-
 
 
 def index(request):
@@ -111,23 +111,23 @@ def get_places(request):
 def get_place_info(request):
     place_id = request.POST.get("place_id")
 
-    ftp = FTP()
-    ftp.connect('ftpupload.net', 21)
-    ftp.login('epiz_24989236', 'FIbPfZKy3F')
-    FTP_path = "/htdocs/media/img/places/" + str(place_id)
-    ftp.cwd(FTP_path)
+    # ftp = FTP()
+    # ftp.connect('ftpupload.net', 21)
+    # ftp.login('epiz_24989236', 'FIbPfZKy3F')
+    # FTP_path = "/htdocs/media/img/places/" + str(place_id)
+    # ftp.cwd(FTP_path)
 
-    tmp_path = os.path.join(settings.BASE_DIR, 'fish_pr', 'static', 'tmp_img', str(place_id))
-
-    if not os._exists(tmp_path):
-        os.mkdir(tmp_path)
-    os.chdir(tmp_path)
-
-    for filename in ftp.nlst('*.*'):
-        fhandle = open(filename, 'wb')
-        ftp.retrbinary('RETR ' + filename, fhandle.write)
-        fhandle.close()
-    ftp.close()
+    # tmp_path = os.path.join(settings.BASE_DIR, 'fish_pr', 'static', 'tmp_img', str(place_id))
+    #
+    # if not os._exists(tmp_path):
+    #     os.mkdir(tmp_path)
+    # os.chdir(tmp_path)
+    #
+    # for filename in ftp.nlst('*.*'):
+    #     fhandle = open(filename, 'wb')
+    #     ftp.retrbinary('RETR ' + filename, fhandle.write)
+    #     fhandle.close()
+    # ftp.close()
 
     place = FishingPlace.objects.filter(id=place_id).values()
     return JsonResponse(list(place), safe=False)

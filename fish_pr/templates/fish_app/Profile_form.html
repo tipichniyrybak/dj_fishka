@@ -3,5 +3,11 @@
 {% block title %} Edit Profile {% endblock %}
 
 {% block content_area %}
-    
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
 {% endblock %}

@@ -21,7 +21,7 @@ function reloadProfile() {
             $("#fishing_object").html('<b><em>Любимый объект ловли: </b>' + currProfile_json[0].fishing_object + '</em>');
             $("#tackle").html('<b><em>Любимая снасть: </b>' + currProfile_json[0].tackle + '</em>');
             $("#fishing_style").html('<b><em>Любимый стиль ловли: </b>' + currProfile_json[0].fishing_style + '</em>');
-            $("#profile_photo").html('<img class="img_resize" src="/static/img/profile/' + currProfile_json[0].photo.replace(/^.*[\\\/]/, '') +  '"/>');
+            $("#profile_photo").html('<img class="img_resize" src="/media/img/profile/' + currProfile_json[0].photo.replace(/^.*[\\\/]/, '') +  '"/>');
 
             $("#form_first_nameID").val(currProfile_json[0].first_name);
             $("#form_last_nameID").val(currProfile_json[0].last_name);
@@ -57,8 +57,8 @@ function updateFilters() {
     updateProfile('filters');
 }
 
-function hideMapContent() {
-    $('#map_contentID').hide();
+function hidePlaceContent() {
+    $('#place_contentID').hide();
 }
 
 function reloadPlaces() {
@@ -111,7 +111,7 @@ function updateProfile(typeInfo) {
                 closeForm();
                 $('#messageID').html('Профиль успешно обновлен!');
                 $('#messageID').bPopup({
-                    autoClose: 3500 //Auto closes after 1000ms/1sec
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
                 });
             }
         },

@@ -21,11 +21,20 @@ class YandexMap {
             data: {
                 'place_id': place_id
             },
-
             type: 'POST',
-            success: function(response) {
-                console.log('response2:  ');
-                console.log(response);
+            success: function(get_place_info_response) {
+                console.log('get_place_info_response:  ');
+                console.log(get_place_info_response);
+                $('#place_name').html(get_place_info_response[0].name);
+                $('#place_user').html('ИД Рыбака: ' + get_place_info_response[0].user_id);    //TODO link to Profile
+                $('#place_isBame').html('Это база: ' + get_place_info_response[0].is_Base);
+                $('#place_lant').html('lant: ' + get_place_info_response[0].lant);
+                $('#place_long').html('long: ' + get_place_info_response[0].long);
+                $('#place_decription').html('Описание: ' + get_place_info_response[0].description);
+                $('#place_bus_accessibility').html('Доступ на общественном: ' + get_place_info_response[0].bus_accessibility);
+                $('#place_car_accessibility').html('Доступ на машине: ' + get_place_info_response[0].car_accessibility);
+
+
 
             },
             error: function(error) {
@@ -61,9 +70,9 @@ class YandexMap {
                         });
                         myPlacemark1.events.add(['click'],  function (e) {
                             console.log('click cluck');
-                            // that.get_place_info(place['id']);
-                            $('#map_contentID').hide();
-                            $('#map_contentID').slideToggle(200);
+                            $('#place_contentID').hide();
+                            that.get_place_info(place['id']);
+                            $('#place_contentID').slideToggle(200);
 
                         });
                         that.PlacemarkArray.push(myPlacemark1);

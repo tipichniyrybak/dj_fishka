@@ -29,8 +29,9 @@
     min-height: 20px;
 }
 
-.mapContent {
+.placeContent {
     position: absolute;
+    padding: 10px;
     float:right;
     display: none;
     list-style-type: none;
