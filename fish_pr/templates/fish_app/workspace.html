@@ -4,15 +4,18 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/workspace_style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mg-image-viewer.css' %}">
 {% endblock %}
 
 {% block js_link %}
     {% load static %}
     <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?apikey=18f62a6d-77ff-4bb8-8f46-3b6d164fdf4d&lang=ru_RU"></script>
     <script type=text/javascript src="{% static 'js/libs/jquery-3.4.1.js' %}"></script>
+    <script type=text/javascript src="{% static 'js/libs/mg-image-viewer.js' %}"></script>
     <script type=text/javascript src="{% static 'js/libs/bPopup.js' %}"></script>
     <script type=text/javascript src="{% static 'js/yamaps.js' %}"></script>
     <script type=text/javascript src="{% static 'js/workspace.js' %}"></script>
+
 {% endblock %}
 
 {% block js_script %}
@@ -23,6 +26,8 @@
         var currUserID = null;
 
         $(document).ready(function() {
+
+            $.fn.mg_image_viewer();
 
             //currProfile_json = jQuery.parseJSON('{{ currentProfile }}'.replace(/&quot;/gi, '\"'));
             currUserID = '{{ userID }}';

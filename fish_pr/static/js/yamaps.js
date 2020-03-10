@@ -54,7 +54,7 @@ class YandexMap {
                 console.log(get_place_photos_response);
                 var photo_html = "";
                 get_place_photos_response.forEach((photo, i) => {
-                    photo_html = photo_html + '<img class="img_place" src="/media/img/places/' + photo.image.replace(/^.*[\\\/]/, '') +  '"/>'
+                    photo_html = photo_html + '<img class="mg-iv-image" src="/media/img/places/' + photo.image.replace(/^.*[\\\/]/, '') +  '"/>'
 
                 });
                 console.log(photo_html);
