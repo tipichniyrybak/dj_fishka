@@ -14,8 +14,13 @@
     margin-left: 25px;
 }
 
-.img_resize {
+.img_profile {
     width: 10%;
+    height: auto;
+}
+
+.img_place {
+    width: 100px;
     height: auto;
 }
 

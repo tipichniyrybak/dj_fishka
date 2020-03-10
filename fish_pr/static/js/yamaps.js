@@ -19,7 +19,8 @@ class YandexMap {
             type: "POST",
             url: "/get_place_info/",
             data: {
-                'place_id': place_id
+                'data_type': "info",
+                'place_id': place_id,
             },
             type: 'POST',
             success: function(get_place_info_response) {
@@ -33,15 +34,41 @@ class YandexMap {
                 $('#place_decription').html('Описание: ' + get_place_info_response[0].description);
                 $('#place_bus_accessibility').html('Доступ на общественном: ' + get_place_info_response[0].bus_accessibility);
                 $('#place_car_accessibility').html('Доступ на машине: ' + get_place_info_response[0].car_accessibility);
-
-
-
             },
             error: function(error) {
                 console.log('get_place_info_error:');
                 console.log(error);
             }
         });
+
+        $.ajax({
+            type: "POST",
+            url: "/get_place_info/",
+            data: {
+                'data_type': "photos",
+                'place_id': place_id,
+            },
+            type: 'POST',
+            success: function(get_place_photos_response) {
+                console.log('get_place_photos_response:  ');
+                console.log(get_place_photos_response);
+                var photo_html = "";
+                get_place_photos_response.forEach((photo, i) => {
+                    photo_html = photo_html + '<img class="img_place" src="/media/img/places/' + photo.image.replace(/^.*[\\\/]/, '') +  '"/>'
+
+                });
+                console.log(photo_html);
+                $("#place_photos").html(photo_html);
+
+            },
+            error: function(error) {
+                console.log('get_place_photos_error:');
+                console.log(error);
+            }
+        });
+
+
+
     }
 
     set_places() {

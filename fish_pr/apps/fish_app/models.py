@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 
 def get_path_to_save_photos(instance, filename):
-    path = 'fish_pr/media/img/'
+    path = 'img/'
     if type(instance) == Profile:
         path = path + 'profile/'
 

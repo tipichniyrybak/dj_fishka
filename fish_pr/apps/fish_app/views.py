@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Order, Profile
+from .models import FishingPlace, Order, Profile, FishingPlaceImages
 from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -110,6 +110,7 @@ def get_places(request):
 @csrf_exempt
 def get_place_info(request):
     place_id = request.POST.get("place_id")
+    type = request.POST.get("data_type")
 
     # ftp = FTP()
     # ftp.connect('ftpupload.net', 21)
@@ -129,8 +130,16 @@ def get_place_info(request):
     #     fhandle.close()
     # ftp.close()
 
-    place = FishingPlace.objects.filter(id=place_id).values()
-    return JsonResponse(list(place), safe=False)
+
+    if type == 'info':
+        place = FishingPlace.objects.filter(id=place_id).values()
+        return JsonResponse(list(place), safe=False)
+    if type == 'photos':
+        place = FishingPlace.objects.get(pk=place_id)
+
+        image_list = FishingPlaceImages.objects.filter(fishing_place=place).values()
+        # image_list = place.FishingPlaceImages.all()
+        return JsonResponse(list(image_list), safe=False)
 
 
 @csrf_exempt
