@@ -20,9 +20,20 @@
 }
 
 .img_place {
-    width: 100px;
-    height: auto;
+    /* width: 150px; */
+    height: 150px;
+    width: auto;
+    margin-right: 10px;
+    /* cursor: pointer;
+    max-width: 150px;
+    z-index: 99; */
 }
+
+/* .img_place:hover {
+    position:absolute;
+    max-width: none;
+    z-index: 100;
+} */
 
 .formPopup, .message {
     background-color:#fff;
@@ -43,7 +54,7 @@
     margin: 10px;
     overflow: hidden;
     border: 1px solid gray;
-    z-index: 100;
+    z-index: 90;
     background-color: rgba(0, 120, 201, 0.4); /* Цвет фона и значение прозрачности */
 
 }
