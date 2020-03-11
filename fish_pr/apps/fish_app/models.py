@@ -75,6 +75,7 @@ class FishingPlace(models.Model):
 class FishingPlaceImages(models.Model):
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_path_to_save_photos)
+    caption = models.CharField('Caption of photo', max_length=150)
 
     class Meta:
         verbose_name = 'Фото рыболовного места'
