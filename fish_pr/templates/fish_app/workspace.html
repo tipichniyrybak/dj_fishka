@@ -27,11 +27,11 @@
 
         $(document).ready(function() {
 
-            // $.fn.mg_image_viewer();
-            // $.bindViewer(".viewer-item");
-            console.log("viewer");
+            lightbox.option({
+                  'resizeDuration': 200,
+                  'wrapAround': true
+                })
 
-            //currProfile_json = jQuery.parseJSON('{{ currentProfile }}'.replace(/&quot;/gi, '\"'));
             currUserID = '{{ userID }}';
             console.log(currUserID);
             reloadProfile();
@@ -41,7 +41,6 @@
         });
     </script>
 {% endblock %}
-
 
 {% block title %} Workspace {% endblock %}
 
@@ -53,7 +52,7 @@
 
             <div id="profile_photo">
             </div>
-            <a href="javascript:openForm();">Редактировать профиль</a> <br>
+            <a href="javascript:openForm('profile');">Редактировать профиль</a> <br>
             <div id="name">
                 Паша Вислов
             </div>
@@ -145,7 +144,7 @@
             <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" name="form_fishing_style" /></p>
 
             <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
-            <input type="button" value="Отмена"  onclick="closeForm()" />
+            <input type="button" value="Отмена"  onclick="closeForm('profile')" />
         </form>
     </div>
 

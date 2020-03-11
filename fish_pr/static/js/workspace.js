@@ -44,13 +44,24 @@ function reloadProfile() {
     });
 }
 
-function openForm() {
-    $('#formProfileEditID').bPopup();
+function openForm(form) {
+    switch (form) {
+        case 'profile':
+            $('#formProfileEditID').bPopup();
+            break;
+        default:
+
+    }
 }
 
-function closeForm() {
-    // $("#popupForm").hide();
-    $('#formProfileEditID').bPopup().close();
+function closeForm(form) {
+    switch (form) {
+        case 'profile':
+            $('#formProfileEditID').bPopup().close();
+            break;
+        default:
+
+    }
 }
 
 function updateFilters() {
