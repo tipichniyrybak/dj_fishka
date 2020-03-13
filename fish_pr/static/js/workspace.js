@@ -45,9 +45,13 @@ function reloadProfile() {
 }
 
 function openForm(form) {
+    console.log(form);
     switch (form) {
-        case 'profile':
+        case 'profile_update':
             $('#formProfileEditID').bPopup();
+            break;
+        case 'place_add':
+            $('#formPlaceAddID').bPopup();
             break;
         default:
 
@@ -56,8 +60,11 @@ function openForm(form) {
 
 function closeForm(form) {
     switch (form) {
-        case 'profile':
+        case 'profile_update':
             $('#formProfileEditID').bPopup().close();
+            break;
+        case 'place_add':
+            $('#formPlaceAddID').bPopup().close();
             break;
         default:
 
@@ -119,15 +126,54 @@ function updateProfile(typeInfo) {
             if (response == 1) {
                 console.log('ok');
                 reloadProfile();
-                closeForm();
+                closeForm('profile_update');
                 $('#messageID').html('Профиль успешно обновлен!');
                 $('#messageID').bPopup({
-                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                    autoClose: 1000 //Auto closes after 1000ms/1sec
                 });
             }
         },
         error: function(error) {
             console.log('updateProfile_ERROR:');
+            console.log(error);
+        }
+    });
+}
+
+function addPlace() {
+    var addPlaceData = null;
+    addPlaceData = {
+        'userID': currUserID,
+        'name': $('#fPlaceAdd_nameID').val(),
+        'lant': $('#fPlaceAdd_lantID').val(),
+        'long': $('#fPlaceAdd_longID').val(),
+        'isBase': $('#fPlaceAdd_isBaseID').val(),
+        'description': $('#fPlaceAdd_descriptionID').val(),
+        'busAccessability': $('#fPlaceAdd_busAccessabilityID').val(),
+        'carAccessability': $('#fPlaceAdd_carAccessabilityID').val()
+    };
+
+
+    $.ajax({
+        type: "POST",
+        url: "/add_place/",
+        data: addPlaceData,
+        success: function(response) {
+            console.log('response_addPlaceData:  ');
+            console.log(response);
+
+            // if (response == 1) {
+            //     console.log('ok');
+            //     reloadProfile();
+            //     closeForm('profile_update');
+            //     $('#messageID').html('Профиль успешно обновлен!');
+            //     $('#messageID').bPopup({
+            //         autoClose: 1000 //Auto closes after 1000ms/1sec
+            //     });
+            // }
+        },
+        error: function(error) {
+            console.log('addPlaceData_ERROR:');
             console.log(error);
         }
     });

@@ -52,7 +52,8 @@
 
             <div id="profile_photo">
             </div>
-            <a href="javascript:openForm('profile');">Редактировать профиль</a> <br>
+            <div class="active_caption"  id="profile_update" onclick="openForm(this.id)">Редактировать профиль</div>
+            <br>
             <div id="name">
                 Паша Вислов
             </div>
@@ -75,7 +76,7 @@
                 Любимый стиль ловли
             </div> <br>
             <div id="controls">
-                <a href="#">Мои места</a> <a href="#">+</a> <br>
+                <a href="#">Мои места</a> <div class="active_caption" style="display: inline;" id="place_add" onclick="openForm(this.id)"> + </div> <br>
                 <a href="#">Мои рыбалки</a> <a href="#">+</a> <br>
                 <a href="#">Мои Трофеи</a> <a href="#">+</a> <br>
                 <a href="#">Мои отчеты</a> <a href="#">+</a> <br>
@@ -134,17 +135,34 @@
         <form>    <!--  class="form-container" -->
             {% csrf_token %}
             <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
-            <p>Имя: <input type="text" id="form_first_nameID" name="form_first_name" /></p>
-            <p>Фамилия: <input type="text" id="form_last_nameID" name="form_last_name" /></p>
+            <p>Имя: <input type="text" id="form_first_nameID" /></p>
+            <p>Фамилия: <input type="text" id="form_last_nameID" /></p>
 
-            <p>Домашний водоем: <input type="text" id="form_home_pondID" name="form_home_pond" /></p>
-            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" name="form_lovely_pond" /></p>
-            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" name="form_fishing_object" /></p>
-            <p>Любимая снасть: <input type="text" id="form_tackleID" name="form_tackle" /></p>
-            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" name="form_fishing_style" /></p>
+            <p>Домашний водоем: <input type="text" id="form_home_pondID" /></p>
+            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" /></p>
+            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" /></p>
+            <p>Любимая снасть: <input type="text" id="form_tackleID" /></p>
+            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" /></p>
 
             <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
-            <input type="button" value="Отмена"  onclick="closeForm('profile')" />
+            <input type="button" value="Отмена"  onclick="closeForm('profile_update')" />
+        </form>
+    </div>
+
+    <div id="formPlaceAddID" class="formPopup">
+        <form>    <!--  class="form-container" -->
+            {% csrf_token %}
+            <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
+            <p>Название места: <input type="text" id="fPlaceAdd_nameID" /></p>
+            <p>lant: <input type="text" id="fPlaceAdd_lantID" /></p>
+            <p>long: <input type="text" id="fPlaceAdd_longID" /></p>
+            <p>Рыболовная база: <input type="checkbox" id="fPlaceAdd_isBaseID" /></p>
+            <p>Описание: <input type="text" id="fPlaceAdd_descriptionID" /></p>
+            <p>Доступ на общественном: <input type="checkbox" id="fPlaceAdd_busAccessabilityID" /></p>
+            <p>Доступ на машине: <input type="checkbox" id="fPlaceAdd_carAccessabilityID" /></p>
+
+            <input type="button" value="Добавить место" onclick="updateProfile('main')" />
+            <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
         </form>
     </div>
 

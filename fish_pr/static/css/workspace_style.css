@@ -29,11 +29,11 @@
     z-index: 99; */
 }
 
-/* .img_place:hover {
-    position:absolute;
-    max-width: none;
-    z-index: 100;
-} */
+.active_caption {
+    color: #8a0a21;
+    cursor: pointer;
+    font-weight: bold;
+}
 
 .formPopup, .message {
     background-color:#fff;
