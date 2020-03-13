@@ -141,18 +141,23 @@ function updateProfile(typeInfo) {
 }
 
 function addPlace() {
-    var addPlaceData = null;
-    addPlaceData = {
-        'userID': currUserID,
-        'name': $('#fPlaceAdd_nameID').val(),
-        'lant': $('#fPlaceAdd_lantID').val(),
-        'long': $('#fPlaceAdd_longID').val(),
-        'isBase': $('#fPlaceAdd_isBaseID').val(),
-        'description': $('#fPlaceAdd_descriptionID').val(),
-        'busAccessability': $('#fPlaceAdd_busAccessabilityID').val(),
-        'carAccessability': $('#fPlaceAdd_carAccessabilityID').val()
-    };
 
+
+
+    addPlaceData = new FormData();
+    addPlaceData.append('userID', currUserID);
+    addPlaceData.append('name': $('#fPlaceAdd_nameID').val());
+    addPlaceData.append('lant': $('#fPlaceAdd_lantID').val());
+    addPlaceData.append('long': $('#fPlaceAdd_longID').val());
+    addPlaceData.append('isBase': $('#fPlaceAdd_isBaseID').val());
+    addPlaceData.append('description': $('#fPlaceAdd_descriptionID').val());
+    addPlaceData.append('busAccessability': $('#fPlaceAdd_busAccessabilityID').val());
+    addPlaceData.append('carAccessability': $('#fPlaceAdd_carAccessabilityID').val());
+
+    var place_photos = $('#place_photosID')[0].files;
+    place_photos.forEach((place_photo, i) => {
+        addPlaceData.append('files[]', place_photo);
+    });
 
     $.ajax({
         type: "POST",
@@ -162,15 +167,15 @@ function addPlace() {
             console.log('response_addPlaceData:  ');
             console.log(response);
 
-            // if (response == 1) {
-            //     console.log('ok');
-            //     reloadProfile();
-            //     closeForm('profile_update');
-            //     $('#messageID').html('Профиль успешно обновлен!');
-            //     $('#messageID').bPopup({
-            //         autoClose: 1000 //Auto closes after 1000ms/1sec
-            //     });
-            // }
+            if (response > 0) {
+                console.log('ok');
+                reloadProfile();
+                closeForm('place_add');
+                $('#messageID').html('Место успешно добавлено!');
+                $('#messageID').bPopup({
+                    autoClose: 1000 //Auto closes after 1000ms/1sec
+                });
+            }
         },
         error: function(error) {
             console.log('addPlaceData_ERROR:');

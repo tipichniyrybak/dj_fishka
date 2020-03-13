@@ -134,26 +134,27 @@ def get_profile_info(request):
 def add_place(request):
     data = request.POST
     photos = request.FILES.getlist('files[]')
-    place = FishingPlace(name=data.get('place_name'), lant=data.get('place_lant'), long=data.get('place_long'), description=data.get('place_description'), photos=data.get('place_photos'))
+    place = FishingPlace(user=data.get('user_ID'), lant=data.get('lant'), long=data.get('long'), name=data.get('name'), description=data.get('description'),
+                         is_Base=data.get('isBase'), car_accessibility=data.get('carAccessability'), bus_accessibility=data.get('busAccessability'))
     id = place.save()
-    if id != 0:
-        ftp = FTP()
-        ftp.connect('ftpupload.net', 21)
-        ftp.login('epiz_24989236', 'FIbPfZKy3F')
-        FTP_path = "/htdocs/media/img/places/" + str(id)
-        if not FTP_path in ftp.nlst():
-            ftp.mkd(FTP_path)
-        ftp.cwd(FTP_path)
-
-        photo_path = os.path.join(settings.BASE_DIR, 'fish_pr', 'static', 'tmp_img', str(id))
-        fs = FileSystemStorage()
-        for photo in photos:
-            photo_pathname = default_storage.save(os.path.join(photo_path, photo.name), photo)
-            fp = open(photo_pathname, 'rb')
-            ftp.storbinary('STOR %s' % os.path.basename(photo.name), fp, 1024)
-            fp.close()
-            os.remove(photo_pathname)
-        os.rmdir(photo_path)
+    # if id != 0:
+        # ftp = FTP()
+        # ftp.connect('ftpupload.net', 21)
+        # ftp.login('epiz_24989236', 'FIbPfZKy3F')
+        # FTP_path = "/htdocs/media/img/places/" + str(id)
+        # if not FTP_path in ftp.nlst():
+        #     ftp.mkd(FTP_path)
+        # ftp.cwd(FTP_path)
+        #
+        # photo_path = os.path.join(settings.BASE_DIR, 'fish_pr', 'static', 'tmp_img', str(id))
+        # fs = FileSystemStorage()
+        # for photo in photos:
+        #     photo_pathname = default_storage.save(os.path.join(photo_path, photo.name), photo)
+        #     fp = open(photo_pathname, 'rb')
+        #     ftp.storbinary('STOR %s' % os.path.basename(photo.name), fp, 1024)
+        #     fp.close()
+        #     os.remove(photo_pathname)
+        # os.rmdir(photo_path)
     return JsonResponse(id, safe=False)
 
 
