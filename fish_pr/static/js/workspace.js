@@ -87,18 +87,25 @@ function updateProfile(typeInfo) {
     var updateData = null;
     switch (typeInfo) {
         case 'main':
-            updateData = {
-                'userID': currUserID,
-                'typeInfo': 'main',
-                'first_name': $('#form_first_nameID').val(),
-                'last_name': $('#form_last_nameID').val(),
+            updateData = new FormData();
+            updateData.append('userID', currUserID);
+            updateData.append('typeInfo', 'main');
+            updateData.append('first_name', $('#form_first_nameID').val());
+            updateData.append('last_name', $('#form_last_nameID').val());
+            updateData.append('home_pond', $('#form_home_pondID').val());
+            updateData.append('lovely_pond', $('#form_lovely_pondID').val());
+            updateData.append('fishing_object', $('#form_fishing_objectID').val());
+            updateData.append('tackle', $('#form_tackleID').val());
+            updateData.append('fishing_style', $('#form_fishing_styleID').val());
 
-                'home_pond': $('#form_home_pondID').val(),
-                'lovely_pond': $('#form_lovely_pondID').val(),
-                'fishing_object': $('#form_fishing_objectID').val(),
-                'tackle': $('#form_tackleID').val(),
-                'fishing_style': $('#form_fishing_styleID').val()
-            };
+            var profile_photos = $('#profile_photoID')[0].files;
+            console.log(profile_photos);
+
+            Array.from(profile_photos).forEach((profile_photo, i) => {
+                console.log(profile_photo);
+                updateData.append('profile_files[]', profile_photo);
+            });
+
             break;
 
         case 'filters':
