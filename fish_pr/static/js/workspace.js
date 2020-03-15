@@ -141,39 +141,49 @@ function updateProfile(typeInfo) {
 }
 
 function addPlace() {
-
-
-
     addPlaceData = new FormData();
     addPlaceData.append('userID', currUserID);
-    addPlaceData.append('name': $('#fPlaceAdd_nameID').val());
-    addPlaceData.append('lant': $('#fPlaceAdd_lantID').val());
-    addPlaceData.append('long': $('#fPlaceAdd_longID').val());
-    addPlaceData.append('isBase': $('#fPlaceAdd_isBaseID').val());
-    addPlaceData.append('description': $('#fPlaceAdd_descriptionID').val());
-    addPlaceData.append('busAccessability': $('#fPlaceAdd_busAccessabilityID').val());
-    addPlaceData.append('carAccessability': $('#fPlaceAdd_carAccessabilityID').val());
+    addPlaceData.append('name', $('#fPlaceAdd_nameID').val());
+    addPlaceData.append('lant', $('#fPlaceAdd_lantID').val());
+    addPlaceData.append('long', $('#fPlaceAdd_longID').val());
+    addPlaceData.append('isBase', $('#fPlaceAdd_isBaseID').prop('checked'));
+    addPlaceData.append('description', $('#fPlaceAdd_descriptionID').val());
+    addPlaceData.append('busAccessability', $('#fPlaceAdd_busAccessabilityID').prop('checked'));
+    addPlaceData.append('carAccessability', $('#fPlaceAdd_carAccessabilityID').prop('checked'));
 
     var place_photos = $('#place_photosID')[0].files;
-    place_photos.forEach((place_photo, i) => {
-        addPlaceData.append('files[]', place_photo);
+    console.log(place_photos);
+    Array.from(place_photos).forEach((place_photo, i) => {
+        console.log(place_photo);
+        addPlaceData.append('place_files[]', place_photo);
     });
+
 
     $.ajax({
         type: "POST",
         url: "/add_place/",
         data: addPlaceData,
+        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false, // NEEDED, DON'T OMIT THIS
         success: function(response) {
             console.log('response_addPlaceData:  ');
             console.log(response);
 
             if (response > 0) {
-                console.log('ok');
-                reloadProfile();
+                console.log('place added!');
+                //reloadProfile();
+                // $("#PlaceAddID").reset();
+                document.getElementById("PlaceAddID").reset();
                 closeForm('place_add');
                 $('#messageID').html('Место успешно добавлено!');
                 $('#messageID').bPopup({
-                    autoClose: 1000 //Auto closes after 1000ms/1sec
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                });
+                reloadPlaces();
+            } else {
+                $('#messageID').html('Место с таким названием уже существует!');
+                $('#messageID').bPopup({
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
                 });
             }
         },

@@ -132,7 +132,7 @@
     </div>
 
     <div id="formProfileEditID" class="formPopup">
-        <form>    <!--  class="form-container" -->
+        <form id="ProfileEditID">    <!--  class="form-container" -->
             {% csrf_token %}
             <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
             <p>Имя: <input type="text" id="form_first_nameID" /></p>
@@ -150,7 +150,7 @@
     </div>
 
     <div id="formPlaceAddID" class="formPopup">
-        <form>    <!--  class="form-container" -->
+        <form id="PlaceAddID">    <!--  class="form-container" -->
             {% csrf_token %}
             <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
             <p>Название места: <input type="text" id="fPlaceAdd_nameID" /></p>
@@ -162,7 +162,7 @@
             <p>Доступ на машине: <input type="checkbox" id="fPlaceAdd_carAccessabilityID" /></p>
             <input type="file"  id="place_photosID" min="1" max="999" multiple="true"/>
 
-            <input type="button" value="Добавить место" onclick="updateProfile('main')" />
+            <input type="button" value="Добавить место" onclick="addPlace()" />
             <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
         </form>
     </div>

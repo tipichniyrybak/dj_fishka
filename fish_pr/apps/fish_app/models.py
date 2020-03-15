@@ -13,6 +13,7 @@ def get_path_to_save_photos(instance, filename):
 
     if type(instance) == FishingPlaceImages:
         path = path + 'places/'
+        path = path + str(instance.fishing_place.id) + '/'
 
     letters = string.ascii_lowercase
     file_name = ''.join(random.choice(letters) for i in range(20))
@@ -70,7 +71,7 @@ class FishingPlace(models.Model):
         else:
             super(FishingPlace, self).save(*args, **kwargs)
             # return FishingPlace.objects.filter(name=self.name).values('id')
-            return self.id
+            return self
 
 class FishingPlaceImages(models.Model):
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
