@@ -34,6 +34,17 @@ class YandexMap {
                 $('#place_decription').html('Описание: ' + get_place_info_response[0].description);
                 $('#place_bus_accessibility').html('Доступ на общественном: ' + get_place_info_response[0].bus_accessibility);
                 $('#place_car_accessibility').html('Доступ на машине: ' + get_place_info_response[0].car_accessibility);
+                $('#place_id').html(get_place_info_response[0].id);
+                console.log(currUserID);
+                console.log( get_place_info_response[0].user_id);
+                if (currUserID == get_place_info_response[0].user_id) {
+                    $('#RemovePlaceButtonID').css('display', 'block');
+                    // $('#RemovePlaceButtonID').click(function() {
+                    //     deletePlace(get_place_info_response[0].id);
+                    // });
+                } else {
+                    $('#RemovePlaceButtonID').css('display', 'none');
+                }
             },
             error: function(error) {
                 console.log('get_place_info_error:');

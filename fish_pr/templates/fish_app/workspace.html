@@ -87,6 +87,7 @@
         <div class="map_area">
 
             <div id="place_contentID"  class="placeContent">
+                <div id="place_id" hidden>place_id</div>
                 <div id="place_name">
                     ...Base Name...
                 </div>  <br>
@@ -114,11 +115,52 @@
                     car_accessibility
                 </div>  <br>
                 <div id="place_orders">
-                    /Orders list/
+                    <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
                 </div>
 
                 <input type="button" value="close" onclick="hidePlaceContent()">
+                <input type="button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()">
+
             </div>
+
+            <div id="orders_contentID"  class="ordersContent">
+                <div id="place_id" hidden>place_id</div>
+                <div id="place_name">
+                    ...Base Name...
+                </div>  <br>
+                <div id="place_user">
+                    ...User Name...
+                </div>  <br>
+                <div id="place_isBame">
+                    ...place_isBame...
+                </div>  <br>
+                <div id="coord">
+                    <div id="place_lant">00.00000</div>
+                    <br>
+                    <div id="place_long">00.00000</div>
+                </div>  <br>
+                <div id="place_photos">
+                    <!-- <img style='imgm' src='./content/fishing_places/333/32834799.jpg' alt='Forest'> -->
+                </div>  <br>
+                <div id="place_decription">
+                    Decription Text
+                </div>  <br>
+                <div id="place_bus_accessibility">
+                    bus_accessibility
+                </div>  <br>
+                <div id="place_car_accessibility">
+                    car_accessibility
+                </div>  <br>
+                <div id="place_orders">
+                    <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
+                </div>
+
+                <input type="button" value="close" onclick="hidePlaceContent()">
+                <input type="button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()">
+
+            </div>
+
+
             <div id="map" style="margin:auto; width: 100%; height: 80vh; z-index: 50;"></div>
         </div>
         <div class="filters" id="divcontentID">

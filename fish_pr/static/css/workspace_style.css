@@ -45,7 +45,7 @@
     min-height: 20px;
 }
 
-.placeContent {
+.placeContent, .ordersContent {
     position: absolute;
     padding: 10px;
     float:right;
@@ -54,9 +54,16 @@
     margin: 10px;
     overflow: hidden;
     border: 1px solid gray;
+}
+
+.placeContent {
     z-index: 90;
     background-color: rgba(0, 120, 201, 0.4); /* Цвет фона и значение прозрачности */
+}
 
+.ordersContent {
+    z-index: 92;
+    background-color: rgba(26, 97, 45, 0.3); /* Цвет фона и значение прозрачности */
 }
 
 .messageClass {

@@ -16,6 +16,7 @@ urlpatterns = [
     path('add_place/', views.add_place, name='add_place'),
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),
     path('update_profile/', views.update_profile, name='update_profile'),
+    path('delete_place/', views.delete_place, name='delete_place'),
 
     # path('change_profile/', views.change_profile, name='change_profile'),
     # path('<int:place_id>/', views.detail, name='detail'),

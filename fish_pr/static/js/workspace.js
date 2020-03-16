@@ -44,45 +44,6 @@ function reloadProfile() {
     });
 }
 
-function openForm(form) {
-    console.log(form);
-    switch (form) {
-        case 'profile_update':
-            $('#formProfileEditID').bPopup();
-            break;
-        case 'place_add':
-            $('#formPlaceAddID').bPopup();
-            break;
-        default:
-
-    }
-}
-
-function closeForm(form) {
-    switch (form) {
-        case 'profile_update':
-            $('#formProfileEditID').bPopup().close();
-            break;
-        case 'place_add':
-            $('#formPlaceAddID').bPopup().close();
-            break;
-        default:
-
-    }
-}
-
-function updateFilters() {
-    updateProfile('filters');
-}
-
-function hidePlaceContent() {
-    $('#place_contentID').hide();
-}
-
-function reloadPlaces() {
-     myYandexMap.set_places();
-}
-
 function updateProfile(typeInfo) {
     var updateData = null;
     switch (typeInfo) {
@@ -101,22 +62,22 @@ function updateProfile(typeInfo) {
             var profile_photos = $('#profile_photoID')[0].files;
             console.log(profile_photos);
 
-            Array.from(profile_photos).forEach((profile_photo, i) => {
-                console.log(profile_photo);
-                updateData.append('profile_files[]', profile_photo);
-            });
+            // Array.from(profile_photos).forEach((profile_photo, i) => {
+            console.log(profile_photo);
+            updateData.append('profile_files', profile_photos[0]);
+            // });
 
             break;
 
         case 'filters':
-            updateData = {
-                'userID': currUserID,
-                'typeInfo': 'filters',
-                'is_selfPlaces': $('#is_selfPlacesID').is(":checked"),
-                'is_Base': $('#is_BaseID').is(":checked"),
-                'is_carAccessibility': $('#is_carAccessibilityID').is(":checked"),
-                'is_busAccessibility': $('#is_busAccessibilityID').is(":checked")
-            };
+            updateData = new FormData();
+            updateData.append('userID', currUserID);
+            updateData.append('typeInfo', 'filters');
+            updateData.append('is_selfPlaces', $('#is_selfPlacesID').prop('checked'));
+            updateData.append('is_Base', $('#is_BaseID').prop('checked'));
+            updateData.append('is_carAccessibility', $('#is_carAccessibilityID').prop('checked'));
+            updateData.append('is_busAccessibility', $('#is_busAccessibilityID').prop('checked'));
+
             break;
         default:
             break;
@@ -126,6 +87,8 @@ function updateProfile(typeInfo) {
         type: "POST",
         url: "/update_profile/",
         data: updateData,
+        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false, // NEEDED, DON'T OMIT THIS
         success: function(response) {
             console.log('response_update_profile:  ');
             console.log(response);
@@ -134,6 +97,7 @@ function updateProfile(typeInfo) {
                 console.log('ok');
                 reloadProfile();
                 closeForm('profile_update');
+                document.getElementById("ProfileEditID").reset();
                 $('#messageID').html('Профиль успешно обновлен!');
                 $('#messageID').bPopup({
                     autoClose: 1000 //Auto closes after 1000ms/1sec
@@ -201,61 +165,81 @@ function addPlace() {
     });
 }
 
-$('#confirmAddPlaseID').click(function(e){
-    e.preventDefault();
-    console.log("confirmAddPlaseID");
-
-    var files = $('#upload_imagesID')[0].files;
-    var pPhotos ='';
-    console.log($('form').get(0));
-    formData = new FormData();
-    console.log($('#place_nameID').val());
-
-    formData.append('place_name', $('#place_nameID').val());
-    formData.append('place_lant', $('#lantID').val());
-    formData.append('place_long', $('#longID').val());
-    formData.append('place_description', $('#descriptionID').val());
-
-    for (let i = 0; i < files.length; i++) {
-        let file = files[i];
-        formData.append('files[]', file);
-        pPhotos = pPhotos + file.name + '|';
-        console.log('files name:' + file.name);
-    }
-    pPhotos = pPhotos.substring(0, pPhotos.length - 1);
-    formData.append('place_photos', pPhotos);
-    console.log(formData);
-
-    $.ajax({
-        url: '/add_place/',
-        type: 'POST',
-        // data:{
-        //     place_name: $('#place_nameID').val(),
-        //     place_lant: $('#lantID').val(),
-        //     place_long: $('#longID').val(),
-        //     place_description: $('#descriptionID').val(),
-        //     place_photos:pPhotos,
-        //     files: files,
-        // },
-        data: formData,
-        processData: false,
-        contentType: false,
-
-        success: function(response){
-
-            console.log(response);
-            if (response == 0) {
-                console.log('no!!!');
-            } else {
-                myYandexMap.set_places();
-                myYandexMap.map.container.fitToViewport();
-                document.getElementById("add_plase_formID").reset();
-                var modal = document.getElementById("myModal");
-                modal.style.display = "none";
+function deletePlace() {
+    var place_id = $('#place_id').text();
+    console.log('deletePlace id:');
+    console.log(place_id);
+    if (confirm('Вы увепены, что хотите удалить данное место?')) {
+        $.ajax({
+            type: "POST",
+            url: "/delete_place/",
+            data: {
+                'place_id': place_id
+            },
+            success: function(response) {
+                console.log('response_DeletePlace:  ');
+                console.log(response);
+                if (response == 1) {
+                    console.log('place deleted!');
+                    hidePlaceContent();
+                    $('#messageID').html('Место удалено!');
+                    $('#messageID').bPopup({
+                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                    });
+                    reloadPlaces();
+                } else {
+                    $('#messageID').html('Место не было удалено!');
+                    $('#messageID').bPopup({
+                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                    });
+                }
+            },
+            error: function(error) {
+                console.log('response_DeletePlace_ERROR:');
+                console.log(error);
             }
-        },
-        error: function(error){
-            console.log(error);
-        }
-    });
-});
+        });
+    }
+}
+
+
+function openForm(form) {
+    console.log(form);
+    switch (form) {
+        case 'profile_update':
+            $('#formProfileEditID').bPopup();
+            break;
+        case 'place_add':
+            $('#formPlaceAddID').bPopup();
+            break;
+        default:
+
+    }
+}
+
+function closeForm(form) {
+    switch (form) {
+        case 'profile_update':
+            $('#formProfileEditID').bPopup().close();
+            break;
+        case 'place_add':
+            $('#formPlaceAddID').bPopup().close();
+            break;
+        default:
+
+    }
+}
+
+function updateFilters() {
+    updateProfile('filters');
+}
+
+
+
+function hidePlaceContent() {
+    $('#place_contentID').hide();
+}
+
+function reloadPlaces() {
+     myYandexMap.set_places();
+}

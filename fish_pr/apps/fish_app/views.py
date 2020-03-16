@@ -31,36 +31,6 @@ def workspace(request):
                                                        'renewProfileForm': renewProfileForm})
 
 
-@csrf_exempt
-def update_profile(request):
-    currentProfile = Profile.objects.get(user=User.objects.get(id=request.POST.get("userID")))
-    typeInfo = request.POST.get("typeInfo")
-    res = 0
-
-    if typeInfo == 'main':
-        currentProfile.first_name = request.POST.get("first_name")
-        currentProfile.last_name = request.POST.get("last_name")
-
-        currentProfile.home_pond = request.POST.get("home_pond")
-        currentProfile.lovely_pond = request.POST.get("lovely_pond")
-        currentProfile.fishing_object = request.POST.get("fishing_object")
-        currentProfile.tackle = request.POST.get("tackle")
-        currentProfile.fishing_style = request.POST.get("fishing_style")
-        res = 1
-
-    if typeInfo == 'filters':
-        currentProfile.filters = json.dumps({
-            'is_selfPlaces': request.POST.get("is_selfPlaces"),
-            'is_Base': request.POST.get("is_Base"),
-            'is_carAccessibility': request.POST.get("is_carAccessibility"),
-            'is_busAccessibility': request.POST.get("is_busAccessibility")
-        })
-        res = 2
-
-    currentProfile.save()
-    return JsonResponse(res, safe=False)
-
-
 def index(request):
     return render(request, 'fish_app/index.html')
 
@@ -146,6 +116,62 @@ def add_place(request):
             imageFishingPlace.save()
     return JsonResponse(place.id, safe=False)
 
+
+@csrf_exempt
+def update_profile(request):
+    uid = request.POST.get("userID")
+    us = User.objects.get(id=uid)
+    current_profile = Profile.objects.get(user=us)
+    type_info = request.POST.get("typeInfo")
+    photo = request.FILES.getlist('profile_files')
+
+    res = 0
+
+    if type_info == 'main':
+        current_profile.first_name = request.POST.get("first_name")
+        current_profile.last_name = request.POST.get("last_name")
+
+        current_profile.home_pond = request.POST.get("home_pond")
+        current_profile.lovely_pond = request.POST.get("lovely_pond")
+        current_profile.fishing_object = request.POST.get("fishing_object")
+        current_profile.tackle = request.POST.get("tackle")
+        current_profile.fishing_style = request.POST.get("fishing_style")
+        if len(photo) > 0:
+            os.remove('fish_pr/' + settings.MEDIA_URL + current_profile.photo.name)
+            current_profile.photo = photo[0]
+
+        res = 1
+
+    if type_info == 'filters':
+        current_profile.filters = json.dumps({
+            'is_selfPlaces': request.POST.get("is_selfPlaces"),
+            'is_Base': request.POST.get("is_Base"),
+            'is_carAccessibility': request.POST.get("is_carAccessibility"),
+            'is_busAccessibility': request.POST.get("is_busAccessibility")
+        })
+        res = 2
+
+    current_profile.save()
+    return JsonResponse(res, safe=False)
+
+
+@csrf_exempt
+def delete_place(request):
+    place_id = request.POST.get("place_id")
+    place = FishingPlace.objects.get(id=place_id)
+    photos = FishingPlaceImages.objects.filter(fishing_place=place)
+
+    for photo in photos:
+        os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
+        path = os.path.dirname(photo.image.name)
+
+    os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
+    photos.delete()
+    place.delete()
+
+
+    res = 1
+    return JsonResponse(res, safe=False)
 
 
 # def detail(request, place_id):
