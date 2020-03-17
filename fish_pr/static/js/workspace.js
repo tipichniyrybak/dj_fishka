@@ -212,6 +212,9 @@ function openForm(form) {
         case 'place_add':
             $('#formPlaceAddID').bPopup();
             break;
+        case 'order_add':
+                $('#formOrderAddID').bPopup();
+                break;
         default:
 
     }
@@ -225,6 +228,9 @@ function closeForm(form) {
         case 'place_add':
             $('#formPlaceAddID').bPopup().close();
             break;
+        case 'order_add':
+                $('#formOrderAddID').bPopup().close();
+                break;
         default:
 
     }
@@ -238,6 +244,12 @@ function show_orders() {
     $('#place_contentID').hide();
     var place_id = $('#place_id')[0].innerText;
     console.log(place_id);
+
+
+
+
+
+
     $('#orders_contentID').css('display', 'grid');
 }
 

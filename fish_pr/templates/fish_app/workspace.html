@@ -149,6 +149,7 @@
                 </div>
                 <div class="orders_controls">
                     <input type="button" value="close" onclick="hideOrderContent()">
+                    <div class="active_caption"  id="order_add" onclick="openForm(this.id)">Добавить отчет</div>
                 </div>
             </div>
 
@@ -202,17 +203,17 @@
     </div>
 
     <div id="formOrderAddID" class="formPopup">
-        <form id="OrderAddID">    <!--  class="form-container" -->
+        <form id="OrderAddID">
             {% csrf_token %}
 
-            <p>Дата начала: <input type="date" id="formOrderAdd_dateBeginID"></p>
-            <p>Дата окончания: <input type="date" id="formOrderAdd_dateEndID"></p>
-            <p>Описание: <input type="text" id="fPlaceAdd_descriptionID" /></p>
+            <p>Дата начала: <input type="date" id="fOrderAdd_dateBeginID"></p>
+            <p>Дата окончания: <input type="date" id="fOrderAdd_dateEndID"></p>
+            <p>Описание: <input type="text" id="fOrderAdd_descriptionID" /></p>
 
-            <input type="file"  id="order_photosID" min="1" max="999" multiple="true"/>
+            <input type="file"  id="fOrderAdd_photosID" min="1" max="999" multiple="true"/>
 
-            <input type="button" value="Добавить место" onclick="addPlace()" />
-            <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
+            <input type="button" value="Добавить отчет" onclick="addOrder()" />
+            <input type="button" value="Отмена"  onclick="closeForm('order_add')" />
         </form>
     </div>
 
