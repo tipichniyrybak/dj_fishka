@@ -244,13 +244,61 @@ function show_orders() {
     $('#place_contentID').hide();
     var place_id = $('#place_id')[0].innerText;
     console.log(place_id);
-
-
-
-
-
-
     $('#orders_contentID').css('display', 'grid');
+}
+
+function addOrder()
+{
+    addOrderData = new FormData();
+    addOrderData.append('userID', currUserID);
+    addOrderData.append('name', $('#fPlaceAdd_nameID').val());
+    addOrderData.append('lant', $('#fPlaceAdd_lantID').val());
+    addOrderData.append('long', $('#fPlaceAdd_longID').val());
+    addOrderData.append('isBase', $('#fPlaceAdd_isBaseID').prop('checked'));
+
+
+    var place_photos = $('#place_photosID')[0].files;
+    console.log(place_photos);
+    Array.from(place_photos).forEach((place_photo, i) => {
+        console.log(place_photo);
+        addPlaceData.append('place_files[]', place_photo);
+    });
+
+
+    $.ajax({
+        type: "POST",
+        url: "/add_place/",
+        data: addPlaceData,
+        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false, // NEEDED, DON'T OMIT THIS
+        success: function(response) {
+            console.log('response_addPlaceData:  ');
+            console.log(response);
+
+            if (response > 0) {
+                console.log('place added!');
+                //reloadProfile();
+                // $("#PlaceAddID").reset();
+                document.getElementById("PlaceAddID").reset();
+                closeForm('place_add');
+                $('#messageID').html('Место успешно добавлено!');
+                $('#messageID').bPopup({
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                });
+                reloadPlaces();
+            } else {
+                $('#messageID').html('Место с таким названием уже существует!');
+                $('#messageID').bPopup({
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                });
+            }
+        },
+        error: function(error) {
+            console.log('addPlaceData_ERROR:');
+            console.log(error);
+        }
+    });
+}
 }
 
 
