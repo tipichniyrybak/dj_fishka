@@ -234,10 +234,21 @@ function updateFilters() {
     updateProfile('filters');
 }
 
+function show_orders() {
+    $('#place_contentID').hide();
+    var place_id = $('#place_id')[0].innerText;
+    console.log(place_id);
+    $('#orders_contentID').css('display', 'grid');
+}
 
 
 function hidePlaceContent() {
     $('#place_contentID').hide();
+}
+
+function hideOrderContent() {
+    $('#orders_contentID').hide();
+    $('#place_contentID').slideToggle(200);
 }
 
 function reloadPlaces() {

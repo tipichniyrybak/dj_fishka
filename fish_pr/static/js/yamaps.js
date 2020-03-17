@@ -109,6 +109,7 @@ class YandexMap {
                         myPlacemark1.events.add(['click'],  function (e) {
                             console.log('click cluck');
                             $('#place_contentID').hide();
+                            $('#orders_contentID').hide();
                             that.get_place_info(place['id']);
                             $('#place_contentID').slideToggle(200);
 

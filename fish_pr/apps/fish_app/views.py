@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Order, Profile, FishingPlaceImages
+from .models import FishingPlace, Profile, FishingPlaceImages
 from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView

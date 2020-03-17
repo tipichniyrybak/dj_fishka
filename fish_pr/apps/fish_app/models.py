@@ -83,11 +83,12 @@ class FishingPlaceImages(models.Model):
         verbose_name_plural = 'Фото Рыболовных мест'
 
 
-class Order(models.Model):
+class PlaceOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
-    user_id = models.IntegerField()
+    date_begin = models.DateField()
+    date_end = models.DateField()
     description = models.TextField('Description of order')
-    photos = models.CharField('Photos of order', max_length=300)
 
     def __str__(self):
         return self.user_id
@@ -95,3 +96,22 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Отчет о рыбалке'
         verbose_name_plural = 'Отчеты о рыбалке'
+
+    def get_photos(self):
+        photos = PlaceOrderImages.objects.filter(place_order=self).values()
+        return JsonResponse(list(photos), safe=False)
+
+
+class PlaceOrderImages(models.Model):
+    place_order = models.ForeignKey(PlaceOrder, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=get_path_to_save_photos)
+    caption = models.CharField('Caption of photo', max_length=150)
+
+    class Meta:
+        verbose_name = 'Фото отчетов'
+        verbose_name_plural = 'Фото отчетов'
+
+
+
+
+

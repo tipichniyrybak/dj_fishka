@@ -77,9 +77,10 @@
             </div> <br>
             <div id="controls">
                 <a href="#">Мои места</a> <div class="active_caption" style="display: inline;" id="place_add" onclick="openForm(this.id)"> + </div> <br>
+                <a href="#">Мои отчеты</a> <a href="#">+</a> <br>
                 <a href="#">Мои рыбалки</a> <a href="#">+</a> <br>
                 <a href="#">Мои Трофеи</a> <a href="#">+</a> <br>
-                <a href="#">Мои отчеты</a> <a href="#">+</a> <br>
+
                 <a href="#">Мои объявления</a> <a href="#">+</a> <br>
             </div>
             <!-- <input type="button" id="openAddPlaseFormID" value="Add place" name="Add place"> -->
@@ -116,7 +117,7 @@
                 </div>  <br>
                 <div id="place_orders">
                     <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
-                </div>
+                </div> <br>
 
                 <input type="button" value="close" onclick="hidePlaceContent()">
                 <input type="button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()">
@@ -124,42 +125,32 @@
             </div>
 
             <div id="orders_contentID"  class="ordersContent">
-                <div id="place_id" hidden>place_id</div>
-                <div id="place_name">
-                    ...Base Name...
-                </div>  <br>
-                <div id="place_user">
-                    ...User Name...
-                </div>  <br>
-                <div id="place_isBame">
-                    ...place_isBame...
-                </div>  <br>
-                <div id="coord">
-                    <div id="place_lant">00.00000</div>
-                    <br>
-                    <div id="place_long">00.00000</div>
-                </div>  <br>
-                <div id="place_photos">
-                    <!-- <img style='imgm' src='./content/fishing_places/333/32834799.jpg' alt='Forest'> -->
-                </div>  <br>
-                <div id="place_decription">
-                    Decription Text
-                </div>  <br>
-                <div id="place_bus_accessibility">
-                    bus_accessibility
-                </div>  <br>
-                <div id="place_car_accessibility">
-                    car_accessibility
-                </div>  <br>
-                <div id="place_orders">
-                    <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
+                <div id="orders_place_nameID" class="orders_place_name">
+                    ...Place Name...
                 </div>
+                <div id="orders_listID" class="orders_list">
+                    <select size="10" id="select_orders_listID">
 
-                <input type="button" value="close" onclick="hidePlaceContent()">
-                <input type="button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()">
-
+                    </select>
+                </div>
+                <div id="order_infoID" class="order_info">
+                    <div id="order_userID">
+                        order_user
+                    </div>  <br>
+                    <div id="order_periodID">
+                        order_period
+                    </div>  <br>
+                    <div id="order_descriptionID">
+                        order_description
+                    </div>  <br>
+                    <div id="order_photosID">
+                        order_photos
+                    </div>  <br>
+                </div>
+                <div class="orders_controls">
+                    <input type="button" value="close" onclick="hideOrderContent()">
+                </div>
             </div>
-
 
             <div id="map" style="margin:auto; width: 100%; height: 80vh; z-index: 50;"></div>
         </div>
@@ -204,6 +195,21 @@
             <p>Доступ на общественном: <input type="checkbox" id="fPlaceAdd_busAccessabilityID" /></p>
             <p>Доступ на машине: <input type="checkbox" id="fPlaceAdd_carAccessabilityID" /></p>
             <input type="file"  id="place_photosID" min="1" max="999" multiple="true"/>
+
+            <input type="button" value="Добавить место" onclick="addPlace()" />
+            <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
+        </form>
+    </div>
+
+    <div id="formOrderAddID" class="formPopup">
+        <form id="OrderAddID">    <!--  class="form-container" -->
+            {% csrf_token %}
+
+            <p>Дата начала: <input type="date" id="formOrderAdd_dateBeginID"></p>
+            <p>Дата окончания: <input type="date" id="formOrderAdd_dateEndID"></p>
+            <p>Описание: <input type="text" id="fPlaceAdd_descriptionID" /></p>
+
+            <input type="file"  id="order_photosID" min="1" max="999" multiple="true"/>
 
             <input type="button" value="Добавить место" onclick="addPlace()" />
             <input type="button" value="Отмена"  onclick="closeForm('place_add')" />

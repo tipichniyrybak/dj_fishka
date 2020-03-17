@@ -10,6 +10,22 @@
 .map_area { grid-area: 1 / 2 / 2 / 3; }
 .filters { grid-area: 1 / 3 / 2 / 4; }
 
+.ordersContent {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 1fr 10fr 1fr;
+    grid-column-gap: 1px;
+    grid-row-gap: 1px;
+}
+
+.orders_place_name { grid-area: 1 / 1 / 2 / 3; }
+.orders_list  { grid-area: 2 / 1 / 3 / 2; }
+.order_info {
+    grid-area: 2 / 2 / 3 / 3;
+    margin-left: 25px;    
+}
+.orders_controls { grid-area: 3 / 1 / 4 / 3; }
+
 .filters {
     margin-left: 25px;
 }
@@ -64,6 +80,7 @@
 .ordersContent {
     z-index: 92;
     background-color: rgba(26, 97, 45, 0.3); /* Цвет фона и значение прозрачности */
+    margin: 2em;
 }
 
 .messageClass {
