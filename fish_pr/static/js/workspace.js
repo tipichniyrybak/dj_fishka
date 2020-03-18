@@ -111,6 +111,10 @@ function updateProfile(typeInfo) {
     });
 }
 
+function updateFilters() {
+    updateProfile('filters');
+}
+
 function addPlace() {
     addPlaceData = new FormData();
     addPlaceData.append('userID', currUserID);
@@ -202,6 +206,157 @@ function deletePlace() {
     }
 }
 
+function reloadPlaces() {
+     myYandexMap.set_places();
+}
+
+
+function show_orders() {
+    $('#place_contentID').hide();
+
+    $('#orders_contentID').css('display', 'grid');
+}
+
+function addOrder() {
+    addOrderData = new FormData();
+    addOrderData.append('user_id', currUserID);
+    addOrderData.append('place_id', $('#place_id')[0].innerText);
+    addOrderData.append('date_begin', $('#fOrderAdd_dateBeginID').val());
+    addOrderData.append('date_end', $('#fOrderAdd_dateEndID').val());
+    addOrderData.append('description', $('#fOrderAdd_descriptionID').val());
+
+
+    var order_photos = $('#fOrderAdd_photosID')[0].files;
+    console.log(order_photos);
+    Array.from(order_photos).forEach((order_photo, i) => {
+        console.log(order_photo);
+        addOrderData.append('order_files[]', order_photo);
+    });
+
+    console.log('addOrderData');
+    console.log(addOrderData);
+
+    $.ajax({
+        type: "POST",
+        url: "/add_order/",
+        data: addOrderData,
+        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false, // NEEDED, DON'T OMIT THIS
+        success: function(response) {
+            console.log('response_addOrdreData:  ');
+            console.log(response);
+
+            if (response > 0) {
+                console.log('order added!');
+
+                document.getElementById("OrderAddID").reset();
+                closeForm('order_add');
+                $('#messageID').html('Отчет успешно добавлен!'); $('#messageID').bPopup({
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                });
+                reloadPlaces();
+            } else {
+                $('#messageID').html('Отчет не добавлен!');
+                $('#messageID').bPopup({
+                    autoClose: 2000 //Auto closes after 1000ms/1sec
+                });
+            }
+        },
+        error: function(error) {
+            console.log('addOrderData_ERROR:');
+            console.log(error);
+        }
+    });
+}
+
+function deleteOrder() {
+    var place_id = $('#order_id').text();
+    console.log('deletePlace id:');
+    console.log(place_id);
+    if (confirm('Вы увепены, что хотите удалить данное место?')) {
+        $.ajax({
+            type: "POST",
+            url: "/delete_place/",
+            data: {
+                'place_id': place_id
+            },
+            success: function(response) {
+                console.log('response_DeletePlace:  ');
+                console.log(response);
+                if (response == 1) {
+                    console.log('place deleted!');
+                    hidePlaceContent();
+                    $('#messageID').html('Место удалено!');
+                    $('#messageID').bPopup({
+                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                    });
+                    reloadPlaces();
+                } else {
+                    $('#messageID').html('Место не было удалено!');
+                    $('#messageID').bPopup({
+                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                    });
+                }
+            },
+            error: function(error) {
+                console.log('response_DeletePlace_ERROR:');
+                console.log(error);
+            }
+        });
+    }
+}
+
+function reloadOrders() {
+    console.log('__reload_orders:');
+
+    $.ajax({
+        type: "POST",
+        url: "/get_orders/",
+        data:  {
+            'place_id': currPlaceID
+        },
+        type: 'POST',
+        success: function(response) {
+            console.log('response get_orders:  ');
+            console.log(response);
+            ymaps.ready(function () {
+                    response.forEach(function(order) {
+
+                        var key =
+                        orders_list
+                    var myPlacemark1 = new ymaps.Placemark([place['lant'], place['long']], {
+                        iconContent: place['name']
+                    }, {
+                        preset: 'islands#darkOrangeStretchyIcon'
+                    });
+                    myPlacemark1.events.add(['click'],  function (e) {
+                        console.log('click cluck');
+                        $('#place_contentID').hide();
+                        $('#orders_contentID').hide();
+                        that.get_place_info(place['id']);
+                        $('#place_contentID').slideToggle(200);
+
+                    });
+                    that.PlacemarkArray.push(myPlacemark1);
+                    that.map.geoObjects.add(myPlacemark1);
+                });
+            });
+        },
+        error: function(error) {
+            console.log('set_places_error:');
+            console.log(error);
+        }
+    });
+}
+
+function hidePlaceContent() {
+    $('#place_contentID').hide();
+}
+
+function hideOrderContent() {
+    $('#orders_contentID').hide();
+    $('#place_contentID').slideToggle(200);
+}
 
 function openForm(form) {
     console.log(form);
@@ -234,83 +389,4 @@ function closeForm(form) {
         default:
 
     }
-}
-
-function updateFilters() {
-    updateProfile('filters');
-}
-
-function show_orders() {
-    $('#place_contentID').hide();
-    var place_id = $('#place_id')[0].innerText;
-    console.log(place_id);
-    $('#orders_contentID').css('display', 'grid');
-}
-
-function addOrder()
-{
-    addOrderData = new FormData();
-    addOrderData.append('userID', currUserID);
-    addOrderData.append('name', $('#fPlaceAdd_nameID').val());
-    addOrderData.append('lant', $('#fPlaceAdd_lantID').val());
-    addOrderData.append('long', $('#fPlaceAdd_longID').val());
-    addOrderData.append('isBase', $('#fPlaceAdd_isBaseID').prop('checked'));
-
-
-    var place_photos = $('#place_photosID')[0].files;
-    console.log(place_photos);
-    Array.from(place_photos).forEach((place_photo, i) => {
-        console.log(place_photo);
-        addPlaceData.append('place_files[]', place_photo);
-    });
-
-
-    $.ajax({
-        type: "POST",
-        url: "/add_place/",
-        data: addPlaceData,
-        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-        processData: false, // NEEDED, DON'T OMIT THIS
-        success: function(response) {
-            console.log('response_addPlaceData:  ');
-            console.log(response);
-
-            if (response > 0) {
-                console.log('place added!');
-                //reloadProfile();
-                // $("#PlaceAddID").reset();
-                document.getElementById("PlaceAddID").reset();
-                closeForm('place_add');
-                $('#messageID').html('Место успешно добавлено!');
-                $('#messageID').bPopup({
-                    autoClose: 2000 //Auto closes after 1000ms/1sec
-                });
-                reloadPlaces();
-            } else {
-                $('#messageID').html('Место с таким названием уже существует!');
-                $('#messageID').bPopup({
-                    autoClose: 2000 //Auto closes after 1000ms/1sec
-                });
-            }
-        },
-        error: function(error) {
-            console.log('addPlaceData_ERROR:');
-            console.log(error);
-        }
-    });
-}
-}
-
-
-function hidePlaceContent() {
-    $('#place_contentID').hide();
-}
-
-function hideOrderContent() {
-    $('#orders_contentID').hide();
-    $('#place_contentID').slideToggle(200);
-}
-
-function reloadPlaces() {
-     myYandexMap.set_places();
 }

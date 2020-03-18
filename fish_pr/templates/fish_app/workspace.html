@@ -24,6 +24,9 @@
         var myYandexMap = null;
         var currProfile_json = "";
         var currUserID = null;
+        var currPlaceID = null;
+        var currOrderID = null;
+        var orders_list = {};
 
         $(document).ready(function() {
 
@@ -88,7 +91,6 @@
         <div class="map_area">
 
             <div id="place_contentID"  class="placeContent">
-                <div id="place_id" hidden>place_id</div>
                 <div id="place_name">
                     ...Base Name...
                 </div>  <br>
@@ -146,6 +148,7 @@
                     <div id="order_photosID">
                         order_photos
                     </div>  <br>
+                    <input type="button" id="RemoveOrderButtonID" value="Удалить отчет" onclick="deleteOrder()">
                 </div>
                 <div class="orders_controls">
                     <input type="button" value="close" onclick="hideOrderContent()">

@@ -15,6 +15,10 @@ def get_path_to_save_photos(instance, filename):
         path = path + 'places/'
         path = path + str(instance.fishing_place.id) + '/'
 
+    if type(instance) == PlaceOrderImages:
+        path = path + 'orders/'
+        path = path + str(instance.place_order.id) + '/'
+
     letters = string.ascii_lowercase
     file_name = ''.join(random.choice(letters) for i in range(20))
     file_name = file_name + '.jpg'
@@ -50,7 +54,6 @@ class FishingPlace(models.Model):
     is_Base = models.BooleanField(default=False)
     car_accessibility = models.BooleanField(default=False)
     bus_accessibility = models.BooleanField(default=False)
-    # photos = models.ImageField(upload_to=get_path_to_save_photos)
 
     def __str__(self):
         return self.name
@@ -96,6 +99,10 @@ class PlaceOrder(models.Model):
     class Meta:
         verbose_name = 'Отчет о рыбалке'
         verbose_name_plural = 'Отчеты о рыбалке'
+
+    def save(self, *args, **kwargs):
+        super(PlaceOrder, self).save(*args, **kwargs)
+        return self
 
     def get_photos(self):
         photos = PlaceOrderImages.objects.filter(place_order=self).values()

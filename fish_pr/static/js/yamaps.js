@@ -1,7 +1,6 @@
 class YandexMap {
     map = null;
     PlacemarkArray = [];
-    d = 7;
 
     constructor() {
         var that = this;
@@ -14,18 +13,19 @@ class YandexMap {
         });
     }
 
-    get_place_info(place_id) {
+    get_place_info() {
         $.ajax({
             type: "POST",
             url: "/get_place_info/",
             data: {
                 'data_type': "info",
-                'place_id': place_id,
+                'place_id': currPlaceID,
             },
             type: 'POST',
             success: function(get_place_info_response) {
                 console.log('get_place_info_response:  ');
                 console.log(get_place_info_response);
+                $('#place_id').html(get_place_info_response[0].id);
                 $('#place_name').html(get_place_info_response[0].name);
                 $('#place_user').html('ИД Рыбака: ' + get_place_info_response[0].user_id);    //TODO link to Profile
                 $('#place_isBame').html('Это база: ' + get_place_info_response[0].is_Base);
@@ -34,14 +34,10 @@ class YandexMap {
                 $('#place_decription').html('Описание: ' + get_place_info_response[0].description);
                 $('#place_bus_accessibility').html('Доступ на общественном: ' + get_place_info_response[0].bus_accessibility);
                 $('#place_car_accessibility').html('Доступ на машине: ' + get_place_info_response[0].car_accessibility);
-                $('#place_id').html(get_place_info_response[0].id);
                 console.log(currUserID);
                 console.log( get_place_info_response[0].user_id);
                 if (currUserID == get_place_info_response[0].user_id) {
                     $('#RemovePlaceButtonID').css('display', 'block');
-                    // $('#RemovePlaceButtonID').click(function() {
-                    //     deletePlace(get_place_info_response[0].id);
-                    // });
                 } else {
                     $('#RemovePlaceButtonID').css('display', 'none');
                 }
@@ -57,7 +53,7 @@ class YandexMap {
             url: "/get_place_info/",
             data: {
                 'data_type': "photos",
-                'place_id': place_id,
+                'place_id': currPlaceID,
             },
             type: 'POST',
             success: function(get_place_photos_response) {
@@ -110,7 +106,8 @@ class YandexMap {
                             console.log('click cluck');
                             $('#place_contentID').hide();
                             $('#orders_contentID').hide();
-                            that.get_place_info(place['id']);
+                            currPlaceID = place['id'];
+                            that.get_place_info();
                             $('#place_contentID').slideToggle(200);
 
                         });

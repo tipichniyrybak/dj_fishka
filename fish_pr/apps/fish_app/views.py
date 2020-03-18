@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Profile, FishingPlaceImages
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages
 from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -20,6 +20,7 @@ from django.templatetags.static import static
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login
 import json
+from datetime import datetime
 
 
 def workspace(request):
@@ -57,64 +58,11 @@ def registration(request):
 
 
 @csrf_exempt
-def get_places(request):
-    user_id = request.POST.get("userID")
-    filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
-    filt1 = filt[0]
-    filt2 = filt1["filters"]
-    filters = json.loads(filt2)
-
-    places = FishingPlace.objects.values()
-    if filters["is_selfPlaces"] == 'true':
-        places = places.filter(user_id=user_id)
-    if filters["is_Base"] == 'true':
-        places = places.filter(is_Base=True)
-    if filters["is_carAccessibility"] == 'true':
-        places = places.filter(car_accessibility=True)
-    if filters["is_busAccessibility"] == 'true':
-        places = places.filter(bus_accessibility=True)
-
-    return JsonResponse(list(places), safe=False)
-
-
-@csrf_exempt
-def get_place_info(request):
-    place_id = request.POST.get("place_id")
-    type = request.POST.get("data_type")
-
-    if type == 'info':
-        place = FishingPlace.objects.filter(id=place_id).values()
-        return JsonResponse(list(place), safe=False)
-    if type == 'photos':
-        place = FishingPlace.objects.get(pk=place_id)
-
-        image_list = FishingPlaceImages.objects.filter(fishing_place=place).values()
-        # image_list = place.FishingPlaceImages.all()
-        return JsonResponse(list(image_list), safe=False)
-
-
-@csrf_exempt
 def get_profile_info(request):
     user_id = request.POST.get("userID")
     user_by_id = User.objects.get(id=user_id)
     profile = Profile.objects.filter(user=user_by_id).values()
     return JsonResponse(list(profile), safe=False)
-
-@csrf_exempt
-def add_place(request):
-    data = request.POST
-    photos = request.FILES.getlist('place_files[]')
-
-    place = FishingPlace(user_id=int(data.get('userID')), lant=float(data.get('lant')), long=float(data.get('long')),
-                         name=data.get('name'), description=data.get('description'),
-                         is_Base=(data.get('isBase') == 'true'), car_accessibility=(data.get('carAccessability') == 'true'),
-                         bus_accessibility=(data.get('busAccessability') == 'true')).save()
-    # id = place.save()
-    if place != 0:
-        for photo in photos:
-            imageFishingPlace = FishingPlaceImages(fishing_place=place, image=photo, caption='Caption #5')
-            imageFishingPlace.save()
-    return JsonResponse(place.id, safe=False)
 
 
 @csrf_exempt
@@ -156,11 +104,63 @@ def update_profile(request):
 
 
 @csrf_exempt
+def get_places(request):
+    user_id = request.POST.get("userID")
+    filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
+    filt1 = filt[0]
+    filt2 = filt1["filters"]
+    filters = json.loads(filt2)
+
+    places = FishingPlace.objects.values()
+    if filters["is_selfPlaces"] == 'true':
+        places = places.filter(user_id=user_id)
+    if filters["is_Base"] == 'true':
+        places = places.filter(is_Base=True)
+    if filters["is_carAccessibility"] == 'true':
+        places = places.filter(car_accessibility=True)
+    if filters["is_busAccessibility"] == 'true':
+        places = places.filter(bus_accessibility=True)
+
+    return JsonResponse(list(places), safe=False)
+
+
+@csrf_exempt
+def get_place_info(request):
+    place_id = request.POST.get("place_id")
+    type = request.POST.get("data_type")
+
+    if type == 'info':
+        place = FishingPlace.objects.filter(id=place_id).values()
+        return JsonResponse(list(place), safe=False)
+    if type == 'photos':
+        place = FishingPlace.objects.get(pk=place_id)
+
+        image_list = FishingPlaceImages.objects.filter(fishing_place=place).values()
+        # image_list = place.FishingPlaceImages.all()
+        return JsonResponse(list(image_list), safe=False)
+
+
+@csrf_exempt
+def add_place(request):
+    data = request.POST
+    photos = request.FILES.getlist('place_files[]')
+
+    place = FishingPlace(user=User.objects.get(id=int(data.get('userID'))), lant=float(data.get('lant')), long=float(data.get('long')),
+                         name=data.get('name'), description=data.get('description'),
+                         is_Base=(data.get('isBase') == 'true'), car_accessibility=(data.get('carAccessability') == 'true'),
+                         bus_accessibility=(data.get('busAccessability') == 'true')).save()
+    if place != 0:
+        for photo in photos:
+            image_fishing_place = FishingPlaceImages(fishing_place=place, image=photo, caption='Caption #5')
+            image_fishing_place.save()
+    return JsonResponse(place.id, safe=False)
+
+
+@csrf_exempt
 def delete_place(request):
     place_id = request.POST.get("place_id")
     place = FishingPlace.objects.get(id=place_id)
     photos = FishingPlaceImages.objects.filter(fishing_place=place)
-
     for photo in photos:
         os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
         path = os.path.dirname(photo.image.name)
@@ -168,10 +168,78 @@ def delete_place(request):
     os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
     photos.delete()
     place.delete()
-
-
     res = 1
     return JsonResponse(res, safe=False)
+
+
+@csrf_exempt
+def get_orders(request):
+    place_id = request.POST.get("place_id")
+    filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
+    filt1 = filt[0]
+    filt2 = filt1["filters"]
+    filters = json.loads(filt2)
+
+    places = FishingPlace.objects.values()
+    if filters["is_selfPlaces"] == 'true':
+        places = places.filter(user_id=user_id)
+    if filters["is_Base"] == 'true':
+        places = places.filter(is_Base=True)
+    if filters["is_carAccessibility"] == 'true':
+        places = places.filter(car_accessibility=True)
+    if filters["is_busAccessibility"] == 'true':
+        places = places.filter(bus_accessibility=True)
+
+    return JsonResponse(list(places), safe=False)
+
+
+@csrf_exempt
+def get_order_info(request):
+    place_id = request.POST.get("place_id")
+    type = request.POST.get("data_type")
+
+    if type == 'info':
+        place = FishingPlace.objects.filter(id=place_id).values()
+        return JsonResponse(list(place), safe=False)
+    if type == 'photos':
+        place = FishingPlace.objects.get(pk=place_id)
+
+        image_list = FishingPlaceImages.objects.filter(fishing_place=place).values()
+        # image_list = place.FishingPlaceImages.all()
+        return JsonResponse(list(image_list), safe=False)
+
+
+@csrf_exempt
+def add_order(request):
+    data = request.POST
+    photos = request.FILES.getlist('order_files[]')
+
+    order = PlaceOrder(user=User.objects.get(id=int(data.get('user_id'))), fishing_place=FishingPlace.objects.get(id=int(data.get('place_id'))),
+                       date_begin=datetime.strptime(data.get('date_begin'), '%Y-%m-%d').date(),
+                       date_end=datetime.strptime(data.get('date_end'), '%Y-%m-%d').date(),
+                       description=data.get('description')).save()
+    if order != 0:
+        for photo in photos:
+            image_place_order = PlaceOrderImages(place_order=order, image=photo, caption='Caption #7')
+            image_place_order.save()
+    return JsonResponse(order.id, safe=False)
+#
+#
+# @csrf_exempt
+# def delete_place(request):
+#     place_id = request.POST.get("place_id")
+#     place = FishingPlace.objects.get(id=place_id)
+#     photos = FishingPlaceImages.objects.filter(fishing_place=place)
+#     for photo in photos:
+#         os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
+#         path = os.path.dirname(photo.image.name)
+#
+#     os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
+#     photos.delete()
+#     place.delete()
+#     res = 1
+#     return JsonResponse(res, safe=False)
+
 
 
 # def detail(request, place_id):
