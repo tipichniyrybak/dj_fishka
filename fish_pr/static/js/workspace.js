@@ -213,14 +213,14 @@ function reloadPlaces() {
 
 function show_orders() {
     $('#place_contentID').hide();
-
+    reloadOrders();
     $('#orders_contentID').css('display', 'grid');
 }
 
 function addOrder() {
     addOrderData = new FormData();
     addOrderData.append('user_id', currUserID);
-    addOrderData.append('place_id', $('#place_id')[0].innerText);
+    addOrderData.append('place_id', currPlaceID);
     addOrderData.append('date_begin', $('#fOrderAdd_dateBeginID').val());
     addOrderData.append('date_end', $('#fOrderAdd_dateEndID').val());
     addOrderData.append('description', $('#fOrderAdd_descriptionID').val());
@@ -254,7 +254,7 @@ function addOrder() {
                 $('#messageID').html('Отчет успешно добавлен!'); $('#messageID').bPopup({
                     autoClose: 2000 //Auto closes after 1000ms/1sec
                 });
-                reloadPlaces();
+                reloadOrders();
             } else {
                 $('#messageID').html('Отчет не добавлен!');
                 $('#messageID').bPopup({
@@ -270,36 +270,32 @@ function addOrder() {
 }
 
 function deleteOrder() {
-    var place_id = $('#order_id').text();
-    console.log('deletePlace id:');
-    console.log(place_id);
-    if (confirm('Вы увепены, что хотите удалить данное место?')) {
+    if (confirm('Вы увепены, что хотите удалить данный отчет?')) {
         $.ajax({
             type: "POST",
-            url: "/delete_place/",
+            url: "/delete_order/",
             data: {
-                'place_id': place_id
+                'order_id': currOrderID
             },
             success: function(response) {
-                console.log('response_DeletePlace:  ');
+                console.log('response_DeleteOrder:  ');
                 console.log(response);
                 if (response == 1) {
-                    console.log('place deleted!');
-                    hidePlaceContent();
-                    $('#messageID').html('Место удалено!');
+                    console.log('order deleted!');
+                    $('#messageID').html('Отчет удален!');
                     $('#messageID').bPopup({
-                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                        autoClose: 1000 //Auto closes after 1000ms/1sec
                     });
-                    reloadPlaces();
+                    reloadOrders();
                 } else {
-                    $('#messageID').html('Место не было удалено!');
+                    $('#messageID').html('Отчет не был удален!');
                     $('#messageID').bPopup({
-                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                        autoClose: 1000 //Auto closes after 1000ms/1sec
                     });
                 }
             },
             error: function(error) {
-                console.log('response_DeletePlace_ERROR:');
+                console.log('response_DeleteOrder_ERROR:');
                 console.log(error);
             }
         });
@@ -308,6 +304,9 @@ function deleteOrder() {
 
 function reloadOrders() {
     console.log('__reload_orders:');
+    $('#orders_place_nameID').html('ИД Базы: ' + currPlaceID);
+    $('#select_orders_listID').empty();
+    reset_order_content();
 
     $.ajax({
         type: "POST",
@@ -319,34 +318,92 @@ function reloadOrders() {
         success: function(response) {
             console.log('response get_orders:  ');
             console.log(response);
-            ymaps.ready(function () {
-                    response.forEach(function(order) {
-
-                        var key =
-                        orders_list
-                    var myPlacemark1 = new ymaps.Placemark([place['lant'], place['long']], {
-                        iconContent: place['name']
-                    }, {
-                        preset: 'islands#darkOrangeStretchyIcon'
-                    });
-                    myPlacemark1.events.add(['click'],  function (e) {
-                        console.log('click cluck');
-                        $('#place_contentID').hide();
-                        $('#orders_contentID').hide();
-                        that.get_place_info(place['id']);
-                        $('#place_contentID').slideToggle(200);
-
-                    });
-                    that.PlacemarkArray.push(myPlacemark1);
-                    that.map.geoObjects.add(myPlacemark1);
+            if (response.length > 0) {
+                var value = '';
+                response.forEach(function(order) {
+                    var key = order['user'] + ' : ' + order['date_begin'];
+                    value = order['id'];
+                    $('#select_orders_listID').append('<option value="' + value + '"> ' + key + ' </option>');
                 });
-            });
+            } else {
+                $('#orders_place_nameID').html('ИД Базы: ' + currPlaceID + '  <br>Пока нет ни одного отчета. Будьте первым!');
+            }
+
         },
         error: function(error) {
-            console.log('set_places_error:');
+            console.log('get_orders_error:');
             console.log(error);
         }
     });
+}
+
+function reset_order_content() {
+    $('#order_userID').html('ИД Юзера: ');
+    $('#order_periodID').html('Период: ');
+    $('#order_descriptionID').html('Описание: ');
+    $('#RemoveOrderButtonID').css('display', 'none');
+    $("#order_photosID").html('');
+
+}
+
+function get_order_info() {
+    selectBox = document.getElementById("select_orders_listID");                //TODO  JQuery - ???
+    currOrderID = selectBox.options[selectBox.selectedIndex].value;
+    console.log(currOrderID);
+
+    $.ajax({
+        type: "POST",
+        url: "/get_order_info/",
+        data: {
+            'data_type': "info",
+            'order_id': currOrderID,
+        },
+        type: 'POST',
+        success: function(get_order_info_response) {
+            console.log('get_order_info_response:  ');
+            console.log(get_order_info_response);
+
+            $('#order_userID').html('ИД Юзера: ' + get_order_info_response[0].user_id);
+            $('#order_periodID').html('Период: ' + get_order_info_response[0].date_begin + ' - ' + get_order_info_response[0].date_end);
+            $('#order_descriptionID').html('Описание: ' + get_order_info_response[0].description);
+            if (currUserID == get_order_info_response[0].user_id) {
+                $('#RemoveOrderButtonID').css('display', 'block');
+            } else {
+                $('#RemoveOrderButtonID').css('display', 'none');
+            }
+        },
+        error: function(error) {
+            console.log('get_order_info_ERROR:');
+            console.log(error);
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/get_order_info/",
+        data: {
+            'data_type': "photos",
+            'order_id': currOrderID,
+        },
+        type: 'POST',
+        success: function(get_order_photos_response) {
+            console.log('get_order_photos_response:  ');
+            console.log(get_order_photos_response);
+            var photo_html = "";
+            get_order_photos_response.forEach((photo, i) => {
+                console.log(photo.image);
+                photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="image-1" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
+            });
+            console.log(photo_html);
+            $("#order_photosID").html(photo_html);
+
+        },
+        error: function(error) {
+            console.log('get_order_photos_ERROR:');
+            console.log(error);
+        }
+    });
+
 }
 
 function hidePlaceContent() {

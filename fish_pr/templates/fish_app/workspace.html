@@ -21,12 +21,11 @@
 {% block js_script %}
     <script type="text/javascript">
 
-        var myYandexMap = null;
-        var currProfile_json = "";
-        var currUserID = null;
-        var currPlaceID = null;
-        var currOrderID = null;
-        var orders_list = {};
+        myYandexMap = null;
+        currProfile_json = "";
+        currUserID = null;
+        currPlaceID = null;
+        currOrderID = null;
 
         $(document).ready(function() {
 
@@ -131,7 +130,7 @@
                     ...Place Name...
                 </div>
                 <div id="orders_listID" class="orders_list">
-                    <select size="10" id="select_orders_listID">
+                    <select size="10" id="select_orders_listID" onchange="get_order_info();">
 
                     </select>
                 </div>

@@ -22,7 +22,7 @@
 .orders_list  { grid-area: 2 / 1 / 3 / 2; }
 .order_info {
     grid-area: 2 / 2 / 3 / 3;
-    margin-left: 25px;    
+    margin-left: 25px;
 }
 .orders_controls { grid-area: 3 / 1 / 4 / 3; }
 
@@ -79,7 +79,7 @@
 
 .ordersContent {
     z-index: 92;
-    background-color: rgba(26, 97, 45, 0.3); /* Цвет фона и значение прозрачности */
+    background-color: rgba(26, 97, 45, 0.5); /* Цвет фона и значение прозрачности */
     margin: 2em;
 }
 
