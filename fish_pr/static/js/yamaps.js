@@ -13,70 +13,7 @@ class YandexMap {
         });
     }
 
-    get_place_info() {
-        $.ajax({
-            type: "POST",
-            url: "/get_place_info/",
-            data: {
-                'data_type': "info",
-                'place_id': currPlaceID,
-            },
-            type: 'POST',
-            success: function(get_place_info_response) {
-                console.log('get_place_info_response:  ');
-                console.log(get_place_info_response);
-                $('#place_id').html(get_place_info_response[0].id);
-                $('#place_name').html(get_place_info_response[0].name);
-                $('#place_user').html('ИД Рыбака: ' + get_place_info_response[0].user_id);    //TODO link to Profile
-                $('#place_isBame').html('Это база: ' + get_place_info_response[0].is_Base);
-                $('#place_lant').html('lant: ' + get_place_info_response[0].lant);
-                $('#place_long').html('long: ' + get_place_info_response[0].long);
-                $('#place_decription').html('Описание: ' + get_place_info_response[0].description);
-                $('#place_bus_accessibility').html('Доступ на общественном: ' + get_place_info_response[0].bus_accessibility);
-                $('#place_car_accessibility').html('Доступ на машине: ' + get_place_info_response[0].car_accessibility);
-                console.log(currUserID);
-                console.log( get_place_info_response[0].user_id);
-                if (currUserID == get_place_info_response[0].user_id) {
-                    $('#RemovePlaceButtonID').css('display', 'block');
-                } else {
-                    $('#RemovePlaceButtonID').css('display', 'none');
-                }
-            },
-            error: function(error) {
-                console.log('get_place_info_error:');
-                console.log(error);
-            }
-        });
 
-        $.ajax({
-            type: "POST",
-            url: "/get_place_info/",
-            data: {
-                'data_type': "photos",
-                'place_id': currPlaceID,
-            },
-            type: 'POST',
-            success: function(get_place_photos_response) {
-                console.log('get_place_photos_response:  ');
-                console.log(get_place_photos_response);
-                var photo_html = "";
-                get_place_photos_response.forEach((photo, i) => {
-                    console.log(photo.image);
-                    photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="image-1" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
-                });
-                console.log(photo_html);
-                $("#place_photos").html(photo_html);
-
-            },
-            error: function(error) {
-                console.log('get_place_photos_error:');
-                console.log(error);
-            }
-        });
-
-
-
-    }
 
     set_places() {
         var that = this;
@@ -107,7 +44,7 @@ class YandexMap {
                             $('#place_contentID').hide();
                             $('#orders_contentID').hide();
                             currPlaceID = place['id'];
-                            that.get_place_info();
+                            get_place_info();
                             $('#place_contentID').slideToggle(200);
 
                         });
