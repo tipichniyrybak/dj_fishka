@@ -90,6 +90,9 @@
         <div class="map_area">
 
             <div id="place_contentID"  class="placeContent">
+                <!-- <input type="button" class="remove_button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()"> -->
+                {% load static %}
+                <img src="{% static "images/delete.png" %}" alt="delete" id="RemovePlaceButtonID" class="remove_button" height="40" width="40" onclick="deletePlace()">
                 <div id="place_name">
                     ...Base Name...
                 </div>  <br>
@@ -121,7 +124,7 @@
                 </div> <br>
 
                 <input type="button" value="close" onclick="hidePlaceContent()">
-                <input type="button" id="RemovePlaceButtonID" value="Удалить место" onclick="deletePlace()">
+
 
             </div>
 
@@ -131,8 +134,9 @@
                 </div>
                 <div id="orders_listID" class="orders_list">
                     <select size="10" id="select_orders_listID" onchange="get_order_info();">
-
                     </select>
+                    <div class="active_caption"  id="order_add" onclick="openForm(this.id)">Добавить отчет</div>
+
                 </div>
                 <div id="order_infoID" class="order_info">
                     <div id="order_userID">
@@ -150,8 +154,9 @@
                     <input type="button" id="RemoveOrderButtonID" value="Удалить отчет" onclick="deleteOrder()">
                 </div>
                 <div class="orders_controls">
+
                     <input type="button" value="close" onclick="hideOrderContent()">
-                    <div class="active_caption"  id="order_add" onclick="openForm(this.id)">Добавить отчет</div>
+
                 </div>
             </div>
 

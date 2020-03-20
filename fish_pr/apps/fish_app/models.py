@@ -30,8 +30,8 @@ def get_path_to_save_photos(instance, filename):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     photo = models.FileField(upload_to=get_path_to_save_photos, default='img/profile/no_photo.jpg')
-    first_name = models.CharField('Name profile', max_length=50)
-    last_name = models.CharField('Lastname profile', max_length=50)
+    first_name = models.CharField('Name profile', max_length=50, default='Имя')
+    last_name = models.CharField('Lastname profile', max_length=50, default='не назначено')
     is_professional = models.BooleanField(default=False)
     home_pond = models.CharField('Home pond', max_length=70, default='')
     lovely_pond = models.CharField('Lovely pond', max_length=70, default='')
@@ -39,7 +39,8 @@ class Profile(models.Model):
     tackle = models.CharField('tackle', max_length=70, default='')
     fishing_style = models.CharField('fishing_style', max_length=70, default='')
     filters = models.CharField('filters', max_length=300,
-                               default='{"is_selfPlaces": "false", "is_Base": "false", "is_carAccessibility": "false", "is_busAccessibility": "false"}')
+                               default='{"is_selfPlaces": "false", "is_Base": "false", '
+                                       '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     class Meta:
         verbose_name = 'Профиль'

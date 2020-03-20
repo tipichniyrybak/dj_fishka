@@ -463,7 +463,7 @@ function get_order_info() {
             var photo_html = "";
             get_order_photos_response.forEach((photo, i) => {
                 console.log(photo.image);
-                photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="' + photo.image + '" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
+                photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="image-2" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
             });
             console.log(photo_html);
             $("#order_photosID").html(photo_html);
