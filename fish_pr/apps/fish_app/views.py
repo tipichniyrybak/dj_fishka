@@ -54,7 +54,19 @@ def login(request):
 
 
 def registration(request):
-    return render(request, 'fish_app/regstration.html')
+    if request.method == 'POST':
+        form = UserCreationForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            user = User.objects.get(username=username)
+            raw_password = form.cleaned_data.get('password1')
+            profile = Profile(user=user, first_name='Имя', last_name='не указано')
+            profile.save()
+            return redirect('fish_app:login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'fish_app/registration.html', {'form': form})
 
 
 @csrf_exempt

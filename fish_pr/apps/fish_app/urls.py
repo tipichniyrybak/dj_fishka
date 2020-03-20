@@ -8,9 +8,9 @@ app_name = 'fish_app'
 urlpatterns = [
     path('', views.index, name='index'),
     path('workspace/', views.workspace, name='workspace'),
-    # path('login/', auth_views.LoginView.as_view(), name='login'),
+
     path('login/', views.login, name='login'),
-    # path('registration/', views.registration, name='registration'),
+    path('registration/', views.registration, name='registration'),
     path('get_places/', views.get_places, name='get_places'),
     path('get_place_info/', views.get_place_info, name='get_place_info'),
     path('add_place/', views.add_place, name='add_place'),

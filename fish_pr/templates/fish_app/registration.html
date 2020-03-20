@@ -6,15 +6,19 @@
 {% endblock %}
 
 {% block js_link %}
-    {% load static %}
-    <script type=text/javascript src="{% static 'js/libs/jquery-3.4.1.js' %}"></script>
+
+
 {% endblock %}
 
 {% block title %} Log IN {% endblock %}
 
 {% block content_area %}
-    <p>login: <input type="text" name="login"/></p>
-    <p>pass: <input type="text" name="pass"/></p>
-    <p>pass: <input type="text" name="pass1"/></p>
-    <p><input type="submit" value="Register User" id="confirmRegistrationID" name="confirmRegistration" /></p>
+    <h1> Регистрация </h1>
+
+    <form action="{% url 'fish_app:registration' %}" method="post" >
+        {% csrf_token %}
+        {{ form }}
+
+        <input type="submit" value="Registration">
+    </form>
 {% endblock %}
