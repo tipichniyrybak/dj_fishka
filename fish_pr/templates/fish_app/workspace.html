@@ -32,7 +32,7 @@
             lightbox.option({
                   'resizeDuration': 200,
                   'wrapAround': true
-                })
+              });
 
             currUserID = '{{ userID }}';
             console.log(currUserID);
@@ -54,7 +54,7 @@
 
             <div id="profile_photo">
             </div>
-            <div class="active_caption"  id="profile_update" onclick="openForm(this.id)">Редактировать профиль</div>
+            <div class="active_caption"  id="profile_update" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
             <br>
             <div id="name">
                 Паша Вислов
@@ -135,7 +135,7 @@
                 <div id="orders_listID" class="orders_list">
                     <select size="10" id="select_orders_listID" onchange="get_order_info();">
                     </select>
-                    <div class="active_caption"  id="order_add" onclick="openForm(this.id)">Добавить отчет</div>
+                    <div class="active_caption"  id="order_add" onclick="$('#formOrderAddID').bPopup()">Добавить отчет</div>
 
                 </div>
                 <div id="order_infoID" class="order_info">
@@ -192,9 +192,8 @@
     </div>
 
     <div id="formPlaceAddID" class="formPopup">
-        <form id="PlaceAddID">    <!--  class="form-container" -->
+        <form id="PlaceAddID">
             {% csrf_token %}
-            <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
             <p>Название места: <input type="text" id="fPlaceAdd_nameID" /></p>
             <p>lant: <input type="text" id="fPlaceAdd_lantID" /></p>
             <p>long: <input type="text" id="fPlaceAdd_longID" /></p>

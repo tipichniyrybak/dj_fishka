@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages
-from .forms import renewProfileModelForm
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -21,15 +20,13 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login
 import json
 from datetime import datetime
+from .forms import AddPlaceForm
 
 
 def workspace(request):
     user_id = request.session['userID']
-    # cur_profile = request.session['currentProfile']
-    renewProfileForm = renewProfileModelForm()
-
-    return render(request, 'fish_app/workspace.html', {'userID': user_id,
-                                                       'renewProfileForm': renewProfileForm})
+    # add_place_form = AddPlaceForm()
+    return render(request, 'fish_app/workspace.html', {'userID': user_id})
 
 
 def index(request):
@@ -61,7 +58,7 @@ def registration(request):
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
             raw_password = form.cleaned_data.get('password1')
-            profile = Profile(user=user, first_name='Имя', last_name='не указано')
+            profile = Profile(user=user)
             profile.save()
             return redirect('fish_app:login')
     else:

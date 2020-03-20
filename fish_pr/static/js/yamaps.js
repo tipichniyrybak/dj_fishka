@@ -10,6 +10,22 @@ class YandexMap {
                 zoom: 10,
                 controls: []
             });
+
+            that.map.events.add('click', function (e) {
+
+                if (!that.map.balloon.isOpen()) {
+                    var coords = e.get('coords');
+                    that.map.balloon.open(coords, {
+                        contentHeader: coords[0] + ' : ' + coords[1],
+                        contentBody: '<div class="active_caption" style="display: inline;" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
+                        // contentFooter:'<sup>Щелкните еще раз</sup>'
+                    });
+                }
+                else {
+                    that.map.balloon.close();
+                }
+            });
+
         });
     }
 

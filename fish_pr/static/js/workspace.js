@@ -488,21 +488,11 @@ function hideOrderContent() {
     $('#place_contentID').slideToggle(200);
 }
 
-function openForm(form) {
-    console.log(form);
-    switch (form) {
-        case 'profile_update':
-            $('#formProfileEditID').bPopup();
-            break;
-        case 'place_add':
-            $('#formPlaceAddID').bPopup();
-            break;
-        case 'order_add':
-                $('#formOrderAddID').bPopup();
-                break;
-        default:
-
-    }
+function openFormAddPlace(lant, long) {
+    $('#fPlaceAdd_lantID').val(lant);
+    $('#fPlaceAdd_longID').val(long);
+    $('#formPlaceAddID').bPopup();
+    myYandexMap.map.balloon.close();
 }
 
 function closeForm(form) {
