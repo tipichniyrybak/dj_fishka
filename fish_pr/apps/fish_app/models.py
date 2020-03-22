@@ -4,6 +4,7 @@ import os
 import random
 import string
 from django.http import JsonResponse
+from datetime import datetime
 
 
 def get_path_to_save_photos(instance, filename):
@@ -29,7 +30,7 @@ def get_path_to_save_photos(instance, filename):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    photo = models.FileField(upload_to=get_path_to_save_photos, default='img/profile/no_photo.jpg')
+    photo = models.FileField(upload_to=get_path_to_save_photos, default='img/profile/no_photo.png')
     first_name = models.CharField('Name profile', max_length=50, default='Имя')
     last_name = models.CharField('Lastname profile', max_length=50, default='не назначено')
     is_professional = models.BooleanField(default=False)
@@ -56,6 +57,7 @@ class FishingPlace(models.Model):
     is_Base = models.BooleanField(default=False)
     car_accessibility = models.BooleanField(default=False)
     bus_accessibility = models.BooleanField(default=False)
+    datetime_public = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return self.name
@@ -78,6 +80,7 @@ class FishingPlace(models.Model):
             # return FishingPlace.objects.filter(name=self.name).values('id')
             return self
 
+
 class FishingPlaceImages(models.Model):
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=get_path_to_save_photos)
@@ -94,6 +97,8 @@ class PlaceOrder(models.Model):
     date_begin = models.DateField()
     date_end = models.DateField()
     description = models.TextField('Description of order')
+    datetime_public = models.DateTimeField(default=datetime.now)
+
 
     def __str__(self):
         return self.user_id

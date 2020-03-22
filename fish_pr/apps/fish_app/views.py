@@ -93,10 +93,11 @@ def update_profile(request):
         current_profile.fishing_object = request.POST.get("fishing_object")
         current_profile.tackle = request.POST.get("tackle")
         current_profile.fishing_style = request.POST.get("fishing_style")
-        if len(photo) > 0:
-            os.remove('fish_pr/' + settings.MEDIA_URL + current_profile.photo.name)
-            current_profile.photo = photo[0]
 
+        if len(photo) > 0:
+            if current_profile.photo != 'img/profile/no_photo.png':
+                os.remove('fish_pr/' + settings.MEDIA_URL + current_profile.photo.name)
+            current_profile.photo = photo[0]
         res = 1
 
     if type_info == 'filters':
