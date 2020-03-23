@@ -95,8 +95,8 @@ def update_profile(request):
         current_profile.fishing_style = request.POST.get("fishing_style")
 
         if len(photo) > 0:
-            # if current_profile.photo != 'img/profile/no_photo.png':
-            #     os.remove('fish_pr/' + settings.MEDIA_URL + current_profile.photo.name)
+            if current_profile.photo != 'img/profile/no_photo.png':
+                current_profile.photo.delete(save=False)
             current_profile.photo = photo[0]
         res = 1
 
