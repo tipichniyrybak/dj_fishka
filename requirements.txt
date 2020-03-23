@@ -11,3 +11,5 @@ Werkzeug==0.16.0
 whitenoise==5.0.1
 django_cors_headers
 Pillow
+django-storages
+boto3
