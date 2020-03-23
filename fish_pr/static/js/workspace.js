@@ -23,7 +23,8 @@ function reloadProfile() {
             $("#fishing_object").html('<b><em>Любимый объект ловли: </b>' + currProfile_json[0].fishing_object + '</em>');
             $("#tackle").html('<b><em>Любимая снасть: </b>' + currProfile_json[0].tackle + '</em>');
             $("#fishing_style").html('<b><em>Любимый стиль ловли: </b>' + currProfile_json[0].fishing_style + '</em>');
-            $("#profile_photo").html('<img class="img_profile" src="/media/img/profile/' + currProfile_json[0].photo.replace(/^.*[\\\/]/, '') +  '"/>');
+            // <img class="img_place" src="/media/' + photo.image +  '" />
+            $("#profile_photo").html('<img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/' + currProfile_json[0].photo  + '"/>');
 
             $("#form_first_nameID").val(currProfile_json[0].first_name);
             $("#form_last_nameID").val(currProfile_json[0].last_name);
@@ -263,7 +264,7 @@ function get_place_info() {
             var photo_html = "";
             get_place_photos_response.forEach((photo, i) => {
                 console.log(photo.image);
-                photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="image-1" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
+                photo_html = photo_html + '<a href="http://fishkadata.s3.amazonaws.com/media/' + photo.image +  '" data-lightbox="image-1" data-title="' + photo.caption + '"><img class="img_place" src="http://fishkadata.s3.amazonaws.com/media/' + photo.image +  '" /></a>';
             });
             console.log(photo_html);
             $("#place_photos").html(photo_html);
@@ -463,7 +464,7 @@ function get_order_info() {
             var photo_html = "";
             get_order_photos_response.forEach((photo, i) => {
                 console.log(photo.image);
-                photo_html = photo_html + '<a href="/media/' + photo.image +  '" data-lightbox="image-2" data-title="' + photo.caption + '"><img class="img_place" src="/media/' + photo.image +  '" /></a>';
+                photo_html = photo_html + '<a href="http://fishkadata.s3.amazonaws.com/media/' + photo.image +  '" data-lightbox="image-2" data-title="' + photo.caption + '"><img class="img_place" src="http://fishkadata.s3.amazonaws.com/media/' + photo.image +  '" /></a>';
             });
             console.log(photo_html);
             $("#order_photosID").html(photo_html);

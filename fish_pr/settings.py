@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os, sys
+# from .storage_backends import MediaStorage
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'storages',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -149,6 +151,18 @@ MEDIAFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, "fish_pr", "media")
 
+
+AWS_ACCESS_KEY_ID = 'AKIAYWQMLWNICYMY3RGK'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'fishkadata'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'fish_pr.storage_backends.MediaStorage'  # <-- here is where we reference it
 
 
 APPEND_SLASH = True
