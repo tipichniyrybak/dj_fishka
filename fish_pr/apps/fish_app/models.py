@@ -66,7 +66,6 @@ class FishingPlace(models.Model):
         photos = FishingPlaceImages.objects.filter(fishing_place=self).values()
         return JsonResponse(list(photos), safe=False)
 
-
     class Meta:
         verbose_name = 'Рыболовное место'
         verbose_name_plural = 'Рыболовные места'
@@ -97,8 +96,7 @@ class PlaceOrder(models.Model):
     date_begin = models.DateField()
     date_end = models.DateField()
     description = models.TextField('Description of order')
-    datetime_public = models.DateTimeField(default=datetime.now)
-
+    datetime_publication = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return self.user_id
@@ -126,6 +124,21 @@ class PlaceOrderImages(models.Model):
         verbose_name_plural = 'Фото отчетов'
 
 
+class Fishing(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
+    datetime_publication = models.DateTimeField(default=datetime.now)
+    description = models.TextField('Description of fishing', default="fishing description")
+    user_list = models.CharField('Users list', max_length=100, default='')
+    max_users = models.IntegerField(default=0)
+    # chat = models.TextField('fishing chat')
 
+    class Meta:
+        verbose_name = 'Рыбалка'
+        verbose_name_plural = 'Рыбалки'
 
+    def __str__(self):
+        return self.id
 
+    # def add_user(self, user_id):
+    #     return user_id + 1

@@ -60,6 +60,7 @@ class YandexMap {
                             $('#place_contentID').hide();
                             $('#orders_contentID').hide();
                             currPlaceID = place['id'];
+                            console.log(currPlaceID);
                             get_place_info();
                             $('#place_contentID').slideToggle(200);
 

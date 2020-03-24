@@ -21,6 +21,7 @@ from django.contrib.auth import login as auth_login
 import json
 from datetime import datetime
 from .forms import AddPlaceForm
+import boto3
 
 
 def workspace(request):
@@ -170,12 +171,22 @@ def delete_place(request):
     place_id = request.POST.get("place_id")                         # TODO delete all PlaceOrders?
     place = FishingPlace.objects.get(id=place_id)
     photos = FishingPlaceImages.objects.filter(fishing_place=place)
+
+    # Retrieve a bucket's ACL
+    s3 = boto3.client('s3')
+    result = ''
+    result = s3.get_bucket_acl(Bucket='fishkadata')
+    print('res:' + result)
+
     for photo in photos:
-        os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
+        # os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
+        default_storage.delete('/media/' + photo.image.name)
+        photo.delete()
+
         path = os.path.dirname(photo.image.name)
 
-    os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
-    photos.delete()
+    # os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
+    photos.delete()  # current_profile.photo.delete(save=False)
     place.delete()
     res = 1
     return JsonResponse(res, safe=False)

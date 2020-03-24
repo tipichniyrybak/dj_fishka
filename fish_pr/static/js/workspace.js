@@ -175,15 +175,14 @@ function addPlace() {
 }
 
 function deletePlace() {
-    var place_id = $('#place_id').text();
-    console.log('deletePlace id:');
-    console.log(place_id);
+    console.log('currPlaceID::');
+    console.log(currPlaceID);
     if (confirm('Вы увепены, что хотите удалить данное место?')) {
         $.ajax({
             type: "POST",
             url: "/delete_place/",
             data: {
-                'place_id': place_id
+                'place_id': currPlaceID
             },
             success: function(response) {
                 console.log('response_DeletePlace:  ');
