@@ -42,6 +42,7 @@ class Profile(models.Model):
     filters = models.CharField('filters', max_length=300,
                                default='{"is_selfPlaces": "false", "is_Base": "false", '
                                        '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
+    friends = models.CharField('Friends', max_length=150, default='')
 
     class Meta:
         verbose_name = 'Профиль'
@@ -57,7 +58,7 @@ class FishingPlace(models.Model):
     is_Base = models.BooleanField(default=False)
     car_accessibility = models.BooleanField(default=False)
     bus_accessibility = models.BooleanField(default=False)
-    datetime_public = models.DateTimeField(default=datetime.now)
+    datetime_publication = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return self.name
@@ -140,5 +141,9 @@ class Fishing(models.Model):
     def __str__(self):
         return self.id
 
-    # def add_user(self, user_id):
-    #     return user_id + 1
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    receivers = models.CharField('Receivers', max_length=200, default='')
+    msg_content = models.TextField('Msg_content')
+    datetime_publication = models.DateTimeField(default=datetime.now)

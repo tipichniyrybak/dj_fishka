@@ -1,0 +1,91 @@
+{% extends 'fish_app/base.html' %}
+
+{% block css_link %}
+
+{% endblock %}
+
+{% block js_link %}
+    {% load static %}
+    <script type=text/javascript src="{% static 'js/libs/jquery-3.4.1.js' %}"></script>
+    <script type=text/javascript src="{% static 'js/libs/bPopup.js' %}"></script>
+
+
+{% endblock %}
+
+{% block js_script %}
+
+{% endblock %}
+
+
+
+{% block content_area %}
+
+    <div class="content-container">
+
+        <div class="profile">
+
+            <div id="profile_photo">
+            </div>
+            <div class="active_caption"  id="profile_update" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
+            <br>
+            <div id="name">
+                Паша Вислов
+            </div>
+            <div id="is_professional">
+                [yes/no]
+            </div>  <br>
+            <div id="home_pond">
+                Домашний водоем
+            </div>
+            <div id="lovely_pond">
+                Любимый водоем
+            </div>
+            <div id="fishing_object">
+                Любимый объект ловли
+            </div>
+            <div id="tackle">
+                Любимая снасть
+            </div>
+            <div id="fishing_style">
+                Любимый стиль ловли
+            </div> <br>
+            <div id="controls">
+                <!-- <a href="#">Мои места</a> <div class="active_caption" style="display: inline;" id="place_add" onclick="openForm(this.id)"> + </div> <br> -->
+                <a href="#">Мои отчеты</a> <a href="#">+</a> <br>
+                <a href="#">Мои рыбалки</a> <a href="#">+</a> <br>
+                <a href="#">Мои Трофеи</a> <a href="#">+</a> <br>
+
+                <a href="#">Мои объявления</a> <a href="#">+</a> <br>
+            </div>
+            <!-- <input type="button" id="openAddPlaseFormID" value="Add place" name="Add place"> -->
+        </div>
+        <div class="working_area">
+            {% block working_area %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+    <div id="formProfileEditID" class="formPopup">
+        <form id="ProfileEditID">    <!--  class="form-container" -->
+            {% csrf_token %}
+            <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
+            <p>Имя: <input type="text" id="form_first_nameID" /></p>
+            <p>Фамилия: <input type="text" id="form_last_nameID" /></p>
+
+            <p>Домашний водоем: <input type="text" id="form_home_pondID" /></p>
+            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" /></p>
+            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" /></p>
+            <p>Любимая снасть: <input type="text" id="form_tackleID" /></p>
+            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" /></p>
+            <p>Фото <input type="file"  id="profile_photoID" /></p>
+
+            <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
+            <input type="button" value="Отмена"  onclick="closeForm('profile_update')" />
+        </form>
+    </div>
+
+    <div id="messageID" class="message">
+        hello
+    </div>
+{% endblock %}

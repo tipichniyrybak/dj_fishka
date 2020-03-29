@@ -175,12 +175,12 @@ def delete_place(request):
     # Retrieve a bucket's ACL
     s3 = boto3.client('s3')
     result = ''
-    result = s3.get_bucket_acl(Bucket='fishkadata')
+    # result = s3.get_bucket_acl(Bucket='fishkadata')
     print('res:' + result)
 
     for photo in photos:
         # os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
-        default_storage.delete('/media/' + photo.image.name)
+        # photo.delete(save=False)
         photo.delete()
 
         path = os.path.dirname(photo.image.name)
@@ -244,7 +244,6 @@ def delete_order(request):
     order.delete()
     res = 1
     return JsonResponse(res, safe=False)
-
 
 
 # def detail(request, place_id):
