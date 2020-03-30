@@ -1,10 +1,31 @@
 .content-container {
-display: grid;
-grid-template-columns: 1fr 4fr;
-grid-template-rows: 1fr;
-grid-column-gap: 0px;
-grid-row-gap: 0px;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
 }
 
 .profile { grid-area: 1 / 1 / 2 / 2; }
 .working_area { grid-area: 1 / 2 / 2 / 3; }
+
+.formPopup, .message {
+    background-color:#fff;
+    border-radius:15px;
+    color:#000;
+    display:none;
+    padding:20px;
+    min-width:40px;
+    min-height: 20px;
+}
+
+.active_caption {
+    color: #8a0a21;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.img_profile {
+    width: 50%;
+    height: auto;
+}

@@ -27,7 +27,7 @@ import boto3
 def workspace(request):
     user_id = request.session['userID']
     # add_place_form = AddPlaceForm()
-    return render(request, 'fish_app/workspace.html', {'userID': user_id})
+    return render(request, 'fish_app/workspace.html' , {'userID': user_id})
 
 
 def index(request):
@@ -254,7 +254,7 @@ def pdetail(request, user_id):
 
     # latest_order_list = p.order_set.order_by('-id')[:10]
 
-    return render(request, 'pdetail.html', {'profile': p})
+    return render(request, 'fish_app/pdetail.html', {'profile': p})
 
 
 # def leave_comment(request, place_id):

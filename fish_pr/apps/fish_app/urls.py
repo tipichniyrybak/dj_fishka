@@ -8,6 +8,7 @@ app_name = 'fish_app'
 urlpatterns = [
     path('', views.index, name='index'),
     path('workspace/', views.workspace, name='workspace'),
+    # path('base_authorized/', views.base_authorized, name='base_authorized'),
     path('login/', views.login, name='login'),
     path('registration/', views.registration, name='registration'),
 

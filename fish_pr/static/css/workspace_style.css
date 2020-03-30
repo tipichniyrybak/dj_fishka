@@ -1,14 +1,13 @@
-.content-container {
+.working_area-container {
     display: grid;
-    grid-template-columns: 1fr 3.5fr 0.5fr;
+    grid-template-columns: 7fr 1fr;
     grid-template-rows: 1fr;
-    grid-column-gap: 1px;
-    grid-row-gap: 1px;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
 }
 
-.profile { grid-area: 1 / 1 / 2 / 4; }
-.map_area { grid-area: 1 / 2 / 2 / 3; }
-.filters { grid-area: 1 / 3 / 2 / 4; }
+.map_area { grid-area: 1 / 1 / 2 / 2; }
+.filters { grid-area: 1 / 2 / 2 / 3; }
 
 .ordersContent {
     display: grid;
