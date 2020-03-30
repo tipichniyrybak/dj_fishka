@@ -246,16 +246,17 @@ def delete_order(request):
     return JsonResponse(res, safe=False)
 
 
-# def detail(request, place_id):
-#     try:
-#         p = FishingPlace.objects.get( id=place_id)
-#     except:
-#         raise Http404("Данные не найдены!.." )
-#
-#     latest_order_list = p.order_set.order_by('-id')[:10]
-#
-#     return render(request, 'workspace/detail.html', {'place': p, 'latest_order_list': latest_order_list})
-#
+def pdetail(request, user_id):
+    try:
+        p = Profile.objects.get(user_id=user_id)
+    except:
+        raise Http404("Данные не найдены!..")
+
+    # latest_order_list = p.order_set.order_by('-id')[:10]
+
+    return render(request, 'pdetail.html', {'profile': p})
+
+
 # def leave_comment(request, place_id):
 #     try:
 #         p = FishingPlace.objects.get(id=place_id)
