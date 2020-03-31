@@ -1,7 +1,5 @@
 //-------Profile-----
 
-
-
 function updateFilters() {
     updateProfile('filters');
 }
@@ -381,18 +379,4 @@ function openFormAddPlace(lant, long) {
     $('#fPlaceAdd_longID').val(long);
     $('#formPlaceAddID').bPopup();
     myYandexMap.map.balloon.close();
-}
-
-function closeForm(form) {
-    switch (form) {
-
-        case 'place_add':
-            $('#formPlaceAddID').bPopup().close();
-            break;
-        case 'order_add':
-                $('#formOrderAddID').bPopup().close();
-                break;
-        default:
-
-    }
 }

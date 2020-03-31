@@ -26,12 +26,16 @@ import boto3
 
 def workspace(request):
     user_id = request.session['userID']
-    # add_place_form = AddPlaceForm()
-    return render(request, 'fish_app/workspace.html' , {'userID': user_id})
+    return render(request, 'fish_app/workspace.html', {'userID': user_id})
 
 
 def index(request):
     return render(request, 'fish_app/index.html')
+
+
+def friends(request):
+    user_id = request.session['userID']
+    return render(request, 'fish_app/friends.html', {'userID': user_id})
 
 
 def login(request):
