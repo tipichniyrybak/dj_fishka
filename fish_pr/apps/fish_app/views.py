@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 import json
 from datetime import datetime
 from .forms import AddPlaceForm
@@ -30,7 +31,10 @@ def workspace(request):
 
 
 def index(request):
-    return render(request, 'fish_app/index.html')
+    is_logged = 0;
+    if request.user.is_authenticated:
+        is_logged = 1
+    return render(request, 'fish_app/index.html', {'is_logged': is_logged})
 
 
 def friends(request):
@@ -49,10 +53,15 @@ def login(request):
             auth_login(request, user)
             request.session['userID'] = user_id
             # request.session['currentProfile'] = profile_json
-            return redirect('fish_app:workspace')
+            return redirect('fish_app:index')
     else:
         form = AuthenticationForm()
     return render(request, 'fish_app/login.html', {'form': form})
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect('fish_app:index')
 
 
 def registration(request):

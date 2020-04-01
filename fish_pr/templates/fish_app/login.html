@@ -1,18 +1,16 @@
 {% extends 'fish_app/base.html' %}
 
-{% block css_link %}
-    {% load static %}
+{% block title %} Log IN {% endblock %}
 
+{% block css_link %}
 {% endblock %}
 
 {% block js_link %}
-    {% load static %}
-
 {% endblock %}
 
-{% block title %} Log IN {% endblock %}
+{% block js_script %} {% endblock %}
 
-{% block content_area %}
+{% block working_area %}
     <h1> Log In!!!!! </h1>
 
     <form action="{% url 'fish_app:login' %}" method="post" >
@@ -23,4 +21,6 @@
         {% endif %}
         <input type="submit" value="Login">
     </form>
+
+    <p><a href="{% url 'fish_app:registration' %}">Registration</a></p>
 {% endblock %}

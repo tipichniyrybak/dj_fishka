@@ -10,6 +10,7 @@ urlpatterns = [
     path('workspace/', views.workspace, name='workspace'),
     path('friends/', views.friends, name='friends'),
     path('login/', views.login, name='login'),
+    path('logout/', views.logout,  name='logout'),
     path('registration/', views.registration, name='registration'),
 
     path('get_places/', views.get_places, name='get_places'),

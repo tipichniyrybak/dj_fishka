@@ -1,18 +1,15 @@
 {% extends 'fish_app/base.html' %}
 
-{% block css_link %}
-
-
-{% endblock %}
-
-{% block js_link %}
-
-{% endblock %}
-
 {% block title %} Index {% endblock %}
 
-{% block content_area %}
-    <p><a href="{% url 'fish_app:login' %}">Login</a></p>
-    <p><a href="{% url 'fish_app:registration' %}">Registration</a></p>
+{% block css_link %} {% endblock %}
+
+{% block js_link %} {% endblock %}
+
+{% block js_script %} {% endblock %}
+
+{% block working_area %}
+    {{ is_logged }}
+
 
 {% endblock %}
