@@ -135,6 +135,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = 'fish_app:index'
+LOGOUT_REDIRECT_URL  = 'fish_app:index'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

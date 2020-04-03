@@ -13,7 +13,7 @@
 {% block working_area %}
     <h1> Log In!!!!! </h1>
 
-    <form action="{% url 'fish_app:login' %}" method="post" >
+    <form  method="post" >                 <!--  action="{% url 'fish_app:login' %}" -->
         {% csrf_token %}
         {{ form }}
         {% if request.GET.next %}

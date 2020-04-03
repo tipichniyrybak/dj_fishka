@@ -31,10 +31,12 @@ def workspace(request):
 
 
 def index(request):
-    is_logged = 0;
+    is_logged = 0
+    user_id = 0
     if request.user.is_authenticated:
         is_logged = 1
-    return render(request, 'fish_app/index.html', {'is_logged': is_logged})
+        user_id = request.session['userID']
+    return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'user_id': user_id})
 
 
 def friends(request):
@@ -60,8 +62,10 @@ def login(request):
 
 
 def logout(request):
-    auth_logout(request)
-    return redirect('fish_app:index')
+    if request.method == 'POST':
+        auth_logout(request)
+        return redirect('fish_app:index')
+    return HttpResponse('fish_app:index')
 
 
 def registration(request):
@@ -130,10 +134,16 @@ def update_profile(request):
 @csrf_exempt
 def get_places(request):
     user_id = request.POST.get("userID")
-    filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
-    filt1 = filt[0]
-    filt2 = filt1["filters"]
-    filters = json.loads(filt2)
+    # usr_id = request.session['userID']
+
+    if int(user_id) > 0:
+        filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
+        filt1 = filt[0]
+        filt2 = filt1["filters"]
+        filters = json.loads(filt2)
+    else:
+        filters = json.loads('{"is_selfPlaces": "false", "is_Base": "false", '
+                             '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     places = FishingPlace.objects.values()
     if filters["is_selfPlaces"] == 'true':

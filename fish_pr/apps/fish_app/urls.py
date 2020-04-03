@@ -1,6 +1,8 @@
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views
 from django.urls import path, include
-
+from django.conf import settings
+from django.contrib.auth.views import auth_logout
+from django.contrib.auth.views import LogoutView
 from . import views
 
 app_name = 'fish_app'
@@ -10,7 +12,7 @@ urlpatterns = [
     path('workspace/', views.workspace, name='workspace'),
     path('friends/', views.friends, name='friends'),
     path('login/', views.login, name='login'),
-    path('logout/', views.logout,  name='logout'),
+    path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('registration/', views.registration, name='registration'),
 
     path('get_places/', views.get_places, name='get_places'),

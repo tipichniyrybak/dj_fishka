@@ -8,9 +8,11 @@
 
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/base_style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/lightbox.css' %}">
         {% block css_link %} {% endblock %}
 
         <script type=text/javascript src="{% static 'js/libs/jquery-3.4.1.js' %}"></script>
+        <script type=text/javascript src="{% static 'js/libs/lightbox.js' %}"></script>
         <script type=text/javascript src="{% static 'js/libs/bPopup.js' %}"></script>
         <script type=text/javascript src="{% static 'js/base.js' %}"></script>
         {% block js_link %} {% endblock %}
@@ -24,29 +26,43 @@
 
             $(document).ready(function() {
 
-                currUserID = '{{ userID }}';
+                currUserID = '{{ user_id }}';
                 console.log('currUserID');
                 console.log(currUserID);
                 if (currUserID > 0) {
-                  reloadProfile();
-                  lightbox.option({
-                        'resizeDuration': 200,
-                        'wrapAround': true
+
+                    $('#profileID').show();
+                    $('#login_formID').hide();
+                    reloadProfile();
+
+                    lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
                     });
 
-                  myYandexMap = new YandexMap()
-                  myYandexMap.set_places();
+
+                } else {
+                    $('#profileID').hide();
+                    $('#login_formID').show();
                 }
+
+                {% block document_ready_script %} {% endblock %}
+
             });
         </script>
-        {% block js_script %} {% endblock %}
+
 
     </head>
     <body>
         <div class="grid-container">
             <div class="header"></div>
             <div class="login_controls">
-                <div class="profile">
+
+                {{ is_logged }}
+                <br>
+                {{ user_id }}
+
+                <div id="profileID" class="profile">
                     <div id="profile_photo">
                     </div>
                     <div class="active_caption"  id="profile_update" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
@@ -81,7 +97,21 @@
                         <a href="#">Мои Трофеи</a> <a href="#">+</a> <br>
                         <a href="#">Мои объявления</a> <a href="#">+</a> <br> <br> <br>
                     </div>
-                    <div class="active_caption"  id="log_out" onclick="{% url "fish_app:logout" %}">Выйти</div>
+                    <a href="{% url "fish_app:logout" %}">Выйти</a>
+                    <!-- <div class="active_caption"  id="log_out" onclick="{% url "fish_app:logout" %}">Выйти</div> -->
+                </div>
+                <div id="login_formID" class="login_form">
+                    <form action="{% url 'fish_app:login' %}" method="post" >
+                        {% csrf_token %}
+                        <label for="id_username">Имя пользователя:</label>
+                        <input type="text" name="username" autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username"> <br>
+                        <label for="id_password">Пароль:</label>
+                        <input type="password" name="password" autocomplete="current-password" required id="id_password"> <br>
+                        {% if request.GET.next %}
+                            <<input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                        <input type="submit" value="Login">
+                    </form>
                 </div>
 
             </div>

@@ -2,14 +2,149 @@
 
 {% block title %} Index {% endblock %}
 
-{% block css_link %} {% endblock %}
+{% block css_link %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/workspace_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+{% endblock %}
 
-{% block js_link %} {% endblock %}
+{% block js_link %}
+    {% load static %}
+    <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?apikey=18f62a6d-77ff-4bb8-8f46-3b6d164fdf4d&lang=ru_RU"></script>
+    <script type=text/javascript src="{% static 'js/yamaps.js' %}"></script>
+    <script type=text/javascript src="{% static 'js/workspace.js' %}"></script>
 
-{% block js_script %} {% endblock %}
+{% endblock %}
+
+{% block document_ready_script %}
+    myYandexMap = new YandexMap()
+    myYandexMap.set_places();
+{% endblock %}
 
 {% block working_area %}
     {{ is_logged }}
+    <br>
+    {{ user_id }}
+
+    <div class="working_area-container">
+
+        <div class="map_area">
+
+            <div id="place_contentID"  class="placeContent">
+                {% load static %}
+                <img src="{% static "images/delete.png" %}" alt="delete" id="RemovePlaceButtonID" class="remove_button" height="40" width="40" onclick="deletePlace()">
+                <div id="place_name">
+                    ...Base Name...
+                </div>  <br>
+                <div id="place_user">
+                    ...User Name...
+                </div>  <br>
+                <div id="place_isBame">
+                    ...place_isBame...
+                </div>  <br>
+                <div id="coord">
+                    <div id="place_lant">00.00000</div>
+                    <br>
+                    <div id="place_long">00.00000</div>
+                </div>  <br>
+                <div id="place_photos">
+
+                </div>  <br>
+                <div id="place_decription">
+                    Decription Text
+                </div>  <br>
+                <div id="place_bus_accessibility">
+                    bus_accessibility
+                </div>  <br>
+                <div id="place_car_accessibility">
+                    car_accessibility
+                </div>  <br>
+                <div id="place_orders">
+                    <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
+                </div> <br>
+
+                <input type="button" value="Закрыть" onclick="hidePlaceContent()">
+            </div>
+
+            <div id="orders_contentID"  class="ordersContent">
+                <div id="orders_place_nameID" class="orders_place_name">
+                    ...Place Name...
+                </div>
+                <div id="orders_listID" class="orders_list">
+                    <select size="10" id="select_orders_listID" onchange="get_order_info();">
+                    </select>
+                    <div class="active_caption"  id="order_add" onclick="$('#formOrderAddID').bPopup()">Добавить отчет</div>
+
+                </div>
+                <div id="order_infoID" class="order_info">
+                    <div id="order_userID">
+                        order_user
+                    </div>  <br>
+                    <div id="order_periodID">
+                        order_period
+                    </div>  <br>
+                    <div id="order_descriptionID">
+                        order_description
+                    </div>  <br>
+                    <div id="order_photosID">
+                        order_photos
+                    </div>  <br>
+                    <input type="button" id="RemoveOrderButtonID" value="Удалить отчет" onclick="deleteOrder()">
+                </div>
+                <div class="orders_controls">
+
+                    <input type="button" value="Закрыть" onclick="hideOrderContent()">
+
+                </div>
+            </div>
+
+            <div id="map" style="margin:auto; width: 100%; height: 80vh; z-index: 50;"></div>
+        </div>
+        <div class="filters" id="divcontentID">
+            filters <br>
+            <input type="checkbox" id="is_selfPlacesID" onclick='updateFilters();'>Только мои места ловли<Br>
+            <input type="checkbox" id="is_BaseID" onclick='updateFilters();'>Рыболовная база<Br>
+            <input type="checkbox" id="is_carAccessibilityID" onclick='updateFilters();'>Доступ на машине<Br>
+            <input type="checkbox" id="is_busAccessibilityID" onclick='updateFilters();'>Доступ на общественном<Br>
+            <input type="button" value="Применить"  onclick="reloadPlaces();" />
+        </div>
+    </div>
 
 
+
+    <div id="formPlaceAddID" class="formPopup">
+        <form id="PlaceAddID">
+            {% csrf_token %}
+            <p>Название места: <input type="text" id="fPlaceAdd_nameID" /></p>
+            <p>lant: <input type="text" id="fPlaceAdd_lantID" /></p>
+            <p>long: <input type="text" id="fPlaceAdd_longID" /></p>
+            <p>Рыболовная база: <input type="checkbox" id="fPlaceAdd_isBaseID" /></p>
+            <p>Описание: <input type="text" id="fPlaceAdd_descriptionID" /></p>
+            <p>Доступ на общественном: <input type="checkbox" id="fPlaceAdd_busAccessabilityID" /></p>
+            <p>Доступ на машине: <input type="checkbox" id="fPlaceAdd_carAccessabilityID" /></p>
+            <input type="file"  id="place_photosID" min="1" max="999" multiple="true"/>
+
+            <input type="button" value="Добавить место" onclick="addPlace()" />
+            <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
+        </form>
+    </div>
+
+    <div id="formOrderAddID" class="formPopup">
+        <form id="OrderAddID">
+            {% csrf_token %}
+
+            <p>Дата начала: <input type="date" id="fOrderAdd_dateBeginID"></p>
+            <p>Дата окончания: <input type="date" id="fOrderAdd_dateEndID"></p>
+            <p>Описание: <input type="text" id="fOrderAdd_descriptionID" /></p>
+
+            <input type="file"  id="fOrderAdd_photosID" min="1" max="999" multiple="true"/>
+
+            <input type="button" value="Добавить отчет" onclick="addOrder()" />
+            <input type="button" value="Отмена"  onclick="closeForm('order_add')" />
+        </form>
+    </div>
+
+    <div id="messageID" class="message">
+        hello
+    </div>
 {% endblock %}
