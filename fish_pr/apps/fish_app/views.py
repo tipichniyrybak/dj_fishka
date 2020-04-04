@@ -273,12 +273,17 @@ def delete_order(request):
 def pdetail(request, user_id):
     try:
         p = Profile.objects.get(user_id=user_id)
+
     except:
         raise Http404("Данные не найдены!..")
 
     # latest_order_list = p.order_set.order_by('-id')[:10]
+    user_id = 0
+    if request.user.is_authenticated:
+        is_logged = 1
+        user_id = request.session['userID']
 
-    return render(request, 'fish_app/pdetail.html', {'profile': p})
+    return render(request, 'fish_app/pdetail.html', {'profile': p, 'user_id': user_id})
 
 
 # def leave_comment(request, place_id):

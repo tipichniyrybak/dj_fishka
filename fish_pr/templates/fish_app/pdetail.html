@@ -1,9 +1,37 @@
-{% extends 'fish_app/base_authorized.html' %}
+{% extends 'fish_app/base.html' %}
 
-{% block title %} {{ place.name }} {% endblock %}
+{% block title %} {{ profile.first_name }} {% endblock %}
 
 {% block working_area %}
-    <h2>{{ profile.first_name }}</h2>
+    <div id="profileID" class="profile">
+        <div id="profile_photo">
+            <img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/ {{ profile.photo }} "/>
+        </div>
+        <div class="active_caption"  id="profile_update" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
+        <br>
+        <div id="name">
+            {{ profile.first_name }} {{ profile.last_name }}
+        </div>
+        <div id="is_professional">
+            {{ profile.is_professional }}
+        </div>  <br>
+        <div id="home_pond">
+            Домашний водоем: {{ profile.home_pond }}
+        </div>
+        <div id="lovely_pond">
+            Любимый водоем: {{ profile.lovely_pond }}
+        </div>
+        <div id="fishing_object">
+            Любимый объект ловли: {{ profile.fishing_object }}
+        </div>
+        <div id="tackle">
+            Любимая снасть: {{ profile.tackle }}
+        </div>
+        <div id="fishing_style">
+            Любимый стиль ловли: {{ profile.fishing_style }}
+        </div> <br>
+
+    </div>
 
 
 {% endblock %}
