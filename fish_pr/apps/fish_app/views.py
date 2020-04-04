@@ -58,7 +58,7 @@ def login(request):
             return redirect('fish_app:index')
     else:
         form = AuthenticationForm()
-    return render(request, 'fish_app/login.html', {'form': form})
+    return 1
 
 
 def logout(request):
