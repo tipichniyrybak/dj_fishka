@@ -42,11 +42,20 @@ class Profile(models.Model):
     filters = models.CharField('filters', max_length=300,
                                default='{"is_selfPlaces": "false", "is_Base": "false", '
                                        '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
-    friends = models.CharField('Friends', max_length=150, default='')
+    friends = models.CharField('Friends', max_length=250, default='')
+    requests_for_friendship = models.CharField('requests_for_friendship', max_length=250, default='')
 
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+
+    def add_request_for_friendship(self, requesting_friendship_id):
+        if self.requests_for_friendship.find(str(requesting_friendship_id) + '|') == -1:
+            self.requests_for_friendship = self.requests_for_friendship + str(requesting_friendship_id) + '|'
+            self.save()
+            return 1
+        else:
+            return 0
 
 
 class FishingPlace(models.Model):

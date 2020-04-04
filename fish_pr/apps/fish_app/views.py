@@ -32,11 +32,11 @@ def workspace(request):
 
 def index(request):
     is_logged = 0
-    user_id = 0
+    current_user_id = 0
     if request.user.is_authenticated:
         is_logged = 1
-        user_id = request.session['userID']
-    return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'user_id': user_id})
+        current_user_id = request.session['userID']
+    return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'current_user_id': current_user_id})
 
 
 def friends(request):
@@ -50,11 +50,8 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             user_id = User.objects.get(username=user).id
-            # profile = Profile.objects.filter(user_id=user_id).values()
-            # profile_json = json.dumps(list(profile))
             auth_login(request, user)
             request.session['userID'] = user_id
-            # request.session['currentProfile'] = profile_json
             return redirect('fish_app:index')
     else:
         form = AuthenticationForm()
@@ -84,9 +81,34 @@ def registration(request):
     return render(request, 'fish_app/registration.html', {'form': form})
 
 
+def pdetail(request, user_id):
+    try:
+        p = Profile.objects.get(user_id=user_id)
+
+    except:
+        raise Http404("Данные не найдены!..")
+
+    # latest_order_list = p.order_set.order_by('-id')[:10]
+    current_user_id = 0
+    if request.user.is_authenticated:
+        is_logged = 1
+        current_user_id = request.session['userID']
+
+    return render(request, 'fish_app/pdetail.html', {'profile': p, 'profile_user_id': user_id})
+
+
+@csrf_exempt
+def add_request_for_friendship(request):
+    profile_for_friendship = Profile.objects.get(user_id=request.POST.get("profile_user_id"))
+
+    # profile_for_friendship.save()
+    return JsonResponse(profile_for_friendship.add_request_for_friendship(request.user.id), safe=False)
+
+
+
 @csrf_exempt
 def get_profile_info(request):
-    user_id = request.POST.get("userID")
+    user_id = request.user.id
     user_by_id = User.objects.get(id=user_id)
     profile = Profile.objects.filter(user=user_by_id).values()
     return JsonResponse(list(profile), safe=False)
@@ -94,7 +116,7 @@ def get_profile_info(request):
 
 @csrf_exempt
 def update_profile(request):
-    uid = request.POST.get("userID")
+    uid = request.user.id
     us = User.objects.get(id=uid)
     current_profile = Profile.objects.get(user=us)
     type_info = request.POST.get("typeInfo")
@@ -133,21 +155,21 @@ def update_profile(request):
 
 @csrf_exempt
 def get_places(request):
-    user_id = request.POST.get("userID")
+    user_id = request.user.id
     # usr_id = request.session['userID']
 
-    if int(user_id) > 0:
-        filt = Profile.objects.filter(user_id=user_id).values('filters')         #  JSON B JSONe
+    try:
+        filt = Profile.objects.filter(user_id=request.user.id).values('filters')         #  JSON B JSONe
         filt1 = filt[0]
         filt2 = filt1["filters"]
         filters = json.loads(filt2)
-    else:
+    except:
         filters = json.loads('{"is_selfPlaces": "false", "is_Base": "false", '
                              '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     places = FishingPlace.objects.values()
     if filters["is_selfPlaces"] == 'true':
-        places = places.filter(user_id=user_id)
+        places = places.filter(user_id=request.user.id)
     if filters["is_Base"] == 'true':
         places = places.filter(is_Base=True)
     if filters["is_carAccessibility"] == 'true':
@@ -268,22 +290,6 @@ def delete_order(request):
     order.delete()
     res = 1
     return JsonResponse(res, safe=False)
-
-
-def pdetail(request, user_id):
-    try:
-        p = Profile.objects.get(user_id=user_id)
-
-    except:
-        raise Http404("Данные не найдены!..")
-
-    # latest_order_list = p.order_set.order_by('-id')[:10]
-    user_id = 0
-    if request.user.is_authenticated:
-        is_logged = 1
-        user_id = request.session['userID']
-
-    return render(request, 'fish_app/pdetail.html', {'profile': p, 'user_id': user_id})
 
 
 # def leave_comment(request, place_id):

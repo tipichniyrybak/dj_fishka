@@ -26,14 +26,14 @@
 
             $(document).ready(function() {
 
-                currUserID = '{{ user_id }}';
+                currUserID = '{{ request.user.id }}';
                 console.log('currUserID');
                 console.log(currUserID);
                 if (currUserID > 0) {
 
-                    $('#profileID').show();
+                    $('#profile_controlsID').show();
                     $('#login_formID').hide();
-                    reloadProfile();
+                    //reloadProfile();
 
                     lightbox.option({
                     'resizeDuration': 200,
@@ -42,7 +42,7 @@
 
 
                 } else {
-                    $('#profileID').hide();
+                    $('#profile_controlsID').hide();
                     $('#login_formID').show();
                 }
 
@@ -61,21 +61,17 @@
                 {{ is_logged }}
                 <br>
                 {{ user_id }}
-
-                <div id="profileID" class="profile">
-
-                    <div id="controls">
-                        <a href="/friends">Мои друзья</a> <a href="#">+</a> <br>
-                        <a href="#">Мои сообщения</a> <a href="#">+</a> <br>
-                        <!-- <a href="#">Мои места</a> <div class="active_caption" style="display: inline;" id="place_add" onclick="openForm(this.id)"> + </div> <br> -->
-                        <a href="#">Мои отчеты</a> <a href="#">+</a> <br>
-                        <a href="#">Мои рыбалки</a> <a href="#">+</a> <br>
-                        <a href="#">Мои Трофеи</a> <a href="#">+</a> <br>
-                        <a href="#">Мои объявления</a> <a href="#">+</a> <br> <br> <br>
+                    <div id="profile_controlsID">
+                        <a href="/friends">Мои друзья</a> <br>
+                        <a href="#">Мои сообщения</a> <br>
+                        <a href="#">Мои отчеты</a> <br>
+                        <a href="#">Мои рыбалки</a> <br>
+                        <a href="#">Мои Трофеи</a> <br>
+                        <a href="#">Мои объявления</a> <br> <br> <br>
+                        <a href="{% url "fish_app:logout" %}">Выйти</a>
                     </div>
-                    <a href="{% url "fish_app:logout" %}">Выйти</a>
-                    <!-- <div class="active_caption"  id="log_out" onclick="{% url "fish_app:logout" %}">Выйти</div> -->
-                </div>
+
+
                 <div id="login_formID" class="login_form">
                     <form action="{% url 'fish_app:login' %}" method="post" >
                         {% csrf_token %}
@@ -96,29 +92,6 @@
                 {% endblock %}
             </div>
             <div class="footer"></div>
-        </div>
-
-        <div id="formProfileEditID" class="formPopup">
-            <form id="ProfileEditID">    <!--  class="form-container" -->
-                {% csrf_token %}
-                <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
-                <p>Имя: <input type="text" id="form_first_nameID" /></p>
-                <p>Фамилия: <input type="text" id="form_last_nameID" /></p>
-
-                <p>Домашний водоем: <input type="text" id="form_home_pondID" /></p>
-                <p>Любимый водоем: <input type="text" id="form_lovely_pondID" /></p>
-                <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" /></p>
-                <p>Любимая снасть: <input type="text" id="form_tackleID" /></p>
-                <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" /></p>
-                <p>Фото <input type="file"  id="profile_photoID" /></p>
-
-                <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
-                <input type="button" value="Отмена"  onclick="closeForm('profile_update')" />
-            </form>
-        </div>
-
-        <div id="messageID" class="message">
-            hello
         </div>
 
     </body>

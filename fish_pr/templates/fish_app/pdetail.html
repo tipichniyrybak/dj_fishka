@@ -1,13 +1,50 @@
 {% extends 'fish_app/base.html' %}
 
-{% block title %} {{ profile.first_name }} {% endblock %}
+{% block title %} {{ profile.first_name }} {{ profile.last_name }} {% endblock %}
+
+{% block css_link %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pdetail.css' %}">
+{% endblock %}
+
+{% block js_link %}
+    {% load static %}
+    <script type=text/javascript src="{% static 'js/pdetail.js' %}"></script>
+
+{% endblock %}
+
+{% block document_ready_script %}
+    if (currUserID == {{ profile.user_id }} ) {
+        $('#profile_updateID').show();
+        $('#add_to_friendsID').hide();
+        $('#send_messageID').hide();
+
+    } else if (currUserID != 'None') {
+        $('#profile_updateID').hide();
+        $('#add_to_friendsID').show();
+        $('#send_messageID').show();
+
+    } else {
+        $('#profile_updateID').hide();
+        $('#add_to_friendsID').hide();
+        $('#send_messageID').hide();
+    }
+
+    prof_user_id = {{ profile.user_id }};
+    console.log(prof_user_id);
+
+{% endblock %}
 
 {% block working_area %}
     <div id="profileID" class="profile">
         <div id="profile_photo">
-            <img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/ {{ profile.photo }} "/>
+            <img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/{{ profile.photo }} "/>
         </div>
-        <div class="active_caption"  id="profile_update" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
+        <div class="active_caption"  id="profile_updateID" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
+        <div class="active_caption"  id="add_to_friendsID" onclick="add_request_for_friendship()">Добавить в друзья </div>
+        <div class="active_caption"  id="send_messageID" onclick="">Отправить сообщение</div> <br>
+        <div id="in_friendsID" style="display: none;"> {{ profile.first_name }} у вас в друзьях </div>
+
         <br>
         <div id="name">
             {{ profile.first_name }} {{ profile.last_name }}
@@ -31,6 +68,29 @@
             Любимый стиль ловли: {{ profile.fishing_style }}
         </div> <br>
 
+    </div>
+
+    <div id="formProfileEditID" class="formPopup">
+        <form id="ProfileEditID">    <!--  class="form-container" -->
+            {% csrf_token %}
+            <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
+            <p>Имя: <input type="text" id="form_first_nameID" /></p>
+            <p>Фамилия: <input type="text" id="form_last_nameID" /></p>
+
+            <p>Домашний водоем: <input type="text" id="form_home_pondID" /></p>
+            <p>Любимый водоем: <input type="text" id="form_lovely_pondID" /></p>
+            <p>Любимый объект ловли: <input type="text" id="form_fishing_objectID" /></p>
+            <p>Любимая снасть: <input type="text" id="form_tackleID" /></p>
+            <p>Любимый стиль ловли: <input type="text" id="form_fishing_styleID" /></p>
+            <p>Фото <input type="file"  id="profile_photoID" /></p>
+
+            <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
+            <input type="button" value="Отмена"  onclick="closeForm('profile_update')" />
+        </form>
+    </div>
+
+    <div id="messageID" class="message">
+        hello
     </div>
 
 
