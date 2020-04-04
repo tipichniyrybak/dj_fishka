@@ -259,10 +259,11 @@ def delete_order(request):
     order = PlaceOrder.objects.get(id=order_id)
     photos = PlaceOrderImages.objects.filter(place_order=order)
     for photo in photos:
-        os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
-        path = os.path.dirname(photo.image.name)
+        photo.delete()
+    #     os.remove('fish_pr/' + settings.MEDIA_URL + photo.image.name)
+    #     path = os.path.dirname(photo.image.name)
+    # os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
 
-    os.rmdir('fish_pr/' + settings.MEDIA_URL + path)
     photos.delete()
     order.delete()
     res = 1
