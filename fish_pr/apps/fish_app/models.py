@@ -49,14 +49,6 @@ class Profile(models.Model):
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
 
-    def add_request_for_friendship(self, requesting_friendship_id):
-        if self.requests_for_friendship.find(str(requesting_friendship_id) + '|') == -1:
-            self.requests_for_friendship = self.requests_for_friendship + str(requesting_friendship_id) + '|'
-            self.save()
-            return 1
-        else:
-            return 0
-
 
 class FishingPlace(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

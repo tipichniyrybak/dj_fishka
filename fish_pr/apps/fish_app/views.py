@@ -112,27 +112,32 @@ def add_request_for_friendship(request):
     res = 0
     try:
         requests_for_friendship = json.loads(profile_for_friendship.requests_for_friendship)
-        requests_for_friendship.append(5)
+        users = requests_for_friendship["requests_for_friendship"]
+        if request.user.id not in users:
+            users.append(request.user.id)
+            # requests_for_friendship["requests_for_friendship"] = users
+            profile_for_friendship.requests_for_friendship = json.dumps(requests_for_friendship)
+            res = 1
     except:
-        profile_for_friendship.requests_for_friendship = json.dumps(request.user.id)
+        profile_for_friendship.requests_for_friendship = '{ "requests_for_friendship": [' + str(request.user.id) + '] }'  # json.dumps(request.user.id)
+        res = 1
     profile_for_friendship.save()
-
-    # if profile_for_friendship.requests_for_friendship.find(str(request.user.id) + '|') == -1:
-    #     profile_for_friendship.requests_for_friendship = profile_for_friendship.requests_for_friendship + str(request.user.id) + '|'
-    #
-    #     res = 1
-    # else:
-    #     res = 0
-
-    # profile_for_friendship.save()
     return JsonResponse(res, safe=False)
 
 
 @csrf_exempt
 def add_to_friends(request):
     request.POST.get("request_user_id")
-    currProf = Profile.objects.get(user_id=request.user.id)
-    currProf.requests_for_friendship
+    curr_prof = Profile.objects.get(user_id=request.user.id)
+    requests_for_friendship = json.loads(curr_prof.requests_for_friendship)
+    users = requests_for_friendship["requests_for_friendship"]
+    users.remove(request.POST.get("request_user_id"))
+
+
+
+    curr_prof.save()
+    requestProf = Profile.objects.get(user_id=request.POST.get("request_user_id"))
+
 
 
 
