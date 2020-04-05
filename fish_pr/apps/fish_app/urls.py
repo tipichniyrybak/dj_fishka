@@ -20,6 +20,8 @@ urlpatterns = [
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),
     path('update_profile/', views.update_profile, name='update_profile'),
     path('add_request_for_friendship/', views.add_request_for_friendship, name='add_request_for_friendship'),
+    path('add_to_friends/', views.add_to_friends, name='add_to_friends'),
+
 
     path('get_places/', views.get_places, name='get_places'),
     path('get_place_info/', views.get_place_info, name='get_place_info'),

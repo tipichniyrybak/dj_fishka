@@ -1,4 +1,4 @@
-{% extends 'fish_app/base_authorized.html' %}
+{% extends 'fish_app/base.html' %}
 
 
 
@@ -6,8 +6,18 @@
 
 {% block title %} Friends {% endblock %}
 
+{% block js_link %}
+    {% load static %}
+    <script type=text/javascript src="{% static 'js/friends.js' %}"></script>
+{% endblock %}
+
 {% block working_area %}
 
-    <h3>Friends list</h3>
+    <h4>Заявки в друзья:</h4>
+        {% for profile in profiles_requesting_friendship %}
+            <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> <div class="active_caption"  id="add_to friends{{ profile.user_id }}ID" onclick="add_to_friends({{ profile.user_id }})">Добавить в друзья</div>       <br>
+        {% endfor %}  <br>
+
+    <h4>Мои друзья:</h4>
 
 {% endblock %}
