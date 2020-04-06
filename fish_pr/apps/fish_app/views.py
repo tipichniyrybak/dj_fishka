@@ -42,10 +42,15 @@ def index(request):
 def friends(request):
     curr_prof = Profile.objects.get(user_id=request.user.id)
     try:
-        requests_for_friendship = json.loads(curr_prof.requests_for_friendship)
-        users_id_requesting_friendship = requests_for_friendship["requests_for_friendship"]
+        # requests_for_friendship = json.loads(curr_prof.requests_for_friendship)
+        users_id_requesting_friendship = json.loads(curr_prof.requests_for_friendship)["requests_for_friendship"]
+        users_id_friends = json.loads(curr_prof.friends)["friends"]
     except:
-        curr_prof.requests_for_friendship = '{ "requests_for_friendship": [ ] }'
+        curr_prof.requests_for_friendship = json.dumps({"requests_for_friendship": []})
+        users_id_requesting_friendship = []
+        curr_prof.friends = json.dumps({"friends": []})
+        users_id_friends = []
+
 
     for i in range(0, len(users_id_requesting_friendship)):
         try:
@@ -54,8 +59,10 @@ def friends(request):
             del users_id_requesting_friendship[i]
 
     profiles_requesting_friendship = Profile.objects.filter(user_id__in=users_id_requesting_friendship)
+    profiles_friends = Profile.objects.filter(user_id__in=users_id_friends)
 
-    return render(request, 'fish_app/friends.html', {'profiles_requesting_friendship': profiles_requesting_friendship})
+    return render(request, 'fish_app/friends.html', {'profiles_requesting_friendship': profiles_requesting_friendship,
+                                                     'profiles_friends': profiles_friends})
 
 
 @csrf_exempt
@@ -88,14 +95,24 @@ def add_to_friends(request):
     try:
         friends = json.loads(curr_prof.friends)
         users_friends = friends["friends"]
-        if request.POST.get("request_user_id") not in users_friends:
-            users_friends.append(request.POST.get("request_user_id"))
+        if int(request.POST.get("request_user_id")) not in users_friends:
+            users_friends.append(int(request.POST.get("request_user_id")))
             curr_prof.friends = json.dumps(friends)
     except:
         curr_prof.friends = json.dumps({"friends": [request.POST.get("request_user_id")]})
     curr_prof.save()
 
     requestProf = Profile.objects.get(user_id=request.POST.get("request_user_id"))
+    try:
+        friends = json.loads(requestProf.friends)
+        users_friends = friends["friends"]
+        if int(request.user.id) not in users_friends:
+            users_friends.append(int(request.user.id))
+            requestProf.friends = json.dumps(friends)
+    except:
+        requestProf.friends = json.dumps({"friends": [request.user.id]})
+    requestProf.save()
+
     return JsonResponse(1, safe=False)
 
 
@@ -130,7 +147,7 @@ def registration(request):
             raw_password = form.cleaned_data.get('password1')
             profile = Profile(user=user)
             profile.save()
-            return redirect('fish_app:login')
+            return redirect('fish_app:index')
     else:
         form = UserCreationForm()
     return render(request, 'fish_app/registration.html', {'form': form})

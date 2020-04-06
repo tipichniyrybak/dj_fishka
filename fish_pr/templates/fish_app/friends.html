@@ -19,5 +19,8 @@
         {% endfor %}  <br>
 
     <h4>Мои друзья:</h4>
+    {% for profile in profiles_friends %}
+        <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a>  <br>
+    {% endfor %}  <br>
 
 {% endblock %}
