@@ -42,8 +42,8 @@ class Profile(models.Model):
     filters = models.CharField('filters', max_length=300,
                                default='{"is_selfPlaces": "false", "is_Base": "false", '
                                        '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
-    friends = models.CharField('Friends', max_length=250, default='')
-    requests_for_friendship = models.CharField('requests_for_friendship', max_length=250, default='')
+    friends = models.CharField('Friends', max_length=250, default='{ "friends": [ ] }')
+    requests_for_friendship = models.CharField('requests_for_friendship', max_length=250, default='{ "requests_for_friendship": [ ] }')
 
     class Meta:
         verbose_name = 'Профиль'
