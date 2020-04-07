@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -67,19 +67,24 @@ def friends(request):
 
 @csrf_exempt
 def add_request_for_friendship(request):
-    profile_for_friendship = Profile.objects.get(user_id=request.POST.get("profile_user_id"))
-    res = 0
-    try:
-        requests_for_friendship = json.loads(profile_for_friendship.requests_for_friendship)
-        users = requests_for_friendship["requests_for_friendship"]
-        if request.user.id not in users:
-            users.append(request.user.id)
-            profile_for_friendship.requests_for_friendship = json.dumps(requests_for_friendship)
-            res = 1
-    except:
-        profile_for_friendship.requests_for_friendship = '{ "requests_for_friendship": [' + str(request.user.id) + '] }'  # json.dumps(request.user.id)
-        res = 1
-    profile_for_friendship.save()
+    receive_profile = Profile.objects.get(user_id=request.POST.get("receive_user_id"))
+    res = 1
+
+    f = Friendship.objects.create(user_requesting=User.objects.get(id=request.user.id),
+                                  user_receiving=User.objects.get(id=request.POST.get("receive_user_id")))
+    f.save()
+
+    # try:
+    #     requests_for_friendship = json.loads(receive_profile.requests_for_friendship)
+    #     users = requests_for_friendship["requests_for_friendship"]
+    #     if request.user.id not in users:
+    #         users.append(request.user.id)
+    #         receive_profile.requests_for_friendship = json.dumps(requests_for_friendship)
+    #         res = 1
+    # except:
+    #     receive_profile.requests_for_friendship = '{ "requests_for_friendship": [' + str(request.user.id) + '] }'  # json.dumps(request.user.id)
+    #     res = 1
+    # receive_profile.save()
     return JsonResponse(res, safe=False)
 
 

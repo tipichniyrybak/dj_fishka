@@ -71,7 +71,7 @@ function add_request_for_friendship() {
         type: "POST",
         url: "/add_request_for_friendship/",
         data: {
-            'profile_user_id': prof_user_id
+            'receive_user_id': receive_user_id
         },
 
         success: function(response) {
