@@ -50,6 +50,18 @@ class Profile(models.Model):
         verbose_name_plural = 'Профили'
 
 
+class Friendship(models.Model):
+    FriendshipStatus = (
+        ('AC', 'ACCEPT'),
+        ('CN', 'CANCELED'),
+        ('WT', 'WAITING'),
+    )
+
+    user_requesting = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_requesting')
+    user_receiving = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receiving')
+    status = models.CharField(max_length=255, choices=FriendshipStatus, default='WT')
+
+
 class FishingPlace(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField('Name of place', max_length=100)
