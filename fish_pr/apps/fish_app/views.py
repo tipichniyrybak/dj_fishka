@@ -70,9 +70,8 @@ def add_request_for_friendship(request):
     receive_profile = Profile.objects.get(user_id=request.POST.get("receive_user_id"))
     res = 1
 
-    f = Friendship.objects.create(user_requesting=User.objects.get(id=request.user.id),
-                                  user_receiving=User.objects.get(id=request.POST.get("receive_user_id")))
-    f.save()
+    Friendship.objects.create(user_requesting=User.objects.get(id=request.user.id),
+                              user_receiving=User.objects.get(id=request.POST.get("receive_user_id"))).save()
 
     # try:
     #     requests_for_friendship = json.loads(receive_profile.requests_for_friendship)
