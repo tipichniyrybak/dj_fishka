@@ -4,7 +4,7 @@ function add_to_friends(reqst_user_id) {
         type: "POST",
         url: "/add_to_friends/",
         data: {
-            'request_user_id': recv_user_id
+            'request_user_id': reqst_user_id
         },
 
         success: function(response) {
