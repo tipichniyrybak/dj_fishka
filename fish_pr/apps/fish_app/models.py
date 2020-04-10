@@ -5,6 +5,7 @@ import random
 import string
 from django.http import JsonResponse
 from datetime import datetime
+from itertools import chain
 
 
 def get_path_to_save_photos(instance, filename):

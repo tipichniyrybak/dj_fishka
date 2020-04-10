@@ -12,38 +12,37 @@
     <script type=text/javascript src="{% static 'js/friends.js' %}"></script>
 {% endblock %}
 
+{% block document_ready_script %}
+    openTab('friendsID')
+{% endblock %}
+
 {% block working_area %}
 
     <div class="tab">
-      <button class="tablinks" onclick="openCity(event, 'London')">London</button>
-      <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-      <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+      <button class="tablinks" onclick="openTab('friendsID')">Мои друзья</button>
+      <button class="tablinks" onclick="openTab('receives_for_friendsID')">Входящие</button>
+      <button class="tablinks" onclick="openTab('requests_for_friendsID')">Исходящие</button>
     </div>
 
-    <div id="London" class="tabcontent">
-        <h3>London</h3>
-        <p>London is the capital city of England.</p>
+    <div id="friendsID" class="tabcontent">
+        <h4>Мои друзья:</h4>
+        {% for profile in profiles_friends %}
+            <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a>  <br>
+        {% endfor %}  <br>
     </div>
 
-    <div id="Paris" class="tabcontent">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>
-    </div>
-
-    <div id="Tokyo" class="tabcontent">
-        <h3>Tokyo</h3>
-        <p>Tokyo is the capital of Japan.</p>
-    </div>
-
-
-    <!-- <h4>Заявки в друзья:</h4>
+    <div id="receives_for_friendsID" class="tabcontent">
+        <h4>Входящие заявки в друзья:</h4>
         {% for profile in profiles_requesting_friendship %}
             <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> <div class="active_caption"  id="add_to friends{{ profile.user_id }}ID" onclick="add_to_friends({{ profile.user_id }})">Добавить в друзья</div>       <br>
         {% endfor %}  <br>
+    </div>
 
-    <h4>Мои друзья:</h4>
-    {% for profile in profiles_friends %}
-        <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a>  <br>
-    {% endfor %}  <br> -->
+    <div id="requests_for_friendsID" class="tabcontent">
+        <h4>Исходящие заявки в друзья:</h4>
+        {% for profile in profiles_receiving_friendship %}
+            <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> <br>
+        {% endfor %}  <br>
+    </div>
 
 {% endblock %}

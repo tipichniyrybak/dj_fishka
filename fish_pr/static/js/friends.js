@@ -4,7 +4,7 @@ function add_to_friends(reqst_user_id) {
         type: "POST",
         url: "/add_to_friends/",
         data: {
-            'request_user_id': reqst_user_id
+            'request_user_id': recv_user_id
         },
 
         success: function(response) {
@@ -28,7 +28,7 @@ function add_to_friends(reqst_user_id) {
 }
 
 
-function openCity(evt, cityName) {
+function openTab(cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -39,5 +39,4 @@ function openCity(evt, cityName) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
   document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
 }

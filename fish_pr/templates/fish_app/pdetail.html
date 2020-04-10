@@ -20,8 +20,14 @@
         $('#send_messageID').hide();
 
     } else if (currUserID != 'None') {
+        if (  'True' == '{{  is_friends }}'  ){
+            $('#in_friendsID').show();
+            $('#add_to_friendsID').hide();
+        } else {
+            $('#in_friendsID').hide();
+            $('#add_to_friendsID').show();
+        }
         $('#profile_updateID').hide();
-        $('#add_to_friendsID').show();
         $('#send_messageID').show();
 
     } else {
