@@ -70,9 +70,13 @@ class UserMessage(models.Model):
     )
 
     user_send = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_send')
-    user_receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receive')
+    # user_receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receive')
     text = models.CharField(max_length=255, default='')
     status = models.CharField(max_length=255, choices=UserMessageStatus, default='UR')
+
+
+class Chat(models.Model):
+    users = models.ManyToManyField(UserMessage)
 
 
 class FishingPlace(models.Model):
