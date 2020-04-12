@@ -63,6 +63,18 @@ class Friendship(models.Model):
     status = models.CharField(max_length=255, choices=FriendshipStatus, default='WT')
 
 
+class UserMessage(models.Model):
+    UserMessageStatus = (
+        ('RD', 'READ'),
+        ('UR', 'UNREAD'),
+    )
+
+    user_send = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_send')
+    user_receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receive')
+    text = models.CharField(max_length=255, default='')
+    status = models.CharField(max_length=255, choices=UserMessageStatus, default='UR')
+
+
 class FishingPlace(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField('Name of place', max_length=100)
