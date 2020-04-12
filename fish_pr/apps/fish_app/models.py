@@ -63,6 +63,10 @@ class Friendship(models.Model):
     status = models.CharField(max_length=255, choices=FriendshipStatus, default='WT')
 
 
+class Chat(models.Model):
+    users = models.ManyToManyField(User)
+
+
 class UserMessage(models.Model):
     UserMessageStatus = (
         ('RD', 'READ'),
@@ -71,12 +75,9 @@ class UserMessage(models.Model):
 
     user_send = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_send')
     # user_receive = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receive')
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='chat')
     text = models.CharField(max_length=255, default='')
     status = models.CharField(max_length=255, choices=UserMessageStatus, default='UR')
-
-
-class Chat(models.Model):
-    users = models.ManyToManyField(UserMessage)
 
 
 class FishingPlace(models.Model):
