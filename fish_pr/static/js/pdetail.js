@@ -84,7 +84,19 @@ function add_request_for_friendship() {
                 $('#messageID').bPopup({
                     autoClose: 1000
                 });
+            } else if (response == 2) {
+                $('#messageID').html(profile_first_name + ' стал(а) вашим другом!');
+                $('#messageID').bPopup({
+                    autoClose: 1000
+                });
+            } else if (response == 3) {
+                $('#messageID').html(profile_first_name + ' еще не решил, стать ли вашим другом!');
+                $('#messageID').bPopup({
+                    autoClose: 1000
+                });
             }
+
+
         },
         error: function(error) {
             console.log('add_request_for_friendship_ERROR:');

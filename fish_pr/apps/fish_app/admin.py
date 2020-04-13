@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, UserMessage, Chat
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, UserMessage, Chat, Chat
 
 admin.site.register(Profile)
 admin.site.register(FishingPlace)

@@ -1,0 +1,28 @@
+{% extends 'fish_app/base.html' %}
+
+{% block title %} Мои сообщения {% endblock %}
+
+{% block css_link %}
+    {% load static %}
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/friends.css' %}"> -->
+{% endblock %}
+
+{% block js_link %}
+    {% load static %}
+    <!-- <script type=text/javascript src="{% static 'js/friends.js' %}"></script> -->
+{% endblock %}
+
+{% block document_ready_script %}
+    <!-- openTab('friendsID') -->
+{% endblock %}
+
+{% block working_area %}
+
+    <h3> Мои сообщения:</h3>
+
+    {% for chat in chats %}
+        <a href="/chat{{ chat.id }}">#{{ chat.id }}.{{ chat.name}}</a>  <br>
+        #{{ chat.id }}.{{ chat.name}} <br>
+    {% endfor %}  <br>
+
+{% endblock %}

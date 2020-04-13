@@ -11,11 +11,13 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('workspace/', views.workspace, name='workspace'),
     path('friends/', views.friends, name='friends'),
+    path('messages/', views.messages, name='messages'),
     path('login/', views.login, name='login'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('registration/', views.registration, name='registration'),
 
     path('pdetail<int:user_id>/', views.pdetail, name='pdetail'),
+    path('chat<int:user_id>/', views.chat, name='chat'),
 
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),
     path('update_profile/', views.update_profile, name='update_profile'),

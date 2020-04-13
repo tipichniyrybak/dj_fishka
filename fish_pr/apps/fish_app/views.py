@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, Chat, UserMessage
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -37,22 +37,29 @@ def index(request):
     current_user_id = 0
     if request.user.is_authenticated:
         is_logged = 1
-        current_user_id = request.session['userID']
-    return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'current_user_id': current_user_id})
+        try:
+            current_user_id = request.session['userID']
+        except:
+            current_user_id = 0
+    return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'current_user_id': request.user.id})
 
 
 def friends(request):
     curr_prof = Profile.objects.get(user_id=request.user.id)
 
-    users_friends_id1 = Friendship.objects.filter(user_receiving=request.user.id, status='AC').values_list('user_requesting')
-    users_friends_id2 = Friendship.objects.filter(user_requesting=request.user.id, status='AC').values_list('user_receiving')
+    users_friends_id1 = Friendship.objects.filter(user_receiving=request.user.id, status='AC').values_list(
+        'user_requesting')
+    users_friends_id2 = Friendship.objects.filter(user_requesting=request.user.id, status='AC').values_list(
+        'user_receiving')
     users_friends_id = chain(users_friends_id1, users_friends_id2)
     profiles_friends = Profile.objects.filter(user_id__in=users_friends_id)
 
-    users_requesting_id = Friendship.objects.filter(user_receiving=request.user.id, status='WT').values_list('user_requesting')
+    users_requesting_id = Friendship.objects.filter(user_receiving=request.user.id, status='WT').values_list(
+        'user_requesting')
     profiles_requesting_friendship = Profile.objects.filter(user_id__in=users_requesting_id)
 
-    users_receiving_id = Friendship.objects.filter(user_requesting=request.user.id, status='WT').values_list('user_receiving')
+    users_receiving_id = Friendship.objects.filter(user_requesting=request.user.id, status='WT').values_list(
+        'user_receiving')
     profiles_receiving_friendship = Profile.objects.filter(user_id__in=users_receiving_id)
 
     return render(request, 'fish_app/friends.html', {'profiles_friends': profiles_friends,
@@ -60,12 +67,42 @@ def friends(request):
                                                      'profiles_receiving_friendship': profiles_receiving_friendship})
 
 
+def messages(request):
+    chats = Chat.objects.filter(users__id=request.user.id).order_by('-datetime_last_active')[:20]
+    return render(request, 'fish_app/messages.html', {'chats': chats})
+
+def chat(request, chat_id):
+    try:
+        c = Chat.objects.get(id=chat_id)
+    except:
+        raise Http404("Данные не найдены!..")
+    try:
+        messages = UserMessage.objects.filter(chat=c)
+    except:
+        messages = 'no messages'
+
+    return render(request, 'fish_app/chat.html', {'chat': c, 'messages': messages})
+
+
 @csrf_exempt
 def add_request_for_friendship(request):
-    Friendship.objects.create(user_requesting=User.objects.get(id=request.user.id),
-                              user_receiving=User.objects.get(id=request.POST.get("receive_user_id"))).save()
+    res = 0
 
-    return JsonResponse(1, safe=False)
+    if Friendship.objects.filter(user_requesting=User.objects.get(id=request.POST.get("receive_user_id")),
+                                 user_receiving=User.objects.get(id=request.user.id)).exists():
+        fr = Friendship.objects.filter(user_requesting=User.objects.get(id=request.POST.get("receive_user_id")),
+                                       user_receiving=User.objects.get(id=request.user.id))
+        fr.update(status='AC')
+        res = 2
+    elif Friendship.objects.filter(user_requesting=User.objects.get(id=request.user.id),
+                                   user_receiving=User.objects.get(id=request.POST.get("receive_user_id"))).exists():
+        res = 3
+    else:
+        Friendship.objects.create(user_requesting=User.objects.get(id=request.user.id),
+                                  user_receiving=User.objects.get(id=request.POST.get("receive_user_id"))).save()
+        res = 1
+
+    return JsonResponse(res, safe=False)
 
 
 @csrf_exempt
@@ -125,15 +162,7 @@ def pdetail(request, user_id):
 
     try:
         friendship1 = Friendship.objects.filter(user_requesting=user_id, user_receiving=int(request.user.id))
-
         friendship2 = Friendship.objects.filter(user_requesting=int(request.user.id), user_receiving=user_id)
-        # friendship = chain(friendship1, friendship2)
-
-        # l1 = len(friendship1)
-        # l2 = len(friendship2)
-        # s1 = friendship1[0].status
-        # s2 = friendship2[0].status
-
 
         if len(friendship1) > 0:
             if friendship1[0].status == 'AC':
@@ -141,10 +170,8 @@ def pdetail(request, user_id):
         if len(friendship2) > 0:
             if friendship2[0].status == 'AC':
                 is_friends = True
-
     except:
         is_friends = False
-
 
     # latest_order_list = p.order_set.order_by('-id')[:10]
     current_user_id = 0
@@ -209,7 +236,7 @@ def get_places(request):
     # usr_id = request.session['userID']
 
     try:
-        filt = Profile.objects.filter(user_id=request.user.id).values('filters')         #  JSON B JSONe
+        filt = Profile.objects.filter(user_id=request.user.id).values('filters')  # JSON B JSONe
         filt1 = filt[0]
         filt2 = filt1["filters"]
         filters = json.loads(filt2)
@@ -250,9 +277,11 @@ def add_place(request):
     data = request.POST
     photos = request.FILES.getlist('place_files[]')
 
-    place = FishingPlace(user=User.objects.get(id=int(data.get('userID'))), lant=float(data.get('lant')), long=float(data.get('long')),
+    place = FishingPlace(user=User.objects.get(id=int(data.get('userID'))), lant=float(data.get('lant')),
+                         long=float(data.get('long')),
                          name=data.get('name'), description=data.get('description'),
-                         is_Base=(data.get('isBase') == 'true'), car_accessibility=(data.get('carAccessability') == 'true'),
+                         is_Base=(data.get('isBase') == 'true'),
+                         car_accessibility=(data.get('carAccessability') == 'true'),
                          bus_accessibility=(data.get('busAccessability') == 'true')).save()
     if place != 0:
         for photo in photos:
@@ -263,7 +292,7 @@ def add_place(request):
 
 @csrf_exempt
 def delete_place(request):
-    place_id = request.POST.get("place_id")                         # TODO delete all PlaceOrders?
+    place_id = request.POST.get("place_id")  # TODO delete all PlaceOrders?
     place = FishingPlace.objects.get(id=place_id)
     photos = FishingPlaceImages.objects.filter(fishing_place=place)
 
@@ -314,7 +343,8 @@ def add_order(request):
     data = request.POST
     photos = request.FILES.getlist('order_files[]')
 
-    order = PlaceOrder(user=User.objects.get(id=int(data.get('user_id'))), fishing_place=FishingPlace.objects.get(id=int(data.get('place_id'))),
+    order = PlaceOrder(user=User.objects.get(id=int(data.get('user_id'))),
+                       fishing_place=FishingPlace.objects.get(id=int(data.get('place_id'))),
                        date_begin=datetime.strptime(data.get('date_begin'), '%Y-%m-%d').date(),
                        date_end=datetime.strptime(data.get('date_end'), '%Y-%m-%d').date(),
                        description=data.get('description')).save()
@@ -340,7 +370,6 @@ def delete_order(request):
     order.delete()
     res = 1
     return JsonResponse(res, safe=False)
-
 
 # def leave_comment(request, place_id):
 #     try:
