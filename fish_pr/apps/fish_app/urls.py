@@ -17,7 +17,7 @@ urlpatterns = [
     path('registration/', views.registration, name='registration'),
 
     path('pdetail<int:user_id>/', views.pdetail, name='pdetail'),
-    path('chat<int:user_id>/', views.chat, name='chat'),
+    path('chat<int:chat_id>/', views.chat, name='chat'),
 
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),
     path('update_profile/', views.update_profile, name='update_profile'),

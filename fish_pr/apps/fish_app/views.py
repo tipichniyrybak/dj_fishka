@@ -71,13 +71,14 @@ def messages(request):
     chats = Chat.objects.filter(users__id=request.user.id).order_by('-datetime_last_active')[:20]
     return render(request, 'fish_app/messages.html', {'chats': chats})
 
+
 def chat(request, chat_id):
     try:
         c = Chat.objects.get(id=chat_id)
     except:
         raise Http404("Данные не найдены!..")
     try:
-        messages = UserMessage.objects.filter(chat=c)
+        messages = UserMessage.objects.filter(chat=c).order_by('datetime_sending')
     except:
         messages = 'no messages'
 

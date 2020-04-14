@@ -4,7 +4,7 @@
 
 {% block css_link %}
     {% load static %}
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/friends.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/messages.css' %}">
 {% endblock %}
 
 {% block js_link %}
@@ -18,11 +18,6 @@
 
 {% block working_area %}
 
-    <h3> Мои сообщения:</h3>
-
-    {% for chat in chats %}
-        <a href="/chat{{ chat.id }}">#{{ chat.id }}.{{ chat.name}}</a>  <br>
-        #{{ chat.id }}.{{ chat.name}} <br>
-    {% endfor %}  <br>
+    
 
 {% endblock %}

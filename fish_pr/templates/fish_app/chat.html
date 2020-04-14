@@ -1,28 +1,28 @@
 {% extends 'fish_app/base.html' %}
 
-{% block title %} {{ profile.first_name }} {{ profile.last_name }} {% endblock %}
+{% block title %} Chat #{{ chat.id }} {% endblock %}
 
 {% block css_link %}
     {% load static %}
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/pdetail.css' %}"> -->
+
 {% endblock %}
 
 {% block js_link %}
     {% load static %}
-    <!-- <script type=text/javascript src="{% static 'js/pdetail.js' %}"></script> -->
 
 {% endblock %}
 
 {% block document_ready_script %}
-    <!-- receive_user_id = {{ profile.user_id }};
-    profile_first_name = "{{ profile.first_name }}"
-    console.log(receive_user_id); -->
+
 {% endblock %}
 
 {% block working_area %}
     {% for message in messages %}
         <!-- <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> <div class="active_caption"  id="add_to friends{{ profile.user_id }}ID" onclick="add_to_friends({{ profile.user_id }})">Добавить в друзья</div>       <br> -->
-        #{{ chat.id }}_{{ messag.datetime_sending }}_{{ message.user_send}}:{{ message.text }}   <br>
+        #{{ chat.id }}_{{ message.datetime_sending }}_{{ message.user_send}}:{{ message.text }}   <br>
+        <div class="">
+
+        </div>
     {% endfor %}  <br>
 
 
