@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block document_ready_script %}
-
+    currRoomID = null;
 {% endblock %}
 
 {% block working_area %}
@@ -23,15 +23,16 @@
                 {% if room.name != '' %}
                     <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.name }} </div> <br>
                 {% else %}
-                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.id }} </div> <br>
+                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.users }} </div> <br>
                 {% endif %}
             {% endfor %}  <br>
         </div>
         <div id="messagesID" class="messages">
-
-
         </div>
         <div class="send_message">
+            <br> <br>
+            <input type="text" id="text_messageID">
+            <input type="button" onclick="send_message();" value="Отправить">
 
         </div>
 

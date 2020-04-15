@@ -9,7 +9,6 @@ app_name = 'fish_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('workspace/', views.workspace, name='workspace'),
     path('friends/', views.friends, name='friends'),
     path('messages/', views.messages, name='messages'),
     path('login/', views.login, name='login'),
@@ -25,6 +24,7 @@ urlpatterns = [
     path('add_to_friends/', views.add_to_friends, name='add_to_friends'),
 
     path('get_messages_from_room/', views.get_messages_from_room, name='get_messages_from_room'),
+    path('send_message/', views.send_message, name='send_message'),
 
     path('get_places/', views.get_places, name='get_places'),
     path('get_place_info/', views.get_place_info, name='get_place_info'),

@@ -27,11 +27,6 @@ from django.db.models import Q
 from itertools import chain
 
 
-def workspace(request):
-    user_id = request.session['userID']
-    return render(request, 'fish_app/workspace.html', {'userID': user_id})
-
-
 def index(request):
     is_logged = 0
     current_user_id = 0
@@ -103,10 +98,11 @@ def get_messages_from_room(request):
                 else:
                    is_self = False
 
-                chat_item['messages'] = [{'time': mes['datetime_sending'], 'content':  mes['text']}]
-                # chat_item['messages'].append(message)
-
-                chat_items.append({'photo_src': photosrc[0]['photo'], 'is_self': is_self, 'messages': [{'time': mes['datetime_sending'], 'content':  mes['text']}]})
+                chat_items.append({'photo_src': photosrc[0]['photo'],
+                                   'user_send_id': mes['user_send_id'],
+                                   'is_self': is_self,
+                                   'messages': [{'time': mes['datetime_sending'], 'content':  mes['text']}]
+                                   })
     except:
         kk = 'no messages'
 
@@ -114,6 +110,14 @@ def get_messages_from_room(request):
 
     return JsonResponse(list(chat_items), safe=False)
 
+
+@csrf_exempt
+def send_message(request):
+    UserMessage(user_send=User.objects.get(id=request.user.id),
+                room=Room.objects.get(id=request.POST.get("room_id")),
+                text=request.POST.get("content")).save()
+    res = 1
+    return JsonResponse(res, safe=False)
 
 
 def chat(request, chat_id):
