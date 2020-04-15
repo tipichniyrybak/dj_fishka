@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, Chat, UserMessage
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, Room, UserMessage
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -68,21 +68,65 @@ def friends(request):
 
 
 def messages(request):
-    chats = Chat.objects.filter(users__id=request.user.id).order_by('-datetime_last_active')[:20]
-    return render(request, 'fish_app/messages.html', {'chats': chats})
+    rooms = Room.objects.filter(users__id=request.user.id).order_by('-datetime_last_active')[:20]
+    return render(request, 'fish_app/messages.html', {'rooms': rooms})
 
 
-def chat(request, chat_id):
+@csrf_exempt
+def get_messages_from_room(request):
     try:
-        c = Chat.objects.get(id=chat_id)
+        r = Room.objects.get(id=request.POST.get("room_id"))
     except:
         raise Http404("Данные не найдены!..")
     try:
-        messages = UserMessage.objects.filter(chat=c).order_by('datetime_sending')
-    except:
-        messages = 'no messages'
+        room_messages = UserMessage.objects.filter(room=r).values().order_by('datetime_sending')
+        chat_items = []
+        block_messages = []
+        last_message_user = 0
+        chat_item = {}
+        message = {}
+        # chat_item = None
+        for mes in room_messages:
+            if mes['user_send_id'] == last_message_user:
+                # message.clear()
+                # message['time'] = mes['datetime_sending']
+                # message['content'] = mes['text']
+                chat_items[-1]['messages'].append({'time': mes['datetime_sending'], 'content':  mes['text']})
+            else:
+                last_message_user = mes['user_send_id']
+                # chat_item.clear()
+                photosrc = Profile.objects.filter(user_id=mes['user_send_id']).values('photo')
+                chat_item['photo_src'] = photosrc[0]['photo']
 
-    return render(request, 'fish_app/chat.html', {'chat': c, 'messages': messages})
+                if mes['user_send_id'] == request.user.id:
+                    is_self = True
+                else:
+                   is_self = False
+
+                chat_item['messages'] = [{'time': mes['datetime_sending'], 'content':  mes['text']}]
+                # chat_item['messages'].append(message)
+
+                chat_items.append({'photo_src': photosrc[0]['photo'], 'is_self': is_self, 'messages': [{'time': mes['datetime_sending'], 'content':  mes['text']}]})
+    except:
+        kk = 'no messages'
+
+    # chat_items = {"chat_items": []}
+
+    return JsonResponse(list(chat_items), safe=False)
+
+
+
+def chat(request, chat_id):
+    # try:
+    #     c = Chat.objects.get(id=chat_id)
+    # except:
+    #     raise Http404("Данные не найдены!..")
+    # try:
+    #     messages = UserMessage.objects.filter(chat=c).order_by('datetime_sending')
+    # except:
+    messages = 'no messages'
+
+    return render(request, 'fish_app/chat.html', {'messages': messages})
 
 
 @csrf_exempt
@@ -173,12 +217,6 @@ def pdetail(request, user_id):
                 is_friends = True
     except:
         is_friends = False
-
-    # latest_order_list = p.order_set.order_by('-id')[:10]
-    current_user_id = 0
-    if request.user.is_authenticated:
-        is_logged = 1
-        current_user_id = request.session['userID']
 
     return render(request, 'fish_app/pdetail.html', {'profile': p, 'profile_user_id': user_id,
                                                      'is_friends': is_friends})

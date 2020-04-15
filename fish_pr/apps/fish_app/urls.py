@@ -24,6 +24,7 @@ urlpatterns = [
     path('add_request_for_friendship/', views.add_request_for_friendship, name='add_request_for_friendship'),
     path('add_to_friends/', views.add_to_friends, name='add_to_friends'),
 
+    path('get_messages_from_room/', views.get_messages_from_room, name='get_messages_from_room'),
 
     path('get_places/', views.get_places, name='get_places'),
     path('get_place_info/', views.get_place_info, name='get_place_info'),

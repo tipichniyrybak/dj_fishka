@@ -9,15 +9,33 @@
 
 {% block js_link %}
     {% load static %}
-    <!-- <script type=text/javascript src="{% static 'js/friends.js' %}"></script> -->
+    <script type=text/javascript src="{% static 'js/messages.js' %}"></script>
 {% endblock %}
 
 {% block document_ready_script %}
-    <!-- openTab('friendsID') -->
+
 {% endblock %}
 
 {% block working_area %}
+    <div class="message_content">
+        <div class="rooms">
+            {% for room in rooms %}
+                {% if room.name != '' %}
+                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.name }} </div> <br>
+                {% else %}
+                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.id }} </div> <br>
+                {% endif %}
+            {% endfor %}  <br>
+        </div>
+        <div id="messagesID" class="messages">
 
-    
+
+        </div>
+        <div class="send_message">
+
+        </div>
+
+    </div>
+
 
 {% endblock %}
