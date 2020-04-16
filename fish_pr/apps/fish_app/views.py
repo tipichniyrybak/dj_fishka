@@ -11,6 +11,7 @@ from django.forms.models import model_to_dict
 from ftplib import FTP
 from werkzeug.utils import secure_filename
 import os
+import copy
 from django.core.files.storage import default_storage
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.conf import settings
@@ -76,47 +77,43 @@ def get_messages_from_room(request):
     try:
         room_messages = UserMessage.objects.filter(room=r).values().order_by('datetime_sending')
         chat_items = []
-        block_messages = []
         last_message_user = 0
         chat_item = {}
         message = {}
-        # chat_item = None
         for mes in room_messages:
-            if mes['user_send_id'] == last_message_user:
-                # message.clear()
-                # message['time'] = mes['datetime_sending']
-                # message['content'] = mes['text']
-                chat_items[-1]['messages'].append({'time': mes['datetime_sending'], 'content':  mes['text']})
-            else:
+            if mes['user_send_id'] == last_message_user:            # append message to previous item
+                message['time'] = mes['datetime_sending']
+                message['content'] = mes['text']
+                chat_items[-1]['messages'].append(copy.deepcopy(message))
+            else:                                                   # making new item - blok for messages from 1 sender
                 last_message_user = mes['user_send_id']
-                # chat_item.clear()
-                photosrc = Profile.objects.filter(user_id=mes['user_send_id']).values('photo')
-                chat_item['photo_src'] = photosrc[0]['photo']
-
+                chat_item['photo_src'] = Profile.objects.filter(user_id=mes['user_send_id']).values('photo')[0]['photo']
+                chat_item['user_send_id'] = mes['user_send_id']
                 if mes['user_send_id'] == request.user.id:
-                    is_self = True
+                    chat_item['is_self'] = True
                 else:
-                   is_self = False
-
-                chat_items.append({'photo_src': photosrc[0]['photo'],
-                                   'user_send_id': mes['user_send_id'],
-                                   'is_self': is_self,
-                                   'messages': [{'time': mes['datetime_sending'], 'content':  mes['text']}]
-                                   })
+                    chat_item['is_self'] = False
+                message['time'] = mes['datetime_sending']
+                message['content'] = mes['text']
+                chat_item['messages'] = []
+                chat_item['messages'].append(copy.deepcopy(message))
+                chat_items.append(copy.deepcopy(chat_item))
     except:
         kk = 'no messages'
-
-    # chat_items = {"chat_items": []}
-
     return JsonResponse(list(chat_items), safe=False)
 
 
 @csrf_exempt
 def send_message(request):
-    UserMessage(user_send=User.objects.get(id=request.user.id),
-                room=Room.objects.get(id=request.POST.get("room_id")),
-                text=request.POST.get("content")).save()
-    res = 1
+    if 'room_id' in request.POST:
+        UserMessage(user_send=User.objects.get(id=request.user.id),
+                    room=Room.objects.get(id=request.POST.get("room_id")),
+                    text=request.POST.get("content")).save()
+        res = 1
+    else:
+        room = Room.objects.filter(isers__in=[request.user.id, request.POST.get("user_id")])
+
+        res = 2
     return JsonResponse(res, safe=False)
 
 

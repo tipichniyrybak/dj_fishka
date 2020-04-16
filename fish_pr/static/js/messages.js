@@ -22,8 +22,6 @@ function load_mesages_from_room(room_id) {
                 } else {
                     messages_html = messages_html + '<div class="chat__item">';
                 }
-
-
                 messages_html = messages_html + '<a href="/pdetail' + chat_item['user_send_id'] + '"><img src="http://fishkadata.s3.amazonaws.com/media/' + chat_item['photo_src'] + '" alt="photo" class="chat__person-avatar"></a>';
                 messages_html = messages_html + '<div class="chat__messages">';
                 console.log(chat_item['messages']);
@@ -34,7 +32,7 @@ function load_mesages_from_room(room_id) {
                     messages_html = messages_html + '</div>';
                 });
                 messages_html = messages_html + '</div>';
-                messages_html = messages_html + '</div>';
+                messages_html = messages_html + '</div> <br>';
             });
             messages_html = messages_html + '</div>';
 
