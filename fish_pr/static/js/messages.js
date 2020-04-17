@@ -64,8 +64,6 @@ function send_message() {
                 $('#text_messageID').val('');
                 load_mesages_from_room(currRoomID);
             }
-
-
         },
         error: function(error) {
             console.log('send_message_error:');

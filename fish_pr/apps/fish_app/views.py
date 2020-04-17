@@ -106,28 +106,29 @@ def get_messages_from_room(request):
 @csrf_exempt
 def send_message(request):
     if 'room_id' in request.POST:
-        UserMessage(user_send=User.objects.get(id=request.user.id),
-                    room=Room.objects.get(id=request.POST.get("room_id")),
-                    text=request.POST.get("content")).save()
+        room = Room.objects.get(id=request.POST.get("room_id"))
         res = 1
     else:
-        room = Room.objects.filter(isers__in=[request.user.id, request.POST.get("user_id")])
-
+        rooms = Room.objects.filter(users__id=request.user.id).filter(users__id=int(request.POST.get('user_id')))
+        room = None
+        for cur_room in rooms:
+            if cur_room.users.all().count() == 2:
+                room = cur_room
+        if room is None:
+            users = User.objects.filter(id__in=[request.user.id, int(request.POST.get('user_id'))])
+            room = Room()
+            room.save()
+            for user in users:
+                room.users.add(user)
         res = 2
+
+    UserMessage(user_send=User.objects.get(id=request.user.id),
+                room=room,
+                text=request.POST.get("content")).save()
     return JsonResponse(res, safe=False)
 
 
-def chat(request, chat_id):
-    # try:
-    #     c = Chat.objects.get(id=chat_id)
-    # except:
-    #     raise Http404("Данные не найдены!..")
-    # try:
-    #     messages = UserMessage.objects.filter(chat=c).order_by('datetime_sending')
-    # except:
-    messages = 'no messages'
 
-    return render(request, 'fish_app/chat.html', {'messages': messages})
 
 
 @csrf_exempt

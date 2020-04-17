@@ -66,7 +66,12 @@ class Friendship(models.Model):
 class Room(models.Model):
     name = models.CharField(max_length=100, default='', blank=True)
     datetime_last_active = models.DateTimeField(default=datetime(1970, 0o01, 0o01))
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, default=[])
+
+    def __str__(self):
+        if self.users.all().count() == 2:
+            return 'Чат c ' + self.users.objects.filter(id__not_in=[req])
+        return self.name
 
 
 class UserMessage(models.Model):

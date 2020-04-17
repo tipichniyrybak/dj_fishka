@@ -104,3 +104,32 @@ function add_request_for_friendship() {
         }
     });
 }
+
+function send_message_to_user() {
+    $.ajax({
+        type: "POST",
+        url: "/send_message/",
+        data:  {
+            'user_id': receive_user_id,
+            'content': $('#text_messageID').val()
+        },
+        type: 'POST',
+        success: function(response) {
+            console.log('response send_message_to_profile:  ');
+            console.log(response);
+            if (response == 2) {
+                $('#text_messageID').val('');
+                closeForm('send_message');
+                $('#messageID').html('Сообщение отправлено!');
+                $('#messageID').bPopup({
+                    autoClose: 1000
+                });
+
+            }
+        },
+        error: function(error) {
+            console.log('send_message_error:');
+            console.log(error);
+        }
+    });
+}

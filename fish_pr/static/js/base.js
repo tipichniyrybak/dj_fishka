@@ -56,6 +56,9 @@ function closeForm(form) {
         case 'order_add':
             $('#formOrderAddID').bPopup().close();
             break;
+        case 'send_message':
+            $('#formSendMessageID').bPopup().close();
+            break;
         default:
 
     }

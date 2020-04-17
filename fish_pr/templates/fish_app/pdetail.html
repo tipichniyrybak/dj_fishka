@@ -49,7 +49,7 @@
         </div>
         <div class="active_caption"  id="profile_updateID" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
         <div class="active_caption"  id="add_to_friendsID" onclick="add_request_for_friendship()">Добавить в друзья </div>
-        <div class="active_caption"  id="send_messageID" onclick="send_message_to_user()">Отправить сообщение</div> <br>
+        <div class="active_caption"  id="send_messageID" onclick="$('#formSendMessageID').bPopup()">Отправить сообщение</div> <br>
         <div id="in_friendsID" style="display: none;"> {{ profile.first_name }} у вас в друзьях </div>
 
         <br>
@@ -80,7 +80,6 @@
     <div id="formProfileEditID" class="formPopup">
         <form id="ProfileEditID">    <!--  class="form-container" -->
             {% csrf_token %}
-            <!-- <p><input type="file"  id="form_photoID" name="form_photo" /></p> -->
             <p>Имя: <input type="text" id="form_first_nameID" /></p>
             <p>Фамилия: <input type="text" id="form_last_nameID" /></p>
 
@@ -93,6 +92,18 @@
 
             <input type="button" value="Изменить профиль" onclick="updateProfile('main')" />
             <input type="button" value="Отмена"  onclick="closeForm('profile_update')" />
+        </form>
+    </div>
+
+    <div id="formSendMessageID" class="formPopup">
+        <form id="SendMessageID">    <!--  class="form-container" -->
+            {% csrf_token %}
+            <!-- <p><input type="text" id="text_messageID" /></p> -->
+            <p><textarea rows="4" cols="50" id="text_messageID">
+            </textarea></p>
+
+            <input type="button" value="Отправить сообщение" onclick="send_message_to_user()" />
+            <input type="button" value="Отмена"  onclick="closeForm('send_message')" />
         </form>
     </div>
 
