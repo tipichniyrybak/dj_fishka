@@ -1,22 +1,23 @@
 body {
-    font-family: Impact, Charcoal, sans-serif;;
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 11pt;
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 7fr 1fr;
+  grid-template-rows: 1fr 15fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   height: 100vh;
 }
 
 .header {   grid-area: 1 / 1 / 2 / 4;
-            background: linear-gradient(to bottom, #007a10, #fafafa);}
+            background: linear-gradient(to bottom, #538eed, #fafafa);}
 .login_controls {  grid-area: 2 / 1 / 3 / 2; }
 .working_area {  grid-area: 2 / 2 / 3 / 4; }
 .footer {   grid-area: 3 / 1 / 4 / 4;
-            background: linear-gradient(to top, #007a10, #fafafa);}
+            background: linear-gradient(to top, #538eed, #fafafa);}
 
 .formPopup, .message {
     background-color:#fff;
@@ -29,14 +30,55 @@ body {
 }
 
 .active_caption {
-    color: #8a0a21;
+    color: #409997;
     cursor: pointer;
     font-weight: bold;
+}
+
+
+.active_btn {
+   position: relative;
+   display: inline-block;
+   font-weight: bold;
+   padding: 0.25em 0;
+   text-decoration: none;
+   color: #67c5ff;
+}
+
+.active_btn:before{
+   position: absolute;
+   content: '';
+   width: 100%;
+   height: 4px;
+   top:100%;
+   left: 0;
+   border-radius: 3px;
+   background:#67c5ff;
+   transition: .2s;
+}
+
+.active_btn:hover:before {
+    top: -webkit-calc(100% - 3px);
+    top: calc(100% - 3px);
 }
 
 .links {
     position: relative;
     top: 50%;
     margin-left: 20%;
+}
 
+input[type="text"], input[type="password"]{
+   border: 1px solid #cccccc; //цвет рамки
+   border-radius: 3px; //закругление углов (общее)
+   -webkit-border-radius: 3px; //закругление углов (Google Chrome)
+   -moz-border-radius: 3px; //закругление углов (FireFox)
+   -khtml-border-radius: 3px; //закругление углов (Safari)
+   background: #ffffff !important; // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
+   outline: none; // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+   height: 24px; // высота на свое усмотрение
+   width: 120px; // ширина на свое усмотрение
+   color: #cccccc; //цвет шрифта в обычном состоянии
+   font-size: 11px; // Размер шрифта
+   font-family: Tahoma; // Стиль шрифта
 }

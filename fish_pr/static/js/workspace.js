@@ -135,10 +135,11 @@ function reloadPlaces() {
 }
 
 function set_places() {
+
     filters = { is_selfPlaces : $('#is_selfPlacesID').prop('checked'),
                 is_Base : $('#is_BaseID').prop('checked'),
                 is_carAccessibility : $('#is_carAccessibilityID').prop('checked'),
-                is_busAccessibility :  $('#is_busAccessibilityID').prop('checked') }                
+                is_busAccessibility :  $('#is_busAccessibilityID').prop('checked') }
     filters_json = JSON.stringify(filters);
 
     $.ajax({
@@ -240,9 +241,6 @@ function get_place_info() {
             console.log(error);
         }
     });
-
-
-
 }
 
 //------Order-----------
@@ -458,5 +456,5 @@ function openFormAddPlace(lant, long) {
     $('#fPlaceAdd_lantID').val(lant);
     $('#fPlaceAdd_longID').val(long);
     $('#formPlaceAddID').bPopup();
-    myYandexMap.map.balloon.close();
+    map.balloon.close();
 }

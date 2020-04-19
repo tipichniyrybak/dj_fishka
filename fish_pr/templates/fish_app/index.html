@@ -11,9 +11,7 @@
 {% block js_link %}
     {% load static %}
     <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?apikey=18f62a6d-77ff-4bb8-8f46-3b6d164fdf4d&lang=ru_RU"></script>
-    <script type=text/javascript src="{% static 'js/yamaps.js' %}"></script>
     <script type=text/javascript src="{% static 'js/workspace.js' %}"></script>
-
 {% endblock %}
 
 {% block document_ready_script %}
@@ -29,18 +27,16 @@
                 var coords = e.get('coords');
                 map.balloon.open(coords, {
                     contentHeader: coords[0] + ' : ' + coords[1],
-                    contentBody: '<div class="active_caption" style="display: inline;" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
+                    contentBody: '<div class="active_caption" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
+                    
                 });
             }
             else {
                 map.balloon.close();
             }
         });
+        reloadPlaces();
     });
-
-
-
-
 {% endblock %}
 
 {% block working_area %}
