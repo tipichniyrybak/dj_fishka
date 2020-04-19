@@ -1,3 +1,7 @@
+body {
+    font-family: Impact, Charcoal, sans-serif;;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -28,4 +32,11 @@
     color: #8a0a21;
     cursor: pointer;
     font-weight: bold;
+}
+
+.links {
+    position: relative;
+    top: 50%;
+    margin-left: 20%;
+
 }

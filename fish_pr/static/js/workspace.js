@@ -1,7 +1,34 @@
 //-------Profile-----
 
 function updateFilters() {
-    updateProfile('filters');
+    updateData = new FormData();
+    updateData.append('userID', currUserID);
+    updateData.append('typeInfo', 'filters');
+    updateData.append('is_selfPlaces', $('#is_selfPlacesID').prop('checked'));
+    updateData.append('is_Base', $('#is_BaseID').prop('checked'));
+    updateData.append('is_carAccessibility', $('#is_carAccessibilityID').prop('checked'));
+    updateData.append('is_busAccessibility', $('#is_busAccessibilityID').prop('checked'));
+
+    $.ajax({
+        type: "POST",
+        url: "/update_profile/",
+        data: updateData,
+        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false, // NEEDED, DON'T OMIT THIS
+        success: function(response) {
+            console.log('response_update_profile:  ');
+            console.log(response);
+
+            if (response == 1) {
+                console.log('ok');
+
+            }
+        },
+        error: function(error) {
+            console.log('updateProfile_ERROR:');
+            console.log(error);
+        }
+    });
 }
 
 //-------Place-----------
