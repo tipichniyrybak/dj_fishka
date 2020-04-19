@@ -17,8 +17,30 @@
 {% endblock %}
 
 {% block document_ready_script %}
-    myYandexMap = new YandexMap()
-    myYandexMap.set_places();
+    map = null;
+    ymaps.ready(function () {
+        map = new ymaps.Map('map', {
+            center: [59.939095, 30.315961],
+            zoom: 10,
+            controls: []
+        });
+        map.events.add('click', function (e) {
+            if (!map.balloon.isOpen()) {
+                var coords = e.get('coords');
+                map.balloon.open(coords, {
+                    contentHeader: coords[0] + ' : ' + coords[1],
+                    contentBody: '<div class="active_caption" style="display: inline;" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
+                });
+            }
+            else {
+                map.balloon.close();
+            }
+        });
+    });
+
+
+
+
 {% endblock %}
 
 {% block working_area %}

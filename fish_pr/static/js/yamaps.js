@@ -30,11 +30,14 @@ class YandexMap {
         var that = this;
         console.log('__set_places:');
         var userdata = null;
+
+        filters = [$('#is_selfPlacesID').prop('checked'), $('#is_BaseID').prop('checked'),
+            $('#is_carAccessibilityID').prop('checked'), $('#is_busAccessibilityID').prop('checked')]
         $.ajax({
             type: "POST",
             url: "/get_places/",
             data:  {
-                'userID': currUserID
+                'filters': filters
             },
             type: 'POST',
             success: function(response) {

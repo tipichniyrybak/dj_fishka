@@ -1,34 +1,39 @@
 //-------Profile-----
 
 function updateFilters() {
-    updateData = new FormData();
-    updateData.append('userID', currUserID);
-    updateData.append('typeInfo', 'filters');
-    updateData.append('is_selfPlaces', $('#is_selfPlacesID').prop('checked'));
-    updateData.append('is_Base', $('#is_BaseID').prop('checked'));
-    updateData.append('is_carAccessibility', $('#is_carAccessibilityID').prop('checked'));
-    updateData.append('is_busAccessibility', $('#is_busAccessibilityID').prop('checked'));
 
-    $.ajax({
-        type: "POST",
-        url: "/update_profile/",
-        data: updateData,
-        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-        processData: false, // NEEDED, DON'T OMIT THIS
-        success: function(response) {
-            console.log('response_update_profile:  ');
-            console.log(response);
+    if (currUserID != 'None') {
+        updateData = new FormData();
+        updateData.append('userID', currUserID);
+        updateData.append('typeInfo', 'filters');
+        updateData.append('is_selfPlaces', $('#is_selfPlacesID').prop('checked'));
+        updateData.append('is_Base', $('#is_BaseID').prop('checked'));
+        updateData.append('is_carAccessibility', $('#is_carAccessibilityID').prop('checked'));
+        updateData.append('is_busAccessibility', $('#is_busAccessibilityID').prop('checked'));
 
-            if (response == 1) {
-                console.log('ok');
+        $.ajax({
+            type: "POST",
+            url: "/update_profile/",
+            data: updateData,
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false, // NEEDED, DON'T OMIT THIS
+            success: function(response) {
+                console.log('response_update_profile:  ');
+                console.log(response);
 
+                if (response == 1) {
+                    console.log('ok');
+
+                }
+            },
+            error: function(error) {
+                console.log('updateProfile_ERROR:');
+                console.log(error);
             }
-        },
-        error: function(error) {
-            console.log('updateProfile_ERROR:');
-            console.log(error);
-        }
-    });
+        });
+    } else {
+        console.log('none');
+    }
 }
 
 //-------Place-----------
@@ -124,8 +129,56 @@ function deletePlace() {
 }
 
 function reloadPlaces() {
-     myYandexMap.set_places();
+
+
+    set_places();
 }
+
+function set_places() {
+    filters = { is_selfPlaces : $('#is_selfPlacesID').prop('checked'),
+                is_Base : $('#is_BaseID').prop('checked'),
+                is_carAccessibility : $('#is_carAccessibilityID').prop('checked'),
+                is_busAccessibility :  $('#is_busAccessibilityID').prop('checked') }                
+    filters_json = JSON.stringify(filters);
+
+    $.ajax({
+        type: "POST",
+        url: "/get_places/",
+        data:  {
+            'filters': filters_json
+        },
+        type: 'POST',
+        success: function(response) {
+            console.log('response:  ');
+            console.log(response);
+            ymaps.ready(function () {
+                map.geoObjects.removeAll();
+                response.forEach(function(place) {
+                    console.log(place['name']);
+                    var myPlacemark1 = new ymaps.Placemark([place['lant'], place['long']], {
+                        iconContent: place['name']
+                    }, {
+                        preset: 'islands#darkOrangeStretchyIcon'
+                    });
+                    myPlacemark1.events.add(['click'],  function (e) {
+                        console.log('click cluck');
+                        $('#place_contentID').hide();
+                        $('#orders_contentID').hide();
+                        currPlaceID = place['id'];
+                        console.log(currPlaceID);
+                        get_place_info();
+                        $('#place_contentID').slideToggle(200);
+                    });
+                    map.geoObjects.add(myPlacemark1);
+                });
+            });
+        },
+        error: function(error) {
+            console.log('set_places_error:');
+            console.log(error);
+        }
+    });
+    }
 
 function get_place_info() {
     $.ajax({

@@ -273,26 +273,29 @@ def update_profile(request):
 
 @csrf_exempt
 def get_places(request):
-    user_id = request.user.id
-    # usr_id = request.session['userID']
+    # user_id = request.user.id
+    # # usr_id = request.session['userID']
+    #
+    # try:
+    #     filt = Profile.objects.filter(user_id=request.user.id).values('filters')  # JSON B JSONe
+    #     filt1 = filt[0]
+    #     filt2 = filt1["filters"]
+    #     filters = json.loads(filt2)
+    # except:
+    #     filters = json.loads('{"is_selfPlaces": "false", "is_Base": "false", '
+    #                          '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
-    try:
-        filt = Profile.objects.filter(user_id=request.user.id).values('filters')  # JSON B JSONe
-        filt1 = filt[0]
-        filt2 = filt1["filters"]
-        filters = json.loads(filt2)
-    except:
-        filters = json.loads('{"is_selfPlaces": "false", "is_Base": "false", '
-                             '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
+    # print(request.POST.get("filters").dict())
+    filters = json.loads(request.POST.get("filters"))
 
     places = FishingPlace.objects.values()
-    if filters["is_selfPlaces"] == 'true':
+    if filters["is_selfPlaces"]:
         places = places.filter(user_id=request.user.id)
-    if filters["is_Base"] == 'true':
+    if filters["is_Base"]:
         places = places.filter(is_Base=True)
-    if filters["is_carAccessibility"] == 'true':
+    if filters["is_carAccessibility"]:
         places = places.filter(car_accessibility=True)
-    if filters["is_busAccessibility"] == 'true':
+    if filters["is_busAccessibility"]:
         places = places.filter(bus_accessibility=True)
 
     return JsonResponse(list(places), safe=False)
