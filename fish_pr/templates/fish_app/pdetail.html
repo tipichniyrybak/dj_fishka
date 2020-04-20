@@ -47,10 +47,12 @@
         <div id="profile_photo">
             <img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/{{ profile.photo }} "/>
         </div>
-        <div class="square_btn"  id="profile_updateID" onclick="$('#formProfileEditID').bPopup()">Редактировать профиль</div>
-        <a href="#" class="square_btn">BUTTON</a>
-        <div class="active_caption"  id="add_to_friendsID" onclick="add_request_for_friendship()">Добавить в друзья </div>
-        <div class="active_caption"  id="send_messageID" onclick="$('#formSendMessageID').bPopup()">Отправить сообщение</div> <br>
+        <br>
+        <a href="javascript:$('#formProfileEditID').bPopup()" id="profile_updateID" class="activeButton">Редактировать профиль</a> <br>
+        <a href="javascript:add_request_for_friendship();" id="add_to_friendsID" class="activeButton">Добавить в друзья</a> <br> <br>
+        <!-- <a href="javascript:$('#formSendMessageID').bPopup()" id="send_messageID" class="activeButton">Отправить сообщение</a> <br> <br>
+        <div class="active_caption"  id="add_to_friendsID" onclick="add_request_for_friendship()">Добавить в друзья </div> -->
+        <div class="activeButton"  id="send_messageID" onclick="$('#formSendMessageID').bPopup()">Отправить сообщение</div> <br>
         <div id="in_friendsID" style="display: none;"> {{ profile.first_name }} у вас в друзьях </div>
 
         <br>
@@ -107,10 +109,5 @@
             <input type="button" value="Отмена"  onclick="closeForm('send_message')" />
         </form>
     </div>
-
-    <div id="messageID" class="message">
-        hello
-    </div>
-
 
 {% endblock %}

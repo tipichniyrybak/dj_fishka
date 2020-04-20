@@ -28,7 +28,7 @@
                 map.balloon.open(coords, {
                     contentHeader: coords[0] + ' : ' + coords[1],
                     contentBody: '<div class="active_caption" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
-                    
+
                 });
             }
             else {
@@ -157,9 +157,5 @@
             <input type="button" value="Добавить отчет" onclick="addOrder()" />
             <input type="button" value="Отмена"  onclick="closeForm('order_add')" />
         </form>
-    </div>
-
-    <div id="messageID" class="message">
-        hello
     </div>
 {% endblock %}

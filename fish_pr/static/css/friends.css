@@ -36,3 +36,8 @@
   border: 1px solid #ccc;
   border-top: none;
 }
+
+.friend-avatar{
+    border-radius: 50%;
+    width: 50px;
+}

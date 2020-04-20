@@ -27,6 +27,8 @@
     <div id="friendsID" class="tabcontent">
         <h4>Мои друзья:</h4>
         {% for profile in profiles_friends %}
+            <a href="/pdetail{{ profile.user_id }}"><img src="http://fishkadata.s3.amazonaws.com/media/{{ profile.photo }}" alt="photo" class="friend-avatar"></a>
+
             <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a>  <br>
         {% endfor %}  <br>
     </div>
@@ -34,7 +36,9 @@
     <div id="receives_for_friendsID" class="tabcontent">
         <h4>Входящие заявки в друзья:</h4>
         {% for profile in profiles_requesting_friendship %}
-            <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> <div class="active_caption"  id="add_to friends{{ profile.user_id }}ID" onclick="add_to_friends({{ profile.user_id }})">Добавить в друзья</div>       <br>
+            <a href="/pdetail{{ profile.user_id }}">{{ profile.first_name }}  {{ profile.last_name }}</a> &nbsp;&nbsp;&nbsp;
+            <a href="javascript:add_to_friends({{ profile.user_id }});" id="add_to friends{{ profile.user_id }}ID" class="activeButton">Добавить в друзья</a> <br>
+            <!-- <div class="active_caption"  id="add_to friends{{ profile.user_id }}ID" onclick="add_to_friends({{ profile.user_id }})">Добавить в друзья</div> <br> -->
         {% endfor %}  <br>
     </div>
 

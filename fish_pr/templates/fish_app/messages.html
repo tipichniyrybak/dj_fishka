@@ -23,7 +23,7 @@
                 {% if room.name != '' %}
                     <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.name }} </div> <br>
                 {% else %}
-                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> {{ room.users }} </div> <br>
+                    <div class="active_caption"  id="room{{ room.id }}ID" onclick="load_mesages_from_room({{ room.id }})"> Чат #{{ room.id }} </div> <br>
                 {% endif %}
             {% endfor %}  <br>
         </div>

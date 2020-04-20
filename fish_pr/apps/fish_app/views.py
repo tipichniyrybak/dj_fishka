@@ -128,9 +128,6 @@ def send_message(request):
     return JsonResponse(res, safe=False)
 
 
-
-
-
 @csrf_exempt
 def add_request_for_friendship(request):
     res = 0

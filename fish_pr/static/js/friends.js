@@ -17,6 +17,7 @@ function add_to_friends(reqst_user_id) {
                 $('#messageID').bPopup({
                     autoClose: 1000
                 });
+                window.location.reload(false); 
             }
         },
         error: function(error) {
