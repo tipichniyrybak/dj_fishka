@@ -62,7 +62,7 @@ function addPlace() {
 
     var place_photos = $("#place_photosID")[0].files;
     console.log(place_photos);
-    Array.from(place_photos).forEach((place_photo, i) => {
+    Array.from(place_photos).forEach((place_photo) => {
         console.log(place_photo);
         addPlaceData.append("place_files[]", place_photo);
     });
