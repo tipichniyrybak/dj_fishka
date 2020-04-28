@@ -355,7 +355,7 @@ function deleteOrder() {
                 } else {
                     $("#messageID").html("Отчет не был удален!");
                     $("#messageID").bPopup({
-                        autoClose: 1000
+                        autoClose: 1100
                     });
                 }
             },
