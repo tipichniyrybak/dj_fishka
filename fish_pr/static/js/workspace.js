@@ -43,6 +43,7 @@ function updateFilters() {
 //-------Place-----------
 
 function addPlace() {
+
     addPlaceData = new FormData();
     addPlaceData.append("userID", currUserID);
     addPlaceData.append("name",
@@ -102,6 +103,7 @@ function addPlace() {
 }
 
 function deletePlace() {
+
     console.log("currPlaceID::");
     console.log(currPlaceID);
     if (confirm("Вы увепены, что хотите удалить данное место?")) {
@@ -138,8 +140,6 @@ function deletePlace() {
 }
 
 function reloadPlaces() {
-
-
     set_places();
 }
 
