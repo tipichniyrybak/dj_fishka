@@ -69,7 +69,7 @@ def messages(request):
 
 
 def react(request):
-    return render(request, 'fish_app/messages.html')
+    return render(request, 'fish_app/react.html')
 
 
 @csrf_exempt
