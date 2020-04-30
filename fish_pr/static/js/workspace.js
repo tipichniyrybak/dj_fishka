@@ -43,6 +43,7 @@ function updateFilters() {
 //-------Place-----------
 
 function addPlace() {
+
     addPlaceData = new FormData();
     addPlaceData.append("userID", currUserID);
     addPlaceData.append("name",
@@ -62,7 +63,7 @@ function addPlace() {
 
     var place_photos = $("#place_photosID")[0].files;
     console.log(place_photos);
-    Array.from(place_photos).forEach((place_photo, i) => {
+    Array.from(place_photos).forEach((place_photo) => {
         console.log(place_photo);
         addPlaceData.append("place_files[]", place_photo);
     });
@@ -102,6 +103,7 @@ function addPlace() {
 }
 
 function deletePlace() {
+
     console.log("currPlaceID::");
     console.log(currPlaceID);
     if (confirm("Вы увепены, что хотите удалить данное место?")) {
@@ -138,8 +140,6 @@ function deletePlace() {
 }
 
 function reloadPlaces() {
-
-
     set_places();
 }
 
