@@ -68,6 +68,10 @@ def messages(request):
     return render(request, 'fish_app/messages.html', {'rooms': rooms})
 
 
+def react(request):
+    return render(request, 'fish_app/messages.html')
+
+
 @csrf_exempt
 def get_messages_from_room(request):
     try:

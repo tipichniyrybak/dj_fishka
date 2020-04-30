@@ -9,11 +9,16 @@ app_name = 'fish_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('friends/', views.friends, name='friends'),
-    path('messages/', views.messages, name='messages'),
+
     path('login/', views.login, name='login'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('registration/', views.registration, name='registration'),
+
+    path('friends/', views.friends, name='friends'),
+    path('messages/', views.messages, name='messages'),
+
+    path('react/', views.react, name='react'),
+
 
     path('pdetail<int:user_id>/', views.pdetail, name='pdetail'),
 
