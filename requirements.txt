@@ -13,3 +13,4 @@ django_cors_headers
 Pillow
 django-storages
 boto3
+django-bootstrap3

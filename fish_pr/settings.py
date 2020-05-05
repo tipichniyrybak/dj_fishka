@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'storages',
+    'bootstrap3',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

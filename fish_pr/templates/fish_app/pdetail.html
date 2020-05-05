@@ -39,6 +39,7 @@
     receive_user_id = {{ profile.user_id }};
     profile_first_name = "{{ profile.first_name }}"
     console.log(receive_user_id);
+    reloadProfile( {{ profile.user_id }} );
 
 {% endblock %}
 
@@ -48,8 +49,8 @@
             <img class="img_profile" src="http://fishkadata.s3.amazonaws.com/media/{{ profile.photo }} "/>
         </div>
         <br>
-        <a href="javascript:$('#formProfileEditID').bPopup()" id="profile_updateID" class="activeButton">Редактировать профиль</a> <br>
-        <a href="javascript:add_request_for_friendship();" id="add_to_friendsID" class="activeButton">Добавить в друзья</a> <br> <br>
+        <div class="activeButton"  id="profile_updateID" onclick="$('#formProfileEditID').bPopup();">Редактировать профиль</div> <br>
+        <div class="activeButton"  id="add_to_friendsID" onclick="add_request_for_friendship();">Добавить в друзья</div> <br> <br>
         <!-- <a href="javascript:$('#formSendMessageID').bPopup()" id="send_messageID" class="activeButton">Отправить сообщение</a> <br> <br>
         <div class="active_caption"  id="add_to_friendsID" onclick="add_request_for_friendship()">Добавить в друзья </div> -->
         <div class="activeButton"  id="send_messageID" onclick="$('#formSendMessageID').bPopup()">Отправить сообщение</div> <br>
@@ -57,25 +58,25 @@
 
         <br>
         <div id="name">
-            {{ profile.first_name }} {{ profile.last_name }}
+
         </div>
         <div id="is_professional">
-            {{ profile.is_professional }}
+
         </div>  <br>
         <div id="home_pond">
-            Домашний водоем: {{ profile.home_pond }}
+
         </div>
         <div id="lovely_pond">
-            Любимый водоем: {{ profile.lovely_pond }}
+
         </div>
         <div id="fishing_object">
-            Любимый объект ловли: {{ profile.fishing_object }}
+
         </div>
         <div id="tackle">
-            Любимая снасть: {{ profile.tackle }}
+
         </div>
         <div id="fishing_style">
-            Любимый стиль ловли: {{ profile.fishing_style }}
+
         </div> <br>
 
     </div>
@@ -102,8 +103,7 @@
         <form id="SendMessageID">    <!--  class="form-container" -->
             {% csrf_token %}
             <!-- <p><input type="text" id="text_messageID" /></p> -->
-            <p><textarea rows="4" cols="50" id="text_messageID">
-            </textarea></p>
+            <p><textarea rows="4" cols="50" id="text_messageID"></textarea></p>
 
             <input type="button" value="Отправить сообщение" onclick="send_message_to_user()" />
             <input type="button" value="Отмена"  onclick="closeForm('send_message')" />

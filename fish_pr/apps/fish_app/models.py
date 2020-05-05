@@ -58,7 +58,7 @@ class Friendship(models.Model):
 
     user_requesting = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_requesting')
     user_receiving = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_receiving')
-    status = models.CharField(max_length=255, choices=FriendshipStatus, default='WT')
+    status = models.CharField(max_length=2, choices=FriendshipStatus, default='WT')
 
 
 class Room(models.Model):

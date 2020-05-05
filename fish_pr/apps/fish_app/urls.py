@@ -17,9 +17,6 @@ urlpatterns = [
     path('friends/', views.friends, name='friends'),
     path('messages/', views.messages, name='messages'),
 
-    path('react/', views.react, name='react'),
-
-
     path('pdetail<int:user_id>/', views.pdetail, name='pdetail'),
 
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),

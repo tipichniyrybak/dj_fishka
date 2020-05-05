@@ -51,7 +51,7 @@ body {
 	padding:3px 10px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #283966;
-    weight: 100px;
+    width: max-content;;
 }
 .activeButton:hover {
 	background:linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);

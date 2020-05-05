@@ -27,7 +27,7 @@
                 var coords = e.get('coords');
                 map.balloon.open(coords, {
                     contentHeader: coords[0] + ' : ' + coords[1],
-                    contentBody: '<div class="active_caption" id="place_add" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')"> Добавить место </div>'
+                    contentBody: '<div class="activeButton"  id="place_addID" style="margin-left: 1px" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')">Добавить место</div><div class="activeButton" style="margin-right: 1px" id="order_addID" onclick="openFormAddOrder(' + coords[0] + ', ' + coords[1] + ')">Добавить отчет</div> '
 
                 });
             }
@@ -49,30 +49,30 @@
                 {% load static %}
                 <img src="{% static "images/delete.png" %}" alt="delete" id="RemovePlaceButtonID" class="remove_button" height="40" width="40" onclick="deletePlace()">
                 <div id="place_name">
-                    ...Base Name...
+
                 </div>  <br>
                 <div id="place_user">
-                    ...User Name...
+
                 </div>  <br>
                 <div id="place_isBame">
-                    ...place_isBame...
+                    .
                 </div>  <br>
                 <div id="coord">
-                    <div id="place_lant">00.00000</div>
+                    <div id="place_lant"></div>
                     <br>
-                    <div id="place_long">00.00000</div>
+                    <div id="place_long"></div>
                 </div>  <br>
                 <div id="place_photos">
 
                 </div>  <br>
                 <div id="place_decription">
-                    Decription Text
+
                 </div>  <br>
                 <div id="place_bus_accessibility">
-                    bus_accessibility
+
                 </div>  <br>
                 <div id="place_car_accessibility">
-                    car_accessibility
+
                 </div>  <br>
                 <div id="place_orders">
                     <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>

@@ -68,10 +68,6 @@ def messages(request):
     return render(request, 'fish_app/messages.html', {'rooms': rooms})
 
 
-def react(request):
-    return render(request, 'fish_app/react.html')
-
-
 @csrf_exempt
 def get_messages_from_room(request):
     try:
@@ -227,7 +223,7 @@ def pdetail(request, user_id):
 
 @csrf_exempt
 def get_profile_info(request):
-    user_id = request.user.id
+    user_id = request.POST.get('userID')
     user_by_id = User.objects.get(id=user_id)
     profile = Profile.objects.filter(user=user_by_id).values()
     return JsonResponse(list(profile), safe=False)
