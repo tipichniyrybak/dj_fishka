@@ -143,7 +143,7 @@ LOGOUT_REDIRECT_URL  = 'fish_app:index'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, "fish_pr", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "fish_pr", "static")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "fish_pr", "static"),
 ]
