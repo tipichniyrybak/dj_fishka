@@ -145,14 +145,20 @@ function reloadPlaces() {
 
 function set_places() {
 
-    filters = { is_selfPlaces :
-                    $("#is_selfPlacesID").prop("checked"),
-                is_Base :
-                    $("#is_BaseID").prop("checked"),
-                is_carAccessibility :
-                    $("#is_carAccessibilityID").prop("checked"),
-                is_busAccessibility :
-                    $("#is_busAccessibilityID").prop("checked") }
+    // filters = { is_selfPlaces :
+    //                 $("#is_selfPlacesID").prop("checked"),
+    //             is_Base :
+    //                 $("#is_BaseID").prop("checked"),
+    //             is_carAccessibility :
+    //                 $("#is_carAccessibilityID").prop("checked"),
+    //             is_busAccessibility :
+    //                 $("#is_busAccessibilityID").prop("checked") }
+
+    filters = { is_selfPlaces : false,
+                is_Base : false,
+                is_carAccessibility : false,
+                is_busAccessibility : false }
+
     filters_json = JSON.stringify(filters);
 
     $.ajax({
@@ -168,7 +174,7 @@ function set_places() {
                 map.geoObjects.removeAll();
                 response.forEach(function(place) {
                     console.log(place.name);
-                    var myPlacemark1 = new ymaps.Placemark(
+                    let myPlacemark1 = new ymaps.Placemark(
                         [place.lant,
                         place.long],
                         {
@@ -178,12 +184,14 @@ function set_places() {
                         });
                     myPlacemark1.events.add(["click"],  function (e) {
                         console.log("click cluck");
-                        $("#place_contentID").hide();
-                        $("#orders_contentID").hide();
+                        // $("#place_contentID").hide();
+                        // $("#orders_contentID").hide();
+
                         currPlaceID = place.id;
                         console.log(currPlaceID);
-                        get_place_info();
-                        $("#place_contentID").slideToggle(200);
+                        $("#hidenButtonID").click();
+                        // get_place_info();
+                        // $("#place_contentID").slideToggle(200);
                     });
                     map.geoObjects.add(myPlacemark1);
                 });
@@ -501,5 +509,12 @@ function openFormAddPlace(lant, long) {
     $("#fPlaceAdd_lantID").val(lant);
     $("#fPlaceAdd_longID").val(long);
     $("#formPlaceAddID").bPopup();
+    map.balloon.close();
+}
+
+function openFormAddOrder(lant, long) {
+    $("#fOrderAdd_lantID").val(lant);
+    $("#fOrderAdd_longID").val(long);
+    $("#formOrderAddID").bPopup();
     map.balloon.close();
 }

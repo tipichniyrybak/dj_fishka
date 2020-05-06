@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block document_ready_script %}
+    document.getElementById("hidenButtonID").style.display = "none";
     map = null;
     ymaps.ready(function () {
         map = new ymaps.Map('map', {
@@ -27,7 +28,7 @@
                 var coords = e.get('coords');
                 map.balloon.open(coords, {
                     contentHeader: coords[0] + ' : ' + coords[1],
-                    contentBody: '<div class="activeButton"  id="place_addID" style="margin-left: 1px" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')">Добавить место</div><div class="activeButton" style="margin-right: 1px" id="order_addID" onclick="openFormAddOrder(' + coords[0] + ', ' + coords[1] + ')">Добавить отчет</div> '
+                    contentBody: '<button type="button" class="btn btn-primary" id="place_addID" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')" >Добавить место</button> <button type="button" class="btn btn-primary" id="order_addID" onclick="openFormAddOrder(' + coords[0] + ', ' + coords[1] + ')" >Добавить отчет</button>'
 
                 });
             }
@@ -81,6 +82,140 @@
                 <input type="button" value="Закрыть" onclick="hidePlaceContent()">
             </div>
 
+            <button type="button" id="hidenButtonID" class="btn btn-primary" style: "display: none" data-toggle="modal" data-target="#modalPoll-1">Launch modal</button>
+
+            <div class="modal fade right" id="modalPoll-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+              <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+                <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header">
+                    <p class="heading lead">Feedback request</p>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                  </div>
+
+                  <!--Body-->
+                  <div class="modal-body">
+                    <!-- <div class="text-center">
+                      <i class="far fa-file-alt fa-4x mb-3 animated rotateIn"></i>
+                      <p>
+                        <strong>Your opinion matters</strong>
+                      </p>
+                      <p>Have some ideas how to improve our product?
+                        <strong>Give us your feedback.</strong>
+                      </p>
+                    </div> -->
+
+                    <hr>
+
+
+
+                    <!-- <p class="text-center">
+                      <strong>What could we improve?</strong>
+                    </p>
+                    <!--Basic textarea-->
+                    <!-- <div class="md-form">
+                      <textarea type="text" id="form79textarea" class="md-textarea form-control" rows="3"></textarea>
+                      <label for="form79textarea">Your message</label>
+                    </div>  -->
+
+                  </div>
+
+                  <!--Footer-->
+                  <div class="modal-footer justify-content-center">
+                    <a type="button" class="btn btn-primary waves-effect waves-light">Send
+                      <i class="fa fa-paper-plane ml-1"></i>
+                    </a>
+                    <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">Cancel</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPoll-1">Launch modal</button> -->
+
+            <!-- Modal: modalPoll -->
+            <div class="modal fade right" id="modalPoll-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+              <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+                <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header">
+                    <p class="heading lead">Feedback request
+                    </p>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                  </div>
+
+                  <!--Body-->
+                  <div class="modal-body">
+                    <div class="text-center">
+                      <i class="far fa-file-alt fa-4x mb-3 animated rotateIn"></i>
+                      <p>
+                        <strong>Your opinion matters</strong>
+                      </p>
+                      <p>Have some ideas how to improve our product?
+                        <strong>Give us your feedback.</strong>
+                      </p>
+                    </div>
+
+                    <hr>
+
+                    <!-- Radio -->
+                    <p class="text-center">
+                      <strong>Your rating</strong>
+                    </p>
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" name="group1" type="radio" id="radio-179" value="option1" checked>
+                      <label class="form-check-label" for="radio-179">Very good</label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" name="group1" type="radio" id="radio-279" value="option2">
+                      <label class="form-check-label" for="radio-279">Good</label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" name="group1" type="radio" id="radio-379" value="option3">
+                      <label class="form-check-label" for="radio-379">Mediocre</label>
+                    </div>
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" name="group1" type="radio" id="radio-479" value="option4">
+                      <label class="form-check-label" for="radio-479">Bad</label>
+                    </div>
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" name="group1" type="radio" id="radio-579" value="option5">
+                      <label class="form-check-label" for="radio-579">Very bad</label>
+                    </div>
+                    <!-- Radio -->
+
+                    <p class="text-center">
+                      <strong>What could we improve?</strong>
+                    </p>
+                    <!--Basic textarea-->
+                    <div class="md-form">
+                      <textarea type="text" id="form79textarea" class="md-textarea form-control" rows="3"></textarea>
+                      <label for="form79textarea">Your message</label>
+                    </div>
+
+                  </div>
+
+                  <!--Footer-->
+                  <div class="modal-footer justify-content-center">
+                    <a type="button" class="btn btn-primary waves-effect waves-light">Send
+                      <i class="fa fa-paper-plane ml-1"></i>
+                    </a>
+                    <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">Cancel</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div id="orders_contentID"  class="ordersContent">
                 <div id="orders_place_nameID" class="orders_place_name">
                     ...Place Name...
@@ -112,16 +247,7 @@
 
                 </div>
             </div>
-
             <div id="map" style="margin:auto; width: 100%; height: 80vh; z-index: 50;"></div>
-        </div>
-        <div class="filters" id="divcontentID">
-            filters <br>
-            <input type="checkbox" id="is_selfPlacesID" onclick='updateFilters();'>Только мои места ловли<Br>
-            <input type="checkbox" id="is_BaseID" onclick='updateFilters();'>Рыболовная база<Br>
-            <input type="checkbox" id="is_carAccessibilityID" onclick='updateFilters();'>Доступ на машине<Br>
-            <input type="checkbox" id="is_busAccessibilityID" onclick='updateFilters();'>Доступ на общественном<Br>
-            <input type="button" value="Применить"  onclick="reloadPlaces();" />
         </div>
     </div>
 
@@ -130,32 +256,84 @@
     <div id="formPlaceAddID" class="formPopup">
         <form id="PlaceAddID">
             {% csrf_token %}
-            <p>Название места: <input type="text" id="fPlaceAdd_nameID" /></p>
-            <p>lant: <input type="text" id="fPlaceAdd_lantID" /></p>
-            <p>long: <input type="text" id="fPlaceAdd_longID" /></p>
-            <p>Рыболовная база: <input type="checkbox" id="fPlaceAdd_isBaseID" /></p>
-            <p>Описание: <input type="text" id="fPlaceAdd_descriptionID" /></p>
-            <p>Доступ на общественном: <input type="checkbox" id="fPlaceAdd_busAccessabilityID" /></p>
-            <p>Доступ на машине: <input type="checkbox" id="fPlaceAdd_carAccessabilityID" /></p>
-            <input type="file"  id="place_photosID" min="1" max="999" multiple="true"/>
+            <div class="form-group">
+                <label for="fPlaceAdd_nameID">Название места</label>
+                <input type="text" class="form-control" id="fPlaceAdd_nameID" placeholder="Название места">
+            </div>
 
-            <input type="button" value="Добавить место" onclick="addPlace()" />
-            <input type="button" value="Отмена"  onclick="closeForm('place_add')" />
+            <div class="form-group">
+                <label for="fPlaceAdd_lantID">Широта</label>
+                <input type="text" class="form-control" id="fPlaceAdd_lantID" placeholder="Широта">
+            </div>
+
+            <div class="form-group">
+                <label for="fPlaceAdd_longID">Долгота</label>
+                <input type="text" class="form-control" id="fPlaceAdd_longID" placeholder="Долгота">
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="fPlaceAdd_isBaseID" >
+                <label class="form-check-label" for="fPlaceAdd_isBaseID">Рыболовная база</label>
+            </div>
+
+            <div class="form-group">
+                <label for="fPlaceAdd_descriptionID">Описание</label>
+                <input type="text" class="form-control" id="fPlaceAdd_descriptionID" placeholder="Описание">
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="fPlaceAdd_busAccessabilityID">
+                <label class="form-check-label" for="fPlaceAdd_busAccessabilityID">Доступ на общественном</label>
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="fPlaceAdd_carAccessabilityID">
+                <label class="form-check-label" for="fPlaceAdd_carAccessabilityID">Доступ на машине</label>
+            </div>
+
+            <p>Фото <input type="file"  class="btn btn-default" id="place_photosID" min="1" max="999" multiple="true"/></p>
+
+            <input type="button" value="Добавить место" onclick="addPlace()" class="btn btn-primary"/>
+            <input type="button" value="Отмена"  onclick="closeForm('place_add')" class="btn btn-dark"/>
         </form>
     </div>
 
     <div id="formOrderAddID" class="formPopup">
         <form id="OrderAddID">
             {% csrf_token %}
+            <div class="form-group">
+                <label for="fOrderAdd_lantID">Широта</label>
+                <input type="text" class="form-control" id="fOrderAdd_lantID" placeholder="Широта">
+            </div>
 
-            <p>Дата начала: <input type="date" id="fOrderAdd_dateBeginID"></p>
-            <p>Дата окончания: <input type="date" id="fOrderAdd_dateEndID"></p>
-            <p>Описание: <input type="text" id="fOrderAdd_descriptionID" /></p>
+            <div class="form-group">
+                <label for="fOrderAdd_longID">Долгота</label>
+                <input type="text" class="form-control" id="fOrderAdd_longID" placeholder="Долгота">
+            </div>
 
-            <input type="file"  id="fOrderAdd_photosID" min="1" max="999" multiple="true"/>
+            <div class="form-group row">
+                <label for="fOrderAdd_dateBeginID" class="col-5 col-form-label">Дата начала</label>
+                <div class="col-7">
+                    <input class="form-control" type="date" id="fOrderAdd_dateBeginID">
+                </div>
+            </div>
 
-            <input type="button" value="Добавить отчет" onclick="addOrder()" />
-            <input type="button" value="Отмена"  onclick="closeForm('order_add')" />
+            <div class="form-group row">
+                <label for="fOrderAdd_dateEndID" class="col-5 col-form-label">Дата окончания</label>
+                <div class="col-7">
+                    <input class="form-control" type="date" id="fOrderAdd_dateEndID">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fOrderAdd_descriptionID">Описание</label>
+                <input type="text" class="form-control" id="fOrderAdd_descriptionID" placeholder="Описание">
+            </div>
+
+            <p>Фото <input type="file"  class="btn btn-default" id="fOrderAdd_photosID" min="1" max="999" multiple="true"/></p>
+
+            <input type="button" value="Добавить отчет" onclick="addOrder()" class="btn btn-primary"/>
+            <input type="button" value="Отмена"  onclick="closeForm('order_add')" class="btn btn-dark"/>
         </form>
     </div>
 {% endblock %}
