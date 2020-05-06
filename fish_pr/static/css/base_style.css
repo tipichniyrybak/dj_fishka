@@ -1,23 +1,10 @@
-body {
-    font-family: "Lucida Grande","Lucida Sans Unicode", Tahoma, sans-serif;
-    font-size: 11pt;
-}
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 15fr 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: 100vh;
-}
 
-.header {   grid-area: 1 / 1 / 2 / 4;
-            background: linear-gradient(to bottom, #538eed, #fafafa);}
-.login_controls {  grid-area: 2 / 1 / 3 / 2; }
-.working_area {  grid-area: 2 / 2 / 3 / 4; }
-.footer {   grid-area: 3 / 1 / 4 / 4;
-            background: linear-gradient(to top, #538eed, #fafafa);}
+
+
+.header {   background: linear-gradient(to bottom, #538eed, #fafafa);}
+
+.footer {   background: linear-gradient(to top, #538eed, #fafafa);}
 
 .formPopup, .message {
     background-color:#fff;
@@ -64,22 +51,6 @@ body {
 
 
 .links {
-    position: relative;
-    top: 50%;
-    margin-left: 20%;
-}
+    position: center;
 
-input[type="text"], input[type="password"]{
-   border: 1px solid #cccccc; //цвет рамки
-   border-radius: 3px; //закругление углов (общее)
-   -webkit-border-radius: 3px; //закругление углов (Google Chrome)
-   -moz-border-radius: 3px; //закругление углов (FireFox)
-   -khtml-border-radius: 3px; //закругление углов (Safari)
-   background: #ffffff !important; // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
-   outline: none; // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
-   height: 24px; // высота на свое усмотрение
-   width: 120px; // ширина на свое усмотрение
-   color: #cccccc; //цвет шрифта в обычном состоянии
-   font-size: 11px; // Размер шрифта
-   font-family: Tahoma; // Стиль шрифта
 }
