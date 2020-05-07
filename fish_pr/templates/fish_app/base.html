@@ -58,7 +58,7 @@
     </head>
     <body>
 
-        <div class="container-fluid cont">
+        <div class="container-fluid ">
         	<div class="row header">
         		<div class="col-md-12">
         			<ul class="nav">
@@ -91,6 +91,10 @@
                                     {% if request.GET.next %}
                                         <input type="hidden" name="next" value="{{ request.GET.next }}">
                                     {% endif %}
+
+
+                                    <button type="button" class="btn btn-link" onclick="location.href = '/registration';" >Регистрация</button>
+
                                     <button type="submit" class="btn btn-primary">Войти</button>
                                 </form>
                             </div>

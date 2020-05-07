@@ -38,8 +38,6 @@
 
         filtersButton = new ymaps.control.Button({
                  data: {
-                     {% load static %}
-                     image: '{% static "images/delete.png" %}',
                      content: 'Фильтра',
                      title: 'Фильтра'
                  },
@@ -184,7 +182,7 @@
                         </div>
                             <!-- Футер модального окна -->
                         <div class="modal-footer">
-
+                            <button type="button" data-dismiss="modal" onclick="set_places();" class="btn btn-primary" >Применить</button>
                             <button type="button" data-dismiss="modal" class="btn btn-default">Закрыть</button>
                         </div>
                     </div>
