@@ -29,15 +29,38 @@
                 map.balloon.open(coords, {
                     contentHeader: coords[0] + ' : ' + coords[1],
                     contentBody: '<button type="button" class="btn btn-primary" id="place_addID" onclick="openFormAddPlace(' + coords[0] + ', ' + coords[1] + ')" >Добавить место</button> <button type="button" class="btn btn-primary" id="order_addID" onclick="openFormAddOrder(' + coords[0] + ', ' + coords[1] + ')" >Добавить отчет</button>'
-
                 });
             }
             else {
                 map.balloon.close();
             }
         });
+
+        filtersButton = new ymaps.control.Button({
+                 data: {
+                     {% load static %}
+                     image: '{% static "images/delete.png" %}',
+                     content: 'Фильтра',
+                     title: 'Фильтра'
+                 },
+                 options: {
+                     selectOnClick: false,
+                     maxWidth: [30, 100, 150]
+                 }
+        });
+
+        filtersButton.events.add('click', function(e) {
+            $('#filters_contentID').modal('show');
+        });
+
+        map.controls.add(filtersButton, { float: 'right', floatIndex: 100 });
+
         reloadPlaces();
     });
+
+
+
+
 {% endblock %}
 
 {% block working_area %}
@@ -46,94 +69,128 @@
 
         <div class="map_area">
 
-            <div id="pplace_contentID"  class="placeContent">
-                {% load static %}
-                <img src="{% static "images/delete.png" %}" alt="delete" id="RemovePlaceButtonID" class="remove_button" height="40" width="40" onclick="deletePlace()">
-                <div id="place_name"></div>  <br>
-                <div id="place_user">
-
-                </div>  <br>
-                <div id="place_isBame">
-                    .
-                </div>  <br>
-                <div id="coord">
-                    <div id="place_lant"></div>
-                    <br>
-                    <div id="place_long"></div>
-                </div>  <br>
-                <div id="place_photos">
-
-                </div>  <br>
-                <div id="place_decription">
-
-                </div>  <br>
-                <div id="place_bus_accessibility">
-
-                </div>  <br>
-                <div id="place_car_accessibility">
-
-                </div>  <br>
-                <div id="place_orders">
-                    <div class="active_caption"  id="show_ordersID" onclick="show_orders()">Показать отчеты</div>
-                </div> <br>
-
-                <input type="button" value="Закрыть" onclick="hidePlaceContent()">
-            </div>
-
-
             <div id="place_contentID" class="modal fade" >
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <!-- Заголовок модального окна -->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="place_name"></h4>
+                        <div class="modal-header" >
+                            <div id="place_name" class="modal-title"></div>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
                             <!-- Основное содержимое модального окна -->
                         <div class="modal-body">
-                            Содержимое модального окна...
+                            {% load static %}
+                            <img src="{% static "images/delete.png" %}" alt="delete" id="RemovePlaceButtonID" class="remove_button" height="40" width="40" onclick="deletePlace();">
+                            <div id="place_user">
+
+                            </div>  <br>
+                            <div id="place_isBame">
+                                .
+                            </div>  <br>
+                            <div id="coord">
+                                <div id="place_lant"></div>
+                                <br>
+                                <div id="place_long"></div>
+                            </div>  <br>
+                            <div id="place_photos">
+
+                            </div>  <br>
+                            <div id="place_decription">
+
+                            </div>  <br>
+                            <div id="place_bus_accessibility">
+
+                            </div>  <br>
+                            <div id="place_car_accessibility">
+
+                            </div>  <br>
                         </div>
                             <!-- Футер модального окна -->
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                            <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                            <button type="button" onclick="show_orders();" class="btn btn-primary" >Отчеты</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-default">Закрыть</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div id="orders_contentID" class="modal fade" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <!-- Заголовок модального окна -->
+                        <div class="modal-header" >
+                            <div id="orders_place_nameID" class="modal-title"></div>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                            <!-- Основное содержимое модального окна -->
+                        <div class="modal-body">
+                            <div id="orders_listID" class="orders_list">
+                                <select size="10" id="select_orders_listID" onchange="get_order_info();">
+                                </select>
+                                <div class="active_caption"  id="order_add" onclick="$('#formOrderAddID').bPopup()">Добавить отчет</div>
 
-            <div id="orders_contentID"  class="ordersContent">
-                <div id="orders_place_nameID" class="orders_place_name">
-                    ...Place Name...
-                </div>
-                <div id="orders_listID" class="orders_list">
-                    <select size="10" id="select_orders_listID" onchange="get_order_info();">
-                    </select>
-                    <div class="active_caption"  id="order_add" onclick="$('#formOrderAddID').bPopup()">Добавить отчет</div>
-
-                </div>
-                <div id="order_infoID" class="order_info">
-                    <div id="order_userID">
-                        order_user
-                    </div>  <br>
-                    <div id="order_periodID">
-                        order_period
-                    </div>  <br>
-                    <div id="order_descriptionID">
-                        order_description
-                    </div>  <br>
-                    <div id="order_photosID">
-                        order_photos
-                    </div>  <br>
-                    <input type="button" id="RemoveOrderButtonID" value="Удалить отчет" onclick="deleteOrder()">
-                </div>
-                <div class="orders_controls">
-
-                    <input type="button" value="Закрыть" onclick="hideOrderContent()">
-
+                            </div>
+                            <div id="order_infoID" class="order_info">
+                                <div id="order_userID">
+                                    order_user
+                                </div>  <br>
+                                <div id="order_periodID">
+                                    order_period
+                                </div>  <br>
+                                <div id="order_descriptionID">
+                                    order_description
+                                </div>  <br>
+                                <div id="order_photosID">
+                                    order_photos
+                                </div>  <br>
+                                <input type="button" id="RemoveOrderButtonID" value="Удалить отчет" onclick="deleteOrder()">
+                            </div>
+                        </div>
+                            <!-- Футер модального окна -->
+                        <div class="modal-footer">
+                            <!-- <button type="button" onclick="show_orders();" class="btn btn-primary" data-dismiss="modal">Отчеты</button> -->
+                            <button type="button" data-dismiss="modal" class="btn btn-default">Закрыть</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div id="filters_contentID" class="modal fade" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <!-- Заголовок модального окна -->
+                        <div class="modal-header" >
+                            <div class="modal-title">Фильтра</div>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                            <!-- Основное содержимое модального окна -->
+                        <div class="modal-body">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_selfPlacesID">
+                                <label class="form-check-label" for="is_selfPlacesID">Мои места</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_BaseID">
+                                <label class="form-check-label" for="is_BaseID">Рыболовная база</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_carAccessibilityID">
+                                <label class="form-check-label" for="is_carAccessibilityID">Доступ на машине</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_busAccessibilityID">
+                                <label class="form-check-label" for="is_busAccessibilityID">Доступ на общественном</label>
+                            </div>
+                        </div>
+                            <!-- Футер модального окна -->
+                        <div class="modal-footer">
+
+                            <button type="button" data-dismiss="modal" class="btn btn-default">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="map" style="margin:auto; width: 100%; height: 80vh; z-index: 50;"></div>
         </div>
     </div>

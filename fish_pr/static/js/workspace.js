@@ -121,8 +121,9 @@ function deletePlace() {
                     hidePlaceContent();
                     $("#messageID").html("Место удалено!");
                     $("#messageID").bPopup({
-                        autoClose: 2000 //Auto closes after 1000ms/1sec
+                        autoClose: 2000//Auto closes after 1000ms/1sec
                     });
+                    $('#place_contentID').modal('hide');
                     reloadPlaces();
                 } else {
                     $("#messageID").html("Место не было удалено!");
@@ -145,19 +146,16 @@ function reloadPlaces() {
 
 function set_places() {
 
-    // filters = { is_selfPlaces :
-    //                 $("#is_selfPlacesID").prop("checked"),
-    //             is_Base :
-    //                 $("#is_BaseID").prop("checked"),
-    //             is_carAccessibility :
-    //                 $("#is_carAccessibilityID").prop("checked"),
-    //             is_busAccessibility :
-    //                 $("#is_busAccessibilityID").prop("checked") }
+    filters = { is_selfPlaces :
+                    $("#is_selfPlacesID").prop("checked"),
+                is_Base :
+                    $("#is_BaseID").prop("checked"),
+                is_carAccessibility :
+                    $("#is_carAccessibilityID").prop("checked"),
+                is_busAccessibility :
+                    $("#is_busAccessibilityID").prop("checked") }
 
-    filters = { is_selfPlaces : false,
-                is_Base : false,
-                is_carAccessibility : false,
-                is_busAccessibility : false }
+
 
     filters_json = JSON.stringify(filters);
 
@@ -191,8 +189,8 @@ function set_places() {
                         console.log(currPlaceID);
 
 
-                        // get_place_info();
-                        $('#place_contentID').modal();
+                        get_place_info();
+
                     });
                     map.geoObjects.add(myPlacemark1);
                 });
@@ -241,6 +239,7 @@ function get_place_info() {
             } else {
                 $("#RemovePlaceButtonID").css("display", "none");
             }
+            $('#place_contentID').modal();
         },
         error: function(error) {
             console.log("get_place_info_error:");
@@ -284,9 +283,9 @@ function get_place_info() {
 //------Order-----------
 
 function show_orders() {
-    $("#place_contentID").hide();
+    $("#place_contentID").modal('hide');
     reloadOrders();
-    $("#orders_contentID").css("display", "grid");
+    $("#orders_contentID").modal('show');
 }
 
 function addOrder() {
@@ -502,8 +501,8 @@ function hidePlaceContent() {
 }
 
 function hideOrderContent() {
-    $("#orders_contentID").hide();
-    $("#place_contentID").slideToggle(200);
+    $("#orders_contentID").modal('hide');
+    $("#place_contentID").modal('show');
 }
 
 function openFormAddPlace(lant, long) {
