@@ -182,16 +182,17 @@ function set_places() {
                         }, {
                             preset: "islands#darkOrangeStretchyIcon"
                         });
-                    myPlacemark1.events.add(["click"],  function (e) {
+                    myPlacemark1.events.add('click',  function(e) {
                         console.log("click cluck");
                         // $("#place_contentID").hide();
                         // $("#orders_contentID").hide();
 
                         currPlaceID = place.id;
                         console.log(currPlaceID);
-                        $("#hidenButtonID").click();
+
+
                         // get_place_info();
-                        // $("#place_contentID").slideToggle(200);
+                        $('#place_contentID').modal();
                     });
                     map.geoObjects.add(myPlacemark1);
                 });

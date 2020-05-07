@@ -58,7 +58,7 @@
     </head>
     <body>
 
-        <div class="container-fluid">
+        <div class="container-fluid cont">
         	<div class="row header">
         		<div class="col-md-12">
         			<ul class="nav">
@@ -78,7 +78,7 @@
                             </div>
 
                             <div id="login_formID" class="login_form">
-                                <form role="form" action="{% url 'fish_app:login' %}" method="post" >
+                                <form role="form" action="{% url 'fish_app:login' %}" method="post" style="margin: 10px;" >
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <label for="id_username">Имя пользователя</label>
