@@ -6,6 +6,7 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/workspace_style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+
 {% endblock %}
 
 {% block js_link %}
@@ -153,8 +154,8 @@
                 </div>
             </div>
 
-            <div id="filters_contentID" class="modal fade" >
-                <div class="modal-dialog">
+            <div class="modal fade right" id="filters_contentID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+                <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
                     <div class="modal-content">
                     <!-- Заголовок модального окна -->
                         <div class="modal-header" >
