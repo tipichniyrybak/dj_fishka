@@ -10,12 +10,10 @@
 
 {% endblock %}
 
-{% block title %} Registration {% endblock %}
+{% block title %} Регистрация {% endblock %}
 
 {% block working_area %}
     <h1> Регистрация </h1>
-
-
 
     <form action="{% url 'fish_app:registration' %}" method="post" >
         {% csrf_token %}

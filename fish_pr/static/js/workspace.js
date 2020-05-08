@@ -157,6 +157,7 @@ function set_places() {
 
 
 
+
     filters_json = JSON.stringify(filters);
 
     $.ajax({
