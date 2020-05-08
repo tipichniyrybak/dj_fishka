@@ -26,7 +26,8 @@
 
 .modal.right.fade.show .modal-dialog {
     position: absolute;
-    right: 0;
+    right: 20px;
+    top: 25px;
 }
 
 

@@ -146,23 +146,23 @@ function reloadPlaces() {
 
 function set_places() {
 
-    // filters = { is_selfPlaces :
-    //                 $("#is_selfPlacesID").prop("checked"),
-    //             is_Base :
-    //                 $("#is_BaseID").prop("checked"),
-    //             is_carAccessibility :
-    //                 $("#is_carAccessibilityID").prop("checked"),
-    //             is_busAccessibility :
-    //                 $("#is_busAccessibilityID").prop("checked") }
-
     filters = { is_selfPlaces :
-                    false,
+                    $("#is_selfPlacesID").prop("checked"),
                 is_Base :
-                    false,
+                    $("#is_BaseID").prop("checked"),
                 is_carAccessibility :
-                    false,
+                    $("#is_carAccessibilityID").prop("checked"),
                 is_busAccessibility :
-                    false }
+                    $("#is_busAccessibilityID").prop("checked") }
+
+    // filters = { is_selfPlaces :
+    //                 false,
+    //             is_Base :
+    //                 false,
+    //             is_carAccessibility :
+    //                 false,
+    //             is_busAccessibility :
+    //                 false }
 
 
 
