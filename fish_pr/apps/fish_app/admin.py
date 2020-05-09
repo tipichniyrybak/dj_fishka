@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, UserMessage, \
-    Room
+    Room, Fishing
 
 admin.site.register(Profile)
 admin.site.register(FishingPlace)
@@ -12,3 +12,4 @@ admin.site.register(PlaceOrderImages)
 admin.site.register(Friendship)
 admin.site.register(UserMessage)
 admin.site.register(Room)
+admin.site.register(Fishing)

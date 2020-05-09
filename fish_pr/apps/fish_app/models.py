@@ -136,6 +136,8 @@ class FishingPlaceImages(models.Model):
 class PlaceOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
+    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8)
+    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8)
     date_begin = models.DateField()
     date_end = models.DateField()
     description = models.TextField('Description of order')
@@ -168,11 +170,14 @@ class PlaceOrderImages(models.Model):
 
 
 class Fishing(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #creator = models.ForeignKey(User, on_delete=models.CASCADE)
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
+    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8)
+    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8)
     datetime_publication = models.DateTimeField(default=datetime.now)
     description = models.TextField('Description of fishing', default="fishing description")
-    user_list = models.CharField('Users list', max_length=100, default='')
+    # user_list = models.CharField('Users list', max_length=100, default='')
+    users = models.ManyToManyField(User, blank=True)
     max_users = models.IntegerField(default=0)
     # chat = models.TextField('fishing chat')
 
@@ -180,8 +185,19 @@ class Fishing(models.Model):
         verbose_name = 'Рыбалка'
         verbose_name_plural = 'Рыбалки'
 
+    def save(self, request, *args, **kwargs):
+        self.users[0] = request.user
+        super(FishingPlace, self).save(*args, **kwargs)
+        # return FishingPlace.objects.filter(name=self.name).values('id')
+        return self
+
+    # def save_model(self, request, obj, form, change):
+    #     obj.users[0] = request.user
+    #     obj.added_by = request.user
+    #     super().save_model(request, obj, form, change)
+
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Message(models.Model):
