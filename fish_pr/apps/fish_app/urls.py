@@ -9,6 +9,7 @@ app_name = 'fish_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('index5/', views.index5, name='index5'),
 
     path('login/', views.login, name='login'),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),

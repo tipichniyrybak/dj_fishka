@@ -39,6 +39,10 @@ def index(request):
             current_user_id = 0
     return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'current_user_id': request.user.id})
 
+def index5(request):
+    return render(request, 'fish_app/index5.html')
+
+
 
 def friends(request):
     curr_prof = Profile.objects.get(user_id=request.user.id)
