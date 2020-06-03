@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title> {% block title %} My fishing site {% endblock %} </title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base_style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/lightbox.css' %}">
+        {% block css_link %} {% endblock %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script type=text/javascript src="{% static 'js/libs/jquery-3.4.1.js' %}"></script>
+        <script type=text/javascript src="{% static 'js/libs/lightbox.js' %}"></script>
+        <script type=text/javascript src="{% static 'js/libs/bPopup.js' %}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script type=text/javascript src="{% static 'js/base.js' %}"></script>
+        {% block js_link %} {% endblock %}
+
+        <script type="text/javascript">
+            currUserID = null;
+            currPlaceID = null;
+            currOrderID = null;
+            myYandexMap = null;
+            currProfile_json = "";
+
+            $(document).ready(function() {
+
+                currUserID = '{{ request.user.id }}';
+                console.log('currUserID');
+                console.log(currUserID);
+                if (currUserID > 0) {
+
+                    $('#profile_controlsID').show();
+                    $('#login_formID').hide();
+                    //reloadProfile();
+
+                    lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                    });
+
+
+                } else {
+                    $('#profile_controlsID').hide();
+                    $('#login_formID').show();
+                }
+
+                {% block document_ready_script %} {% endblock %}
+
+            });
+        </script>
+
+
+    </head>
+    <body>
+
+        <div class="container-fluid ">
+        	<div class="row header">
+        		<div class="col-md-12">
+        			<ul class="nav">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownProfileMenuButtonID" data-toggle="dropdown"> Профиль </button>
+
+                        <div class="dropdown-menu">
+                            <div id="profile_controlsID">
+                                <a class="dropdown-item" href="/pdetail{{ request.user.id }}">Мой профиль</a>
+                                <a class="dropdown-item" href="/friends">Мои друзья</a>
+                                <a class="dropdown-item" href="/messages">Мои сообщения</a>
+                                <a class="dropdown-item" href="#">Мои отчеты</a>
+                                <a class="dropdown-item" href="#">Мои рыбалки</a>
+                                <a class="dropdown-item" href="#">Мои Трофеи</a>
+                                <a class="dropdown-item" href="#">Мои объявления</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url "fish_app:logout" %}">Выйти</a>
+                            </div>
+
+                            <div id="login_formID" class="login_form">
+                                <form role="form" action="{% url 'fish_app:login' %}" method="post" style="margin: 10px;" >
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="id_username">Имя пользователя</label>
+                                        <input type="text" class="form-control" id="id_username" name="username" autocapitalize="none" autocomplete="username" maxlength="150" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_password">Пароль</label>
+                                        <input type="password" class="form-control" id="id_password" name="password" autocomplete="current-password" required/>
+                                    </div>
+                                    {% if request.GET.next %}
+                                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                                    {% endif %}
+
+
+                                    <button type="button" class="btn btn-link" onclick="location.href = '/registration';" >Регистрация</button>
+
+                                    <button type="submit" class="btn btn-primary">Войти</button>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <li class="nav-item">
+        					<a class="nav-link active" href="/">Карта</a>
+        				</li>
+        				<li class="nav-item">
+        					<a class="nav-link active" href="#">Лента</a>
+        				</li>
+        				<li class="nav-item">
+        					<a class="nav-link active" href="#">Ихтиосправочник</a>
+        				</li>
+
+        			</ul>
+        		</div>
+        	</div>
+        	<div class="row">
+
+        		<div class="col-md-12">
+                    {% block working_area %}
+                    {% endblock %}
+        		</div>
+        	</div>
+        	<div class="row footer">
+        		<div class="col-md-12">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="javascript: alert('Zenit SPb!')">Go</a>
+                        </li>
+                    </ul>
+        		</div>
+        	</div>
+        </div>
+
+        <div id="messageID" class="message">
+            hello
+        </div>
+
+    </body>
+</html>
