@@ -28,42 +28,10 @@
     {% block js_link %} {% endblock %}
 
     <script type="text/javascript">
-        let currUserID = null;
-        let currPlaceID = null;
-        let currOrderID = null;
-        let myYandexMap = null;
-        let currProfile_json = "";
-
         $(document).ready(function() {
-
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                $(this).toggleClass('active');
-            });
-
-            currUserID = '{{ request.user.id }}';
-            console.log('currUserID');
-            console.log(currUserID);
-            if (currUserID > 0) {
-
-                // $('#profile_controlsID').show();
-                // $('#login_formID').hide();
-                //reloadProfile();
-
-                lightbox.option({
-                'resizeDuration': 200,
-                'wrapAround': true
-                });
-
-
-            } else {
-                // $('#profile_controlsID').hide();
-                // $('#login_formID').show();
-            }
-
-            {% block document_ready_script %} {% endblock %}
-
+            {% block document_ready_script %} {% endblock %}            
         });
+
     </script> 
 
 </head>
