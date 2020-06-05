@@ -95,10 +95,10 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd5m6egghndu0gf',
-        'USER': 'kiyffmcejhyjql',
-        'PASSWORD': '0cc5d3ca782cf4fa6af65ca774edb87765f361167256276572d9b612071a4ee5',
-        'HOST': 'ec2-176-34-97-213.eu-west-1.compute.amazonaws.com',
+        'NAME': 'dbptk765996pa',
+        'USER': 'iyolidaklfpoko',
+        'PASSWORD': 'ce3ff51bb765f65285b094e065c3d0a4f0871fdb54de10d837d622e5e7838925',
+        'HOST': 'ec2-54-75-225-52.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -143,7 +143,7 @@ LOGOUT_REDIRECT_URL  = 'fish_app:index'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, "fish_pr", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "fish_pr", "static")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "fish_pr", "static"),
 ]

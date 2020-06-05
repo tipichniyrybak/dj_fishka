@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     {% load static %}
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/lightbox.css' %}">
@@ -29,50 +29,127 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            {% block document_ready_script %} {% endblock %}            
+            let currUserID = 0;
+            let currPlaceID = null;
+            let currOrderID = null;
+            let myYandexMap = null;
+            let currProfile_json = "";
+
+            $(document).ready(function() {
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                    $(this).toggleClass('active');
+                });
+
+                currUserID = '{{ request.user.id }}';
+                console.log('currUserID');
+                console.log(currUserID);
+                if (currUserID > 0) {
+                    console.log('currUserID > 0');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/get_profile_info/',
+                        data: {
+                            'userID': currUserID
+                        },
+                        success: function(response) {
+                            console.log('Profile_json:  ');
+                            console.log(response);
+                            currProfile_json = response;
+                            $("#name").html('<em><h4>' + currProfile_json[0].first_name + ' ' +currProfile_json[0].last_name + '</h4></em>');
+                            $("#profile_photo").html('<img class="profile-foto" src="http://fishkadata.s3.amazonaws.com/media/' + currProfile_json[0].photo  + '"/>');
+                        }
+
+                    });
+
+                    $('#profile_controlsID').show();
+                    $('#login_formID').hide();
+                    //reloadProfile();
+
+                    lightbox.option({
+                    'resizeDuration': 200,
+                    'wrapAround': true
+                    });
+
+
+                } else {
+                    $('#profile_controlsID').hide();
+                    $('#login_formID').show();
+                }
+            });
+            {% block document_ready_script %} {% endblock %}
         });
-
-    </script> 
-
+    </script>
 </head>
 
 <body>
     <div class="wrapper">
         <!-- Профиль -->
        <nav id="sidebar">
-            <div class="sidebar-header">
-            <h3>Профиль</h3>
-            </div> 
-            <ul class="list-unstyled components">
-            <p>Вася Нефедов</p>
-            <div class="profile-foto">
-               <img src="img/%D0%B1%D0%B0%D1%82%D1%8F-%D0%BC%D0%B5%D0%BC.jpg" class="profile-foto" alt="">
-                
-            </div>
-                <li class="active">
-                    <a href="/pdetail{{ request.user.id }}">Мой профиль</a>
-                </li>
-                <li>
-                    <a href="/friends">Мои друзья</a>
-                </li>
-                <li>
-                    <a href="/messages">Мои сообщения</a>
-                </li>
-                <li>
-                    <a href="#">Мои отчеты</a>
-                </li>
-                <li>
-                    <a href="#">Мои рыбалки</a>
-                </li>
-                <li>
-                    <a href="#">Мои трофеи</a>
-                </li>
-                <li>
-                    <a href="#">Мои обьявления</a>
-                </li>
-             </ul>  
+           <div id="profile_controlsID">
+                <div class="sidebar-header">
+                <h3>Профиль</h3>
+                </div>
+                <ul class="list-unstyled components">
+                <p id="name">Вася Нефедов</p>
+
+                <div class="profile-foto" id="profile_photo">
+                   <img src="img/%D0%B1%D0%B0%D1%82%D1%8F-%D0%BC%D0%B5%D0%BC.jpg" class="profile-foto" height="100" alt="">
+                </div>
+                    <li class="active">
+                        <a href="/pdetail{{ request.user.id }}">Мой профиль</a>
+                    </li>
+                    <li>
+                        <a href="/friends">Мои друзья</a>
+                    </li>
+                    <li>
+                        <a href="/messages">Мои сообщения</a>
+                    </li>
+                    <li>
+                        <a href="#">Мои отчеты</a>
+                    </li>
+                    <li>
+                        <a href="#">Мои рыбалки</a>
+                    </li>
+                    <li>
+                        <a href="#">Мои трофеи</a>
+                    </li>
+                    <li>
+                        <a href="#">Мои обьявления</a>
+                    </li>
+                    <li>
+                        <a href="{% url "fish_app:logout" %}">Выход</a>
+                    </li>
+                 </ul>
+
+             </div>
+
+             <div id="login_formID" class="login_form">
+                 <form role="form" action="{% url 'fish_app:login' %}" method="post" style="margin: 10px;" >
+                     {% csrf_token %}
+                     <div class="form-group">
+                         <label for="id_username">Имя пользователя</label>
+                         <input type="text" class="form-control" id="id_username" name="username" autocapitalize="none" autocomplete="username" maxlength="150" required/>
+                     </div>
+                     <div class="form-group">
+                         <label for="id_password">Пароль</label>
+                         <input type="password" class="form-control" id="id_password" name="password" autocomplete="current-password" required/>
+                     </div>
+                     {% if request.GET.next %}
+                         <input type="hidden" name="next" value="{{ request.GET.next }}">
+                     {% endif %}
+
+
+                     <button type="button" class="btn btn-link" onclick="location.href = '/registration';" >Регистрация</button>
+
+                     <button type="submit" class="btn btn-primary">Войти</button>
+                 </form>
+             </div>
+
         </nav>
-                
+
 
         <!-- Карта и навбар -->
         <div id="content">
