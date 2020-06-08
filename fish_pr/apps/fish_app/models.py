@@ -94,8 +94,8 @@ class UserMessage(models.Model):
 class FishingPlace(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField('Name of place', max_length=100)
-    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8)
-    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8)
+    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8, default=0)
+    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8, default=0)
     description = models.TextField('Description of place')
     is_Base = models.BooleanField(default=False)
     car_accessibility = models.BooleanField(default=False)
@@ -136,8 +136,8 @@ class FishingPlaceImages(models.Model):
 class PlaceOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
-    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8)
-    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8)
+    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8, default=0)
+    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8, default=0)
     date_begin = models.DateField()
     date_end = models.DateField()
     description = models.TextField('Description of order')
@@ -172,8 +172,8 @@ class PlaceOrderImages(models.Model):
 class Fishing(models.Model):
     #creator = models.ForeignKey(User, on_delete=models.CASCADE)
     fishing_place = models.ForeignKey(FishingPlace, on_delete=models.CASCADE)
-    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8)
-    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8)
+    lant = models.DecimalField('Lant of place', max_digits=10, decimal_places=8, default=0)
+    long = models.DecimalField('Long of place', max_digits=10, decimal_places=8, default=0)
     datetime_publication = models.DateTimeField(default=datetime.now)
     description = models.TextField('Description of fishing', default="fishing description")
     # user_list = models.CharField('Users list', max_length=100, default='')
@@ -205,3 +205,9 @@ class Message(models.Model):
     receivers = models.CharField('Receivers', max_length=200, default='')
     msg_content = models.TextField('Msg_content')
     datetime_publication = models.DateTimeField(default=datetime.now)
+
+
+class IFishes(models.Model):
+    name = models.CharField('name', max_length=60, default='fish_name')
+    description = models.TextField('Description of fish', default="fish description")
+    photo_src = models.CharField('photo_src', max_length=256, default='')
