@@ -18,6 +18,8 @@ urlpatterns = [
     path('friends/', views.friends, name='friends'),
     path('messages/', views.messages, name='messages'),
 
+    path('ihtio/', views.ihtio, name='ihtio'),
+
     path('pdetail<int:user_id>/', views.pdetail, name='pdetail'),
 
     path('get_profile_info/', views.get_profile_info, name='get_profile_info'),

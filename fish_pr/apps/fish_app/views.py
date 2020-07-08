@@ -39,9 +39,13 @@ def index(request):
             current_user_id = 0
     return render(request, 'fish_app/index.html', {'is_logged': is_logged, 'current_user_id': request.user.id})
 
+
 def index5(request):
     return render(request, 'fish_app/index5.html')
 
+
+def ihtio(request):
+    return render(request, 'fish_app/ihtio.html')
 
 
 def friends(request):

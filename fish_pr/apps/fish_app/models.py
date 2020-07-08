@@ -210,4 +210,4 @@ class Message(models.Model):
 class IFishes(models.Model):
     name = models.CharField('name', max_length=60, default='fish_name')
     description = models.TextField('Description of fish', default="fish description")
-    photo_src = models.CharField('photo_src', max_length=256, default='')
+    photo_src = models.CharField('photo_src', max_length=256, default='')   
