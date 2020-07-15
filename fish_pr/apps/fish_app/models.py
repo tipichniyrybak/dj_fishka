@@ -207,7 +207,23 @@ class Message(models.Model):
     datetime_publication = models.DateTimeField(default=datetime.now)
 
 
-class IFishes(models.Model):
-    name = models.CharField('name', max_length=60, default='fish_name')
-    description = models.TextField('Description of fish', default="fish description")
-    photo_src = models.CharField('photo_src', max_length=256, default='')   
+class IFish(models.Model):
+    name = models.CharField('name', max_length=60, default='fish_name')                             # Название
+    photo_src = models.CharField('photo_src', max_length=256, default='')                           # Путь к фото
+    lat_name = models.CharField('lat_name', max_length=60, default='fish_lat_name')                 # Латинское название
+    another_name = models.CharField('another_name', max_length=256, default='fish_another_name')    # Другие названия
+    family = models.CharField('family', max_length=60, default='fish_family')                       # Семейство
+    genus = models.CharField('genus',  max_length=60, default='fish_genus')                         # Род
+    kind = models.CharField('kind',  max_length=60, default='fish_kind')                            # Тип
+    lifestyle = models.CharField('lifestyle', max_length=256, default='fish_lifestyle')             # Образ жизни
+    food_type = models.CharField('food_type',  max_length=256, default='fish_food_type')            # Тип питания
+    habitat = models.TextField('habitat', default='fish_habitat')                                   # Ареал обитания
+    description = models.TextField('description', default='fish_description')                       # Описание
+    appearance = models.TextField('appearance', default='fish_appearance')                          # Внешний вид
+    behavior_features = models.TextField('behavior_features', default='fish_behavior_features')     # Особенности поведения
+    food_features = models.TextField('food_features', default='fish_food_features')                 # Особенности питания
+    reproduction = models.TextField('reproduction', default='fish_reproduction')                    # Размножение
+    fishing_style = models.TextField('fishing_style', default='fishing_style')                      # Особенности ловли
+
+
+
