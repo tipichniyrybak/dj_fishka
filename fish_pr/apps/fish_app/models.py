@@ -43,6 +43,7 @@ class Profile(models.Model):
     filters = models.CharField('filters', max_length=300,
                                default='{"is_selfPlaces": "false", "is_Base": "false", '
                                        '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
+    telegram_id = models.CharField('telegram_id', max_length=10, default='')
 
     class Meta:
         verbose_name = 'Профиль'
