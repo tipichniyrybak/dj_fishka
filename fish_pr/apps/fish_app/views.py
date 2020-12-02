@@ -291,17 +291,17 @@ def get_places(request):
     #                          '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     # print(request.POST.get("filters").dict())
-    # filters = json.loads(request.POST.get("filters"))
+    filters = json.loads(request.POST.get("filters"))
 
     places = FishingPlace.objects.values()
-    # if filters["is_selfPlaces"]:
-    #     places = places.filter(user_id=request.user.id)
-    # if filters["is_Base"]:
-    #     places = places.filter(is_Base=True)
-    # if filters["is_carAccessibility"]:
-    #     places = places.filter(car_accessibility=True)
-    # if filters["is_busAccessibility"]:
-    #     places = places.filter(bus_accessibility=True)
+    if filters["is_selfPlaces"]:
+        places = places.filter(user_id=request.user.id)
+    if filters["is_Base"]:
+        places = places.filter(is_Base=True)
+    if filters["is_carAccessibility"]:
+        places = places.filter(car_accessibility=True)
+    if filters["is_busAccessibility"]:
+        places = places.filter(bus_accessibility=True)
 
     return JsonResponse(list(places), safe=False)
 
