@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, Room, UserMessage
+from .models import FishingPlace, Profile, FishingPlaceImages, PlaceOrder, PlaceOrderImages, Friendship, Room, \
+    UserMessage
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -89,11 +90,11 @@ def get_messages_from_room(request):
         chat_item = {}
         message = {}
         for mes in room_messages:
-            if mes['user_send_id'] == last_message_user:            # append message to previous item
+            if mes['user_send_id'] == last_message_user:  # append message to previous item
                 message['time'] = mes['datetime_sending']
                 message['content'] = mes['text']
                 chat_items[-1]['messages'].append(copy.deepcopy(message))
-            else:                                                   # making new item - blok for messages from 1 sender
+            else:  # making new item - blok for messages from 1 sender
                 last_message_user = mes['user_send_id']
                 chat_item['photo_src'] = Profile.objects.filter(user_id=mes['user_send_id']).values('photo')[0]['photo']
                 chat_item['user_send_id'] = mes['user_send_id']
@@ -291,7 +292,11 @@ def get_places(request):
     #                          '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     # print(request.POST.get("filters").dict())
-    filters = json.loads(request.POST.get("filters"))
+    try:
+        filters = json.loads(request.POST.get("filters"))
+    except:
+        filters = json.loads('{"is_selfPlaces": "false", "is_Base": "false", '
+                             '"is_carAccessibility": "false", "is_busAccessibility": "false"}')
 
     places = FishingPlace.objects.values()
     if filters["is_selfPlaces"]:
